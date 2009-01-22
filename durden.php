@@ -174,14 +174,15 @@ function makeLinks($text) {
 }
 
 function printRSS($num) {
-        $query = "select id,entry,date_format(entrytime, '%a, %d %b %Y %H:%i:%s') as date from main order by entrytime desc limit $num";
+        $query = "select id,subject,body,date_format(entrytime, '%a, %d %b %Y %H:%i:%s') as date from main order by entrytime desc limit $num";
         $result = mysql_query($query);
 
 	$siteurl = getSiteUrl();
 
         while ($row = mysql_fetch_array($result)) {
 		echo "\t<item>\n";
-		echo "\t\t<title>" . $row['entry'] . "</title>\n";
+		echo "\t\t<title>" . $row['subject'] . "</title>\n";
+		echo "\t\t<description>" . $row['body'] . "</description>\n";
 		echo "\t\t<pubDate>" . $row['date'] . " PST</pubDate>\n";
 		echo "\t\t<guid>" . $siteurl . "/entry.php?number=" . $row['id'] . "</guid>\n";
 		echo "\t\t<link>" . $siteurl . "/entry.php?number=" . $row['id'] . "</link>\n";
