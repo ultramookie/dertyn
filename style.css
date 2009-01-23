@@ -43,18 +43,24 @@ hr {
 	color: #c0c0c0;
 }
 
-.entry {
+.subject {
 	font-size: medium;
-	word-wrap: break-word;
+	word-wrap: break-word;	
+	font-weight: bold;
 	background:#F0F0F0;
+}
+
+.entry {
+	font-size: small;
+	word-wrap: break-word;
 	padding: 10px 25px;
 }
 
 .timedate {
 	font-size: x-small;
 	background:#FFFFFF;
-	text-align: right;
-	padding:  6px;
+	text-align: left;
+	padding:  0px;
 }
 
 .menu {

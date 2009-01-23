@@ -81,14 +81,18 @@ function printEntry($id) {
 		$text = $row['body'];
 	}
 
-        echo "<p class=\"subject\">" . $row['subject'] . " </p>";
-        echo "<p class=\"body\">" . $text . " </p>";
+	echo "\n";
+        echo "<p class=\"subject\"><a href=\"entry.php?number=" . $id . "\">" . $row['subject'] . "</a></p>";
+	echo "\n";
 	echo "<p class=\"timedate\">" . $row['date'];
-        echo " <a href=\"entry.php?number=" . $id ."\"><img src=\"page_link.gif\" border=\"0\" /></a> ";
 	if(checkCookie()) {
 		echo "<a href=\"delete.php?number=" . $id ."\"><img src=\"page_delete.gif\" border=\"0\" /></a> ";
 	}
-	echo "</p><hr />";
+	echo "</p>";
+	echo "\n";
+        echo "<p class=\"entry\">" . $text . " </p>";
+	echo "\n";
+	echo "<hr />";
 }
 
 function makeYouTube($in_url) {
@@ -181,7 +185,6 @@ function printRSS($num) {
         while ($row = mysql_fetch_array($result)) {
 		echo "\t<item>\n";
 		echo "\t\t<title>" . $row['subject'] . "</title>\n";
-		echo "\t\t<description>" . $row['body'] . "</description>\n";
 		echo "\t\t<pubDate>" . $row['date'] . " PST</pubDate>\n";
 		echo "\t\t<guid>" . $siteurl . "/entry.php?number=" . $row['id'] . "</guid>\n";
 		echo "\t\t<link>" . $siteurl . "/entry.php?number=" . $row['id'] . "</link>\n";
