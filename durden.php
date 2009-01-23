@@ -509,7 +509,7 @@ function addUser($user,$email,$pass,$site,$url) {
 		$query = "insert into user (name,email,pass,secret) values ('$user','$email','$epass','$secret')";
 		$status = mysql_query($query);
 	
-		$query = "insert into site (name,url,indexNum,rssNum,twitterCheck,twitterEmail,twitterPass) values ('$site','$url','10','10','0','','')";
+		$query = "insert into site (name,url,indexNum,rssNum) values ('$site','$url','10','10')";
 		$status = mysql_query($query);
 
 		echo "mindof installed!  thanks!";
