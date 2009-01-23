@@ -4,7 +4,7 @@
 	$dbhost = "127.0.0.1";
 
 	# the name of your database
-	$db     = "mindof";
+	$db     = "durden";
 
 	# the username to log into the database
 	$dbuser = "username";

@@ -512,7 +512,7 @@ function addUser($user,$email,$pass,$site,$url) {
 		$query = "insert into site (name,url,indexNum,rssNum) values ('$site','$url','10','10')";
 		$status = mysql_query($query);
 
-		echo "mindof installed!  thanks!";
+		echo "durden installed!  thanks!";
 	}
 }
 
