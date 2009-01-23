@@ -15,7 +15,7 @@
 
         if( (checkCookie()) && ((stripslashes($_POST['checksubmit']))) ) {
 		$subject = strip_tags($_POST['subject']);
-		$body = strip_tags($_POST['body'],"<p><a><i><b><img><br><ul><li>");
+		$body = strip_tags($_POST['body'],"<p><a><i><b><img><br><ul><li><pre>");
 		addEntry($subject,$body);
 		echo " <img src=\"icon_accept.gif\" border=\"0\" /> entry posted. ";
         }
