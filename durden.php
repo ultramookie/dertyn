@@ -266,33 +266,6 @@ function getEmail() {
         return($row['email']);
 }
 
-function gettwitterEmail() {
-        $query = "select twitterEmail from site limit 1";
-        $result = mysql_query($query);
-
-        $row = mysql_fetch_array($result);
-
-        return($row['twitterEmail']);
-}
-
-function gettwitterPass() {
-        $query = "select twitterPass from site limit 1";
-        $result = mysql_query($query);
-
-        $row = mysql_fetch_array($result);
-
-        return($row['twitterPass']);
-}
-
-function gettwitterCheck() {
-        $query = "select twitterCheck from site limit 1";
-        $result = mysql_query($query);
-
-        $row = mysql_fetch_array($result);
-
-        return($row['twitterCheck']);
-}
-
 function getUser() {
         $query = "select name from user limit 1";
         $result = mysql_query($query);
@@ -402,7 +375,6 @@ function showSettingsform() {
 	$indexNum = getIndexNum();
 	$rssNum = getRssNum();
 	
-	echo "<p>click here for: <a href=\"twittersettings.php\">twitter settings</a></p>";
 	echo "<p><b>general site settings:</b></p>";
 	echo "<form action=\"";
 	echo $_SERVER['PHP_SELF'];
@@ -418,33 +390,6 @@ function showSettingsform() {
 	echo "<input type=\"submit\" name=\"submit\" value=\"update\">";
 	echo "</form>";
 
-
-}
-
-function showTwitterform() {
-
-	$twitterCheck =  gettwitterCheck();
-	$twitterEmail = gettwitterEmail();
-
-	if($twitterCheck == 1) {
-		$checked = "checked";
-	} else  {
-		$checked = "";
-	}
-
-	echo "<form action=\"";
-	echo $_SERVER['PHP_SELF'];
-	echo "\"";
-	echo " method=\"post\">";
-        echo "user: <input type=\"text\" name=\"user\"><br />";
-        echo "pass: <input type=\"password\" name=\"pass\"><br />";
-	echo "update twitter also: <input type=\"checkbox\" name=\"twitterCheck\" value=\"1\" " .  $checked . "><br />";
-	echo "twitter email address: <input type=\"text\" name=\"twitterEmail\" value=\"" . $twitterEmail . "\"><br />";
-	echo "twitter password: <input type=\"password\" name=\"twitterPass1\"><br />";
-	echo "twitter password (again): <input type=\"password\" name=\"twitterPass2\"><br />";
-	echo "<input type=\"hidden\" name=\"checksubmit\" value=\"1\">";
-	echo "<input type=\"submit\" name=\"submit\" value=\"update\">";
-	echo "</form>";
 
 }
 
@@ -534,18 +479,6 @@ function changeSettings($site,$url,$numberIndex,$numberRSS) {
 
 }
 
-function changeTwitterSettings($twitterCheck,$twitterEmail,$twitterPass) {
-
-        $twitterCheck = mysql_real_escape_string($twitterCheck);
-        $twitterEmail = mysql_real_escape_string($twitterEmail);
-        $twitterPass = mysql_real_escape_string($twitterPass);
-
-	$query = "update site set twitterCheck='$twitterCheck', twitterEmail='$twitterEmail', twitterPass='$twitterPass' limit 1";
-	$result = mysql_query($query);
-
-	echo "your twitter settings have been updated!";
-}
-
 function addUser($user,$email,$pass,$site,$url) {
         $salt = substr("$email",0,2);
         $epass = crypt($pass,$salt);
@@ -565,10 +498,10 @@ function addUser($user,$email,$pass,$site,$url) {
 		$query = "create table user ( name varchar(30) NOT NULL, email varchar(30) NOT NULL, pass varchar(30) NOT NULL, secret varchar(6), cookie varchar(300) )";
 		$status = mysql_query($query);
 
-		$query = "create table main ( id int NOT NULL AUTO_INCREMENT, entrytime DATETIME NOT NULL, entry varchar(160) NOT NULL, PRIMARY KEY (id)); ";
+		$query = "create table main ( id int NOT NULL AUTO_INCREMENT, entrytime DATETIME NOT NULL, subject varchar(160) NOT NULL, body MEDIUMTEXT, PRIMARY KEY (id)); ";
 		$status = mysql_query($query);
 		
-		$query = "create table site ( name varchar(160) NOT NULL, url varchar(160) NOT NULL, indexNum int NOT NULL, rssNum int NOT NULL, twitterCheck int NOT NULL, twitterEmail varchar(50), twitterPass varchar(50) ); ";
+		$query = "create table site ( name varchar(160) NOT NULL, url varchar(160) NOT NULL, indexNum int NOT NULL, rssNum int NOT NULL ); ";
 		$status = mysql_query($query);
 	
 		$secret = generateCode();
