@@ -17,7 +17,6 @@ $numOfEntries = getNumEntries();
 
 function showUpdateForm() {
 	$ua = $_SERVER['HTTP_USER_AGENT'];
-	echo "<div id=\"txtmsg\" class=\"count\">&nbsp;</div>";
         echo "<form action=\"";
         echo $_SERVER['PHP_SELF'];
         echo "\"";
@@ -27,7 +26,7 @@ function showUpdateForm() {
 	        echo "<input type=\"text\" name=\"body\" />";
 	} else {
 	        echo "<input type=\"text\" name=\"subject\" />";
-		echo "<textarea cols=\"80\" rows=\"10\" name=\"body\"></textarea>";
+		echo "<textarea cols=\"70\" rows=\"24\" name=\"body\"></textarea>";
 	}
         echo "<input type=\"hidden\" name=\"checksubmit\" value=\"1\">";
 	echo "<br />";
