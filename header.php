@@ -7,9 +7,6 @@ include_once("durden.php");
 <title><? echo "$sitename"; ?> </title>
 <link rel="stylesheet" type="text/css" media="screen" href="<? echo "$siteurl"; ?>/style.css"/>
 
-<!-- Character Counting -->
-<script type="text/javascript" src="count.js"></script> 
-
 </head>
 <body>
 <div class="main">

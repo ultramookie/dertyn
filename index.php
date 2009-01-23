@@ -4,7 +4,7 @@
 
 <?php
 	$numEntries = getIndexNum();
-	$cookie = $_COOKIE['mindof'];
+	$cookie = $_COOKIE['durden'];
 	$storedcookie = getCookie();
 
         if(checkCookie()) {
@@ -12,8 +12,9 @@
         }
 
         if( (checkCookie()) && ((stripslashes($_POST['checksubmit']))) ) {
-		$update = strip_tags($_POST['update']);
-		addEntry($update);
+		$subject = strip_tags($_POST['subject']);
+		$body = strip_tags($_POST['body']);
+		addEntry($subject,$body);
 		echo " <img src=\"icon_accept.gif\" border=\"0\" /> entry posted. ";
         }
 

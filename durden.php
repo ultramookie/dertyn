@@ -224,7 +224,7 @@ function getCookie() {
 
 function checkCookie() {
 	$secret = getSecret();
-	$cookie = $_COOKIE['mindof'];
+	$cookie = $_COOKIE['durden'];
 	$user = $_COOKIE['user'];
 	$storedcookie = getCookie();
 
@@ -325,7 +325,7 @@ function setLoginCookie($user) {
                 $login = sha1($user . $secret);
                 $expiry = time()+60*60*24*30;
 		setcookie('user',$user,"$expiry");
-                setcookie('mindof',$login,"$expiry");
+                setcookie('durden',$login,"$expiry");
 
 	        $query = "update user set cookie='$login' where name like '$user'";
         	$result = mysql_query($query);
@@ -335,7 +335,7 @@ function killCookie() {
 	if(checkCookie()) {
 		$expiry = time() - 4800;
 		setcookie('user','',"$expiry");
-		setcookie('mindof','',"$expiry");
+		setcookie('durden','',"$expiry");
 	}
 }
 
