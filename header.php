@@ -1,11 +1,6 @@
 <?php 
 include_once("db.php");
 include_once("durden.php");
-
-$sitename = getSiteName();
-$siteurl = getSiteUrl();
-$numOfEntries = getNumEntries();
-
 ?>
 <html>
 <head>
