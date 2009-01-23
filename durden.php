@@ -30,7 +30,7 @@ function showUpdateForm() {
 	}
         echo "<input type=\"hidden\" name=\"checksubmit\" value=\"1\">";
 	echo "<br />";
-        echo "<input type=\"submit\" name=\"submit\" value=\"update\" id=\"submitbutton1\">";
+        echo "<input type=\"submit\" name=\"submit\" value=\"post\" id=\"submitbutton1\">";
         echo "</form>";
 }
 
