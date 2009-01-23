@@ -42,8 +42,9 @@ function addEntry($subject,$body) {
 	$status = mysql_query($query);
 }
 
-function showEntriesIndex($num) {
+function showEntriesIndex() {
 
+	$num = getIndexNum();
         $query = "select id from main order by entrytime desc limit $num";
         $result = mysql_query($query);
 
