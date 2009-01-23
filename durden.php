@@ -76,9 +76,9 @@ function printEntry($id) {
         $row = mysql_fetch_array($result);
 
 	if (ereg(".*http.*",$row['body'])) {
-		$text = makeLinks($row['body']);
+		$text = makeLinks(nl2br($row['body']));
 	} else {
-		$text = $row['body'];
+		$text = nl2br($row['body']);
 	}
 
 	echo "\n";
