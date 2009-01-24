@@ -6,14 +6,15 @@
 
 	$numEntries = getIndexNum();
 
+       	if (!$_GET['pagenum']) {
+               	$pagenum = 1;
+       	} else {
+               	$pagenum = $_GET['pagenum'];
+       	}
+
 	if(!$_GET['search']) {
-		printSearchForm();
+		printSearchForm($numEntries,$pagenum);
 	} else {
-        	if (!$_GET['pagenum']) {
-                	$pagenum = 1;
-        	} else {
-                	$pagenum = $_GET['pagenum'];
-        	}
 
 		$search = $_GET['search'];
 
@@ -21,7 +22,7 @@
 
 		$pagenum++;
 
-		echo "<a href=\"" . $_SERVER['PHP_SELF'] . "?pagenum=" . $pagenum . "\" class=\"box\">next &#187;</a>";
+		echo "<a href=\"" . $_SERVER['PHP_SELF'] . "?pagenum=" . $pagenum . "&search=" . $search . "\" class=\"box\">next &#187;</a>";
 	}
 ?>
 

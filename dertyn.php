@@ -28,12 +28,14 @@ function showUpdateForm() {
         echo "</form>";
 }
 
-function printSearchForm() {
+function printSearchForm($numEntries,$pagenum) {
         echo "<form action=\"";
         echo $_SERVER['PHP_SELF'];
         echo "\"";
         echo " method=\"get\">";
         echo "<input type=\"text\" name=\"search\" />";
+        echo "<input type=\"hidden\" name=\"numEntries\" value=\"$numEntries\">";
+        echo "<input type=\"hidden\" name=\"pagenum\" value=\"$pagenum\">";
         echo "<input type=\"hidden\" name=\"checksubmit\" value=\"1\">";
 	echo "<br />";
         echo "<input type=\"submit\" name=\"submit\" value=\"search\" id=\"submitbutton1\">";
@@ -45,10 +47,10 @@ function showSearchResults($num,$pnum,$search) {
         if($pnum == 1) {
                 $offset = 1;
         } else {
-                $offset = ($pnum-1) * $num;
+                $offset = $pnum * $num;
         }
 	
-	$query = "select id, match (subject,body) against ('$search') as score from main where match (subject,body) against ('$search') order by score desc";
+	$query = "select id from main where match (subject,body) against ('$search') order by entrytime desc limit $offset,$num";
         $result = mysql_query($query);
 
 	$numrows = mysql_num_rows($result);
