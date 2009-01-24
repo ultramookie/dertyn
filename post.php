@@ -4,7 +4,7 @@
 
 <?php
 	$numEntries = getIndexNum();
-	$cookie = $_COOKIE['durden'];
+	$cookie = $_COOKIE['dertyn'];
 	$storedcookie = getCookie();
 
         if(checkCookie()) {

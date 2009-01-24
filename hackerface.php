@@ -1,6 +1,6 @@
 <?php
 
-// durden api stuff
+// dertyn api stuff
 // steve "mookie" kong
 // http://ultramookie.com
 //

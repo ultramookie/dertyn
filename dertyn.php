@@ -1,6 +1,6 @@
 <?php
 
-// durden main library
+// dertyn main library
 // steve "mookie" kong
 // http://ultramookie.com
 //
@@ -230,7 +230,7 @@ function getCookie() {
 
 function checkCookie() {
 	$secret = getSecret();
-	$cookie = $_COOKIE['durden'];
+	$cookie = $_COOKIE['dertyn'];
 	$user = $_COOKIE['user'];
 	$storedcookie = getCookie();
 
@@ -331,7 +331,7 @@ function setLoginCookie($user) {
                 $login = sha1($user . $secret);
                 $expiry = time()+60*60*24*30;
 		setcookie('user',$user,"$expiry");
-                setcookie('durden',$login,"$expiry");
+                setcookie('dertyn',$login,"$expiry");
 
 	        $query = "update user set cookie='$login' where name like '$user'";
         	$result = mysql_query($query);
@@ -341,7 +341,7 @@ function killCookie() {
 	if(checkCookie()) {
 		$expiry = time() - 4800;
 		setcookie('user','',"$expiry");
-		setcookie('durden','',"$expiry");
+		setcookie('dertyn','',"$expiry");
 	}
 }
 
@@ -521,7 +521,7 @@ function addUser($user,$email,$pass,$site,$url) {
 		$query = "insert into site (name,url,indexNum,rssNum) values ('$site','$url','10','10')";
 		$status = mysql_query($query);
 
-		echo "durden installed!  thanks!";
+		echo "dertyn installed!  thanks!";
 	}
 }
 
