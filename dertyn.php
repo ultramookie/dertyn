@@ -39,7 +39,7 @@ function printComment($cid,$pid) {
 		$date = $row['date'];
 
 		echo "<hr />\n";
-		if(preg_match($url,"^http")) {
+		if(strlen($url) > 0) {
 			echo "<p class=\"commenter\"><a href=\"$url\">$name</a> said on $date...</p>\n";
 		} else {
 			echo "<p class=\"commenter\">$name said on $date...</p>\n";
