@@ -28,6 +28,41 @@ function showUpdateForm() {
         echo "</form>";
 }
 
+function printSearchForm() {
+        echo "<form action=\"";
+        echo $_SERVER['PHP_SELF'];
+        echo "\"";
+        echo " method=\"get\">";
+        echo "<input type=\"text\" name=\"search\" />";
+        echo "<input type=\"hidden\" name=\"checksubmit\" value=\"1\">";
+	echo "<br />";
+        echo "<input type=\"submit\" name=\"submit\" value=\"search\" id=\"submitbutton1\">";
+        echo "</form>";
+}
+
+function showSearchResults($num,$pnum,$search) {
+
+        if($pnum == 1) {
+                $offset = 1;
+        } else {
+                $offset = ($pnum-1) * $num;
+        }
+	
+	$query = "select id, match (subject,body) against ('$search') as score from main where match (subject,body) against ('$search') order by score desc";
+        $result = mysql_query($query);
+
+	$numrows = mysql_num_rows($result);
+
+	if($numrows > 0) {
+        	while ($row = mysql_fetch_array($result)) {
+			printEntry($row['id']);
+       		}
+	} else {
+		echo "Search term $search not fouund.<br />";
+		printSearchForm();
+	}
+}
+
 function printComment($cid,$pid) {
 	$query = "select name,url,comment,date_format(commenttime, '%b %e, %Y @ %h:%i %p') as date from comments where cid = '$cid'";
 	$result = mysql_query($query);
