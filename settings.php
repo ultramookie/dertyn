@@ -5,7 +5,7 @@
 <?php
 
 include_once("db.php");
-include_once("durden.php");
+include_once("dertyn.php");
 
 if ((stripslashes(!$_POST['checksubmit'])) && (checkCookie()) ) {
 	showSettingsform();

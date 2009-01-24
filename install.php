@@ -1,16 +1,16 @@
 <html>
 <head>
-<title>durden installation</title>
+<title>dertyn installation</title>
 </head>
 <body>
-<h2>durden installation.</h2>
+<h2>dertyn installation.</h2>
 be sure you have moved config-example.php to config.php and changed all the right values.<br />
 this is a one step installation process.<br />
 please fill out the following information:<br /><br />
 <?php
 
 include_once("db.php");
-include_once("durden.php");
+include_once("dertyn.php");
 
 if ((stripslashes(!$_POST['checksubmit']))) {
 	showAddform();
