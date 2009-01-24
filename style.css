@@ -1,9 +1,11 @@
 body {
+	margin:0 0 0;
 	font-size: small;
 	font-family: "Verdana", Sans;
 	color:#000000;
 	background:#FFFFFF; 
-	width: 550px;
+	border-top: 6px solid #F0F0F0;
+	border-bottom: 6px solid #F0F0F0;
 }
 
 .main {
@@ -30,12 +32,11 @@ h2 {
 }
 
 .title {
-	font-size: large; 
+	font-size: x-large; 
+	background:#FFFFFF;
 	color: #FC7901;
-	background: #000000;
 	letter-spacing: 5px;
 	word-spacing: 1px;
-	padding: 10px;
 }
 
 hr {
