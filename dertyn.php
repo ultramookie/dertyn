@@ -49,7 +49,9 @@ function printComment($cid,$pid) {
 			$permalink = makePermaLink($pid);
 			echo "about <a href=\"$permalink\">this posting</a>...<br /><br />";
 		}
-
+        	if(checkCookie()) {
+			echo "<a href=\"$siteurl/delete.php?number=$cid&type=comment\"><img src=\"$siteurl/page_delete.gif\" border=\"0\" /></a> ";
+		}
 	}
 }
 
@@ -246,7 +248,7 @@ function printEntry($id,$single) {
 	echo "<p class=\"timedate\">" . $row['date'];
 	if(checkCookie()) {
 		echo "<a href=\"$siteurl/edit.php?number=" . $row['id'] . "\"><img src=\"$siteurl/page_edit.gif\" border=\"0\" /></a> ";
-		echo "<a href=\"$siteurl/delete.php?number=" . $row['id'] . "\"><img src=\"$siteurl/page_delete.gif\" border=\"0\" /></a> ";
+		echo "<a href=\"$siteurl/delete.php?number=" . $row['id'] . "&type=post\"><img src=\"$siteurl/page_delete.gif\" border=\"0\" /></a> ";
 	}
 	echo "</p>";
 	echo "\n";
@@ -571,7 +573,7 @@ function showSettingsform() {
 
 }
 
-function showDelform($id,$secret) {
+function showDelform($id,$type) {
 	echo "hey! are you SURE you want to delete this entry?";
 	$siteurl = getSiteUrl();
         echo "<form action=\"";
@@ -580,6 +582,7 @@ function showDelform($id,$secret) {
         echo " method=\"post\">";
         echo "<input type=\"hidden\" name=\"checksubmit\" value=\"1\">";
         echo "<input type=\"hidden\" name=\"id\" value=\"$id\">";
+        echo "<input type=\"hidden\" name=\"type\" value=\"$type\">";
         echo "<input type=\"submit\" name=\"submit\" value=\"YES\">";
 	echo " <a href=\"$siteurl\">no</a>";
         echo "</form>";
@@ -599,11 +602,16 @@ function showForgotform() {
 }
 
 
-function deleteEntry($id) {
-	$query = "delete from main where id='$id'";
-	$result = mysql_query($query);
-
-	echo "entry " . $id . " deleted!";
+function deleteEntry($id,$type) {
+	if(ereg("^post",$type)) {
+		$query = "delete from main where id='$id'";
+		$result = mysql_query($query);
+		echo "post " . $id . " deleted!";
+	} else if (ereg("^comment",$type)) {
+		$query = "delete from comments where cid='$id'";
+		$result = mysql_query($query);
+		echo "comment " . $id . " deleted!";
+	}
 }
 
 function generateCode($length=16) {
