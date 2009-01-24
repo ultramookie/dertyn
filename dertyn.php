@@ -28,27 +28,54 @@ function showUpdateForm() {
         echo "</form>";
 }
 
-function printComments() {
-	echo "comments here";
+function printComments($pid) {
+	$query = "select cid,name,url,comment,date_format(commenttime, '%b %e, %Y @ %h:%i %p') as date from comments where pid = '$pid' order by commenttime desc";
+	$result = mysql_query($query);
+
+	while ($row = mysql_fetch_array($result)) {
+		$name = $row['name'];
+		$url = $row['url'];
+		$comment =  makeLinks(nl2br($row['comment']));
+		$date = $row['date'];
+
+		echo "<hr />\n";
+		echo "<p class=\"commenter\"><a href=\"$url\">$name</a> said on $date...</p>\n";
+		echo "<p class=\"comment\">$comment</p>\n";
+
+	}
+
 }
 
-function printCommentForm() {
+function addComment($name,$url,$comment,$ipaddy,$pid) {
+	$name = mysql_real_escape_string($name);
+	$url = mysql_real_escape_string($url);
+	$comment = mysql_real_escape_string($comment);
+	$ipaddy = mysql_real_escape_string($ipaddy);
+	$pid = mysql_real_escape_string($pid);
+
+	$query = "insert into comments (name,url,comment,ip,pid,commenttime) values ('$name','$url','$comment','$ipaddy','$pid',NOW())";
+	$status = mysql_query($query);
+}
+
+function printCommentForm($id) {
         echo "<form action=\"";
         echo $_SERVER['PHP_SELF'];
         echo "\"";
         echo " method=\"post\">";
-        echo "Name: <input type=\"text\" name=\"name\" /><br />";
-        echo "URL: <input type=\"text\" name=\"url\" /><br />";
-	echo "Comment: <br />";
-	echo "<textarea cols=\"50\" rows=\"10\" name=\"comment\"></textarea>";
-	echo "<p class=\"noseeum\">";
-	echo "Don't type anything here unless you're an evil robot:<br />";
-	echo "<input type=\"text\" id=\"captcha\" name=\"captcha\" maxlength=\"50\" />";
-	echo "<br /><br />";
-	echo "</p>";
-        echo "<input type=\"hidden\" name=\"checksubmit\" value=\"1\">";
+        echo "Name: <input type=\"text\" name=\"name\" /><br />\n";
+        echo "URL: <input type=\"text\" name=\"url\" /><br />\n";
+	echo "Comment: <br />\n";
+	echo "<textarea cols=\"50\" rows=\"10\" name=\"comment\"></textarea>\n";
+	echo "<p class=\"noseeum\">\n";
+	echo "Don't type anything here unless you're an evil robot:<br />\n";
+	echo "<input type=\"text\" id=\"captcha\" name=\"captcha\" maxlength=\"50\" />\n";
+	echo "<br /><br />\n";
+	echo "</p>\n";
+        echo "<input type=\"hidden\" name=\"pid\" value=\"$id\">\n";
+        echo "<input type=\"hidden\" name=\"ipaddy\" value=\"" . $_SERVER['REMOTE_ADDR'] . "\">\n";
+        echo "<input type=\"hidden\" name=\"checksubmit\" value=\"1\">\n";
 	echo "<br />";
-        echo "<input type=\"submit\" name=\"submit\" value=\"post\" id=\"submitbutton1\">";
+        echo "<input type=\"submit\" name=\"submit\" value=\"post\" id=\"submitbutton1\">\n";
         echo "</form>";
 }
 
@@ -118,6 +145,14 @@ function showEntriesArchive($num,$pnum) {
         while ($row = mysql_fetch_array($result)) {
 		printEntry($row['id']);
         }
+}
+
+function getPid($slug) {
+	$query = "select id from main where slug = '$slug'";
+	$result = mysql_query($query);
+	$row = mysql_fetch_array($result);
+
+	return $row['id'];
 }
 
 function makePermaLink($id,$single) {

@@ -51,6 +51,18 @@ hr {
 	background:#F0F0F0;
 }
 
+.commenter {
+	word-wrap: break-word;	
+	font-weight: bold;
+	background:#F0F0F0;
+}
+
+.comment {
+	font-size: small;
+	word-wrap: break-word;
+	padding: 10px 25px;
+}
+
 .entry {
 	font-size: small;
 	word-wrap: break-word;
