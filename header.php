@@ -1,6 +1,9 @@
 <?php 
 include_once("db.php");
 include_once("dertyn.php");
+
+$siteurl = getSiteUrl();
+
 ?>
 <html>
 <head>
@@ -15,9 +18,9 @@ include_once("dertyn.php");
 <?php
 	if(checkCookie()) {
 		$username = getUserName();
-		echo "<a href=\"usermod.php\" class=\"menu\">" . $username . "</a> | <a href=\"post.php\" class=\"menu\">new post</a> | posts: " . $numOfEntries . " | <a href=\"settings.php\" class=\"menu\">site admin</a> | <a href=\"rss.php\" class=\"menu\">rss</a> | <a href=\"logout.php\" class=\"menu\">logout</a>";
+		echo "<a href=\"$siturl/usermod.php\" class=\"menu\">" . $username . "</a> | <a href=\"$siteurl/post.php\" class=\"menu\">new post</a> | posts: " . $numOfEntries . " | <a href=\"$siteurl/settings.php\" class=\"menu\">site admin</a> | <a href=\"$siteurl/rss.php\" class=\"menu\">rss</a> | <a href=\"$siteurl/logout.php\" class=\"menu\">logout</a>";
 	} else {
-		echo "updates: " . $numOfEntries . " | <a href=\"login.php\" class=\"menu\">login</a> | <a href=\"rss.php\" class=\"menu\">rss</a>";
+		echo "updates: " . $numOfEntries . " | <a href=\"$siteurl/login.php\" class=\"menu\">login</a> | <a href=\"$siteurl/rss.php\" class=\"menu\">rss</a>";
 	}
 ?>
 </p>

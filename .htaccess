@@ -1,9 +1,6 @@
 <IfModule mod_rewrite.c>
 RewriteEngine On
 RewriteBase /
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule . /index.php [L]
-RewriteRule ^wayback/([0-9]{4})/([0-9]{1,2})/([0-9]{1,2})/([^/]+)/page/?([0-9]{1,})/?$ /index.php?&name=$4 [QSA,L]
-RewriteRule ^wayback/([0-9]{4})/([0-9]{1,2})/([0-9]{1,2})/([^/]+)/?([0-9]+)?/?$ /index.php?name=$4 [QSA,L]
+RewriteRule ^wayback/([0-9]{4})/([0-9]{1,2})/([0-9]{1,2})/([^/]+)/page/?([0-9]{1,})/?$ /entry.php?&id=$4 [QSA,L]
+RewriteRule ^wayback/([0-9]{4})/([0-9]{1,2})/([0-9]{1,2})/([^/]+)/?([0-9]+)?/?$ /entry.php?id=$4 [QSA,L]
 </IfModule>

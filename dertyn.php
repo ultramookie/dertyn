@@ -72,10 +72,49 @@ function showEntriesArchive($num,$pnum) {
         }
 }
 
-function printEntry($id) {
+function makePermaLink($id,$single) {
 
-	$query = "select subject,body,date_format(entrytime, '%b %e, %Y @ %h:%i %p') as date from main where id = '$id'";
-        $result = mysql_query($query);
+	$siteurl = getSiteUrl();
+	$rewriteCheck = getrewriteCheck();
+
+	if (($rewriteCheck == 1) && ($single)) {
+		$query = "select slug,date_format(entrytime, '%Y') as year,date_format(entrytime, '%m') as month,date_format(entrytime, '%d') as day  from main where slug = '$id'";
+		$result = mysql_query($query);
+        	$row = mysql_fetch_array($result);
+		$month = $row['month'];
+		$day = $row['day'];
+		$year = $row['year'];
+		$slug = $row['slug'];
+		$permalink = "$siteurl/wayback/$year/$month/$day/$slug/";
+	} else if ($rewriteCheck == 1) {
+		$query = "select slug,date_format(entrytime, '%Y') as year,date_format(entrytime, '%m') as month,date_format(entrytime, '%d') as day  from main where id = '$id'";
+		$result = mysql_query($query);
+        	$row = mysql_fetch_array($result);
+		$month = $row['month'];
+		$day = $row['day'];
+		$year = $row['year'];
+		$slug = $row['slug'];
+		$permalink = "$siteurl/wayback/$year/$month/$day/$slug/";
+	} else {
+		$permalink = $siteurl . "/entry.php?id=" . $id;
+	}
+
+	return $permalink;
+}
+
+function printEntry($id,$single) {
+
+	$siteurl = getSiteUrl();
+	$permalink = makePermaLink($id,$single);
+	$rewriteCheck = getrewriteCheck();
+
+	if (($rewriteCheck == 1) && ($single)) {
+		$query = "select id,subject,body,date_format(entrytime, '%b %e, %Y @ %h:%i %p') as date from main where slug = '$id'";
+        	$result = mysql_query($query);
+	} else {
+		$query = "select id,subject,body,date_format(entrytime, '%b %e, %Y @ %h:%i %p') as date from main where id = '$id'";
+        	$result = mysql_query($query);
+	}
         $row = mysql_fetch_array($result);
 
 	if (ereg(".*http.*",$row['body'])) {
@@ -85,11 +124,11 @@ function printEntry($id) {
 	}
 
 	echo "\n";
-        echo "<p class=\"subject\"><a href=\"entry.php?number=" . $id . "\">" . $row['subject'] . "</a></p>";
+        echo "<p class=\"subject\"><a href=\"" . $permalink . "\">" . $row['subject'] . "</a></p>";
 	echo "\n";
 	echo "<p class=\"timedate\">" . $row['date'];
 	if(checkCookie()) {
-		echo "<a href=\"delete.php?number=" . $id ."\"><img src=\"page_delete.gif\" border=\"0\" /></a> ";
+		echo "<a href=\"$siteurl/delete.php?number=" . $row['id'] . "\"><img src=\"$siteurl/page_delete.gif\" border=\"0\" /></a> ";
 	}
 	echo "</p>";
 	echo "\n";
@@ -189,8 +228,8 @@ function printRSS($num) {
 		echo "\t<item>\n";
 		echo "\t\t<title>" . $row['subject'] . "</title>\n";
 		echo "\t\t<pubDate>" . $row['date'] . " PST</pubDate>\n";
-		echo "\t\t<guid>" . $siteurl . "/entry.php?number=" . $row['id'] . "</guid>\n";
-		echo "\t\t<link>" . $siteurl . "/entry.php?number=" . $row['id'] . "</link>\n";
+		echo "\t\t<guid>" . $siteurl . "/entry.php?id=" . $row['id'] . "</guid>\n";
+		echo "\t\t<link>" . $siteurl . "/entry.php?id=" . $row['id'] . "</link>\n";
 		echo "\t</item>\n";
         }
 }
