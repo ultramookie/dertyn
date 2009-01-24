@@ -72,9 +72,8 @@ function showEntriesArchive($num,$pnum) {
         }
 }
 
-
 function printEntry($id) {
-       
+
 	$query = "select subject,body,date_format(entrytime, '%b %e, %Y @ %h:%i %p') as date from main where id = '$id'";
         $result = mysql_query($query);
         $row = mysql_fetch_array($result);
@@ -375,11 +374,27 @@ function showAddform() {
 	echo "</form>";
 }
 
+function getrewriteCheck() {
+        $query = "select rewrite from site limit 1";
+        $result = mysql_query($query);
+
+        $row = mysql_fetch_array($result);
+
+        return($row['rewrite']);
+}
+
 function showSettingsform() {
 	$sitename = getSiteName();
 	$rawsiteurl = getRawSiteUrl();
 	$indexNum = getIndexNum();
 	$rssNum = getRssNum();
+	$rewriteCheck = getrewriteCheck();
+
+	if($rewriteCheck == 1) {
+		$checked = "checked";
+	} else {
+		$checked = "";
+	}
 	
 	echo "<p><b>general site settings:</b></p>";
 	echo "<form action=\"";
@@ -392,6 +407,7 @@ function showSettingsform() {
 	echo "base url (without http://): <input type=\"text\" name=\"url\" value=\"" . $rawsiteurl . "\"><br />";
 	echo "number of entries to display per page: <input type=\"text\" name=\"index\" value=\"" . $indexNum . "\"><br />";
 	echo "number of entries to display in rss feed: <input type=\"text\" name=\"rss\" value=\"" . $rssNum . "\"><br />";
+	echo "use mod_rewrite? (remove .htaccess if you uncheck this): <input type=\"checkbox\" name=\"rewrite\" value=\"1\" " .  $checked . "><br />";
 	echo "<input type=\"hidden\" name=\"checksubmit\" value=\"1\">";
 	echo "<input type=\"submit\" name=\"submit\" value=\"update\">";
 	echo "</form>";
@@ -471,14 +487,15 @@ function changePass($user,$pass) {
 	echo " <img src=\"icon_accept.gif\" border=\"0\" /> password has been updated!";
 }
 
-function changeSettings($site,$url,$numberIndex,$numberRSS) {
+function changeSettings($site,$url,$numberIndex,$numberRSS,$rewrite) {
 
         $site = mysql_real_escape_string($site);
         $url = mysql_real_escape_string($url);
         $numberIndex = mysql_real_escape_string($numberIndex);
         $numberRSS = mysql_real_escape_string($numberRSS);
+        $rewrite = mysql_real_escape_string($rewrite);
 
-	$query = "update site set name='$site', url='$url', indexNum='$numberIndex', rssNum='$numberRSS' limit 1";
+	$query = "update site set name='$site', url='$url', indexNum='$numberIndex', rssNum='$numberRSS', rewrite='$rewrite' limit 1";
 	$result = mysql_query($query);
 
 	echo "your settings have been updated!";
@@ -510,7 +527,7 @@ function addUser($user,$email,$pass,$site,$url) {
 		$query = "create table comments ( cid int NOT NULL AUTO_INCREMENT, pid int NOT NULL, commenttime DATETIME NOT NULL, ip varchar(16), name varchar(40), url varchar(100), comment MEDIUMTEXT, PRIMARY KEY (cid)); ";
 		$status = mysql_query($query);
 		
-		$query = "create table site ( name varchar(160) NOT NULL, url varchar(160) NOT NULL, indexNum int NOT NULL, rssNum int NOT NULL ); ";
+		$query = "create table site ( name varchar(160) NOT NULL, url varchar(160) NOT NULL, indexNum int NOT NULL, rssNum int NOT NULL, rewrite int NOT NULL ); ";
 		$status = mysql_query($query);
 	
 		$secret = generateCode();
@@ -518,7 +535,7 @@ function addUser($user,$email,$pass,$site,$url) {
 		$query = "insert into user (name,email,pass,secret) values ('$user','$email','$epass','$secret')";
 		$status = mysql_query($query);
 	
-		$query = "insert into site (name,url,indexNum,rssNum) values ('$site','$url','10','10')";
+		$query = "insert into site (name,url,indexNum,rssNum,rewrite) values ('$site','$url','10','10','1')";
 		$status = mysql_query($query);
 
 		echo "dertyn installed!  thanks!";
