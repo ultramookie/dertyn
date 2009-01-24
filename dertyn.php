@@ -16,18 +16,34 @@ $rssNum = getRssNum();
 $numOfEntries = getNumEntries();
 
 function showUpdateForm() {
-	$ua = $_SERVER['HTTP_USER_AGENT'];
         echo "<form action=\"";
         echo $_SERVER['PHP_SELF'];
         echo "\"";
         echo " method=\"post\">";
-	if (eregi("IEMobile|Windows\ CE|iPhone|Mobile",$ua)) {
-	        echo "<input type=\"text\" name=\"subject\" />";
-	        echo "<input type=\"text\" name=\"body\" />";
-	} else {
-	        echo "<input type=\"text\" name=\"subject\" />";
-		echo "<textarea cols=\"70\" rows=\"24\" name=\"body\"></textarea>";
-	}
+        echo "<input type=\"text\" name=\"subject\" />";
+	echo "<textarea cols=\"70\" rows=\"24\" name=\"body\"></textarea>";
+        echo "<input type=\"hidden\" name=\"checksubmit\" value=\"1\">";
+	echo "<br />";
+        echo "<input type=\"submit\" name=\"submit\" value=\"post\" id=\"submitbutton1\">";
+        echo "</form>";
+}
+
+function showEditForm($id) {
+
+	$query = "select subject,body from main where id = '$id'";
+	$result = mysql_query($query);
+	$row = mysql_fetch_array($result);
+
+	$subject = $row['subject'];
+	$body = $row['body'];
+
+        echo "<form action=\"";
+        echo $_SERVER['PHP_SELF'];
+        echo "\"";
+        echo " method=\"post\">";
+	echo "<input type=\"text\" name=\"subject\" value=\"$subject\" />";
+	echo "<textarea cols=\"70\" rows=\"24\" name=\"body\">$body</textarea>";
+        echo "<input type=\"hidden\" name=\"id\" value=\"$id\">";
         echo "<input type=\"hidden\" name=\"checksubmit\" value=\"1\">";
 	echo "<br />";
         echo "<input type=\"submit\" name=\"submit\" value=\"post\" id=\"submitbutton1\">";
@@ -42,6 +58,14 @@ function addEntry($subject,$body) {
         $slug = ereg_replace("[^a-zA-Z0-9-]","",$slugdashes);
 
 	$query = "insert into main (subject,body,entrytime,slug) values ('$subject','$body',NOW(),'$slug')";
+	$status = mysql_query($query);
+}
+
+function updateEntry($subject,$body,$id) {
+	$subject = mysql_real_escape_string($subject);
+	$body = mysql_real_escape_string($body);
+
+	$query = "update main set body='$body',subject='$subject' where id='$id'";
 	$status = mysql_query($query);
 }
 
@@ -128,6 +152,7 @@ function printEntry($id,$single) {
 	echo "\n";
 	echo "<p class=\"timedate\">" . $row['date'];
 	if(checkCookie()) {
+		echo "<a href=\"$siteurl/edit.php?number=" . $row['id'] . "\"><img src=\"$siteurl/page_edit.gif\" border=\"0\" /></a> ";
 		echo "<a href=\"$siteurl/delete.php?number=" . $row['id'] . "\"><img src=\"$siteurl/page_delete.gif\" border=\"0\" /></a> ";
 	}
 	echo "</p>";
