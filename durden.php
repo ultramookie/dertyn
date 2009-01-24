@@ -37,8 +37,11 @@ function showUpdateForm() {
 function addEntry($subject,$body) {
 	$subject = mysql_real_escape_string($subject);
 	$body = mysql_real_escape_string($body);
+	$lowersubject = strtolower($subject);
+        $slugdashes = preg_replace("/\s/","-",$lowersubject);
+        $slug = ereg_replace("[^a-zA-Z0-9-]","",$slugdashes);
 
-	$query = "insert into main (subject,body,entrytime) values ('$subject','$body',NOW())";
+	$query = "insert into main (subject,body,entrytime,slug) values ('$subject','$body',NOW(),'$slug')";
 	$status = mysql_query($query);
 }
 
@@ -501,7 +504,7 @@ function addUser($user,$email,$pass,$site,$url) {
 		$query = "create table user ( name varchar(30) NOT NULL, email varchar(30) NOT NULL, pass varchar(30) NOT NULL, secret varchar(6), cookie varchar(300) )";
 		$status = mysql_query($query);
 
-		$query = "create table main ( id int NOT NULL AUTO_INCREMENT, entrytime DATETIME NOT NULL, subject varchar(160) NOT NULL, body MEDIUMTEXT, PRIMARY KEY (id), FULLTEXT(subject,body)); ";
+		$query = "create table main ( id int NOT NULL AUTO_INCREMENT, entrytime DATETIME NOT NULL, subject varchar(160) NOT NULL, body MEDIUMTEXT, slug varchar(160), PRIMARY KEY (id), FULLTEXT(subject,body)); ";
 		$status = mysql_query($query);
 		
 		$query = "create table comments ( cid int NOT NULL AUTO_INCREMENT, pid int NOT NULL, commenttime DATETIME NOT NULL, ip varchar(16), name varchar(40), url varchar(100), comment MEDIUMTEXT, PRIMARY KEY (cid)); ";
