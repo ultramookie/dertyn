@@ -28,6 +28,30 @@ function showUpdateForm() {
         echo "</form>";
 }
 
+function printComments() {
+	echo "comments here";
+}
+
+function printCommentForm() {
+        echo "<form action=\"";
+        echo $_SERVER['PHP_SELF'];
+        echo "\"";
+        echo " method=\"post\">";
+        echo "Name: <input type=\"text\" name=\"name\" /><br />";
+        echo "URL: <input type=\"text\" name=\"url\" /><br />";
+	echo "Comment: <br />";
+	echo "<textarea cols=\"50\" rows=\"10\" name=\"comment\"></textarea>";
+	echo "<p class=\"noseeum\">";
+	echo "Don't type anything here unless you're an evil robot:<br />";
+	echo "<input type=\"text\" id=\"captcha\" name=\"captcha\" maxlength=\"50\" />";
+	echo "<br /><br />";
+	echo "</p>";
+        echo "<input type=\"hidden\" name=\"checksubmit\" value=\"1\">";
+	echo "<br />";
+        echo "<input type=\"submit\" name=\"submit\" value=\"post\" id=\"submitbutton1\">";
+        echo "</form>";
+}
+
 function showEditForm($id) {
 
 	$query = "select subject,body from main where id = '$id'";

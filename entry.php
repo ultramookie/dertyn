@@ -16,6 +16,12 @@ if ($rewriteCheck == 1) {
 	printEntry($id);
 }
 
+echo "<p class=\"subject\">Comments</p>";
+
+printCommentForm();
+
+printComments();
+
 ?>
 
 <?php
