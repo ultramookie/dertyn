@@ -23,4 +23,5 @@ $siteurl = getSiteUrl();
 		echo "updates: " . $numOfEntries . " | <a href=\"$siteurl/login.php\" class=\"menu\">login</a> | <a href=\"$siteurl/comments.php\" class=\"menu\">comments</a> | <a href=\"$siteurl/rss.php\" class=\"menu\">rss</a>";
 	}
 ?>
+
 </p>
