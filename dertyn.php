@@ -28,8 +28,8 @@ function showUpdateForm() {
         echo "</form>";
 }
 
-function printComments($pid) {
-	$query = "select cid,name,url,comment,date_format(commenttime, '%b %e, %Y @ %h:%i %p') as date from comments where pid = '$pid' order by commenttime desc";
+function printComment($cid,$pid) {
+	$query = "select name,url,comment,date_format(commenttime, '%b %e, %Y @ %h:%i %p') as date from comments where cid = '$cid'";
 	$result = mysql_query($query);
 
 	while ($row = mysql_fetch_array($result)) {
@@ -39,9 +39,27 @@ function printComments($pid) {
 		$date = $row['date'];
 
 		echo "<hr />\n";
-		echo "<p class=\"commenter\"><a href=\"$url\">$name</a> said on $date...</p>\n";
+		if(preg_match($url,"^http")) {
+			echo "<p class=\"commenter\"><a href=\"$url\">$name</a> said on $date...</p>\n";
+		} else {
+			echo "<p class=\"commenter\">$name said on $date...</p>\n";
+		}
 		echo "<p class=\"comment\">$comment</p>\n";
+		if($pid > 0) {
+			$permalink = makePermaLink($pid);
+			echo "about <a href=\"$permalink\">this posting</a>...<br /><br />";
+		}
 
+	}
+}
+
+function printComments($pid) {
+	$query = "select cid from comments where pid = '$pid' order by commenttime desc";
+	$result = mysql_query($query);
+
+	while ($row = mysql_fetch_array($result)) {
+		$cid = $row['cid'];
+		printComment($cid);
 	}
 
 }
@@ -144,6 +162,22 @@ function showEntriesArchive($num,$pnum) {
 
         while ($row = mysql_fetch_array($result)) {
 		printEntry($row['id']);
+        }
+}
+
+function showRecentComments($num,$pnum) {
+
+        if($pnum == 1) {
+                $offset = 1;
+        } else {
+                $offset = ($pnum-1) * $num;
+        }
+
+        $query = "select cid,pid from comments order by commenttime desc limit $offset,$num";
+        $result = mysql_query($query);
+
+        while ($row = mysql_fetch_array($result)) {
+		printComment($row['cid'],$row['pid']);
         }
 }
 
