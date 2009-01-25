@@ -21,13 +21,13 @@ body {
 }
 
 #main {
-	width:500px;
+	width:550px;
 	float:left;
 }
 
 #sidebar {
 	font-size: medium;
-	width:250px;
+	width:200px;
 	float:right;
 	color:#555555;
 	background: #FFCC99;

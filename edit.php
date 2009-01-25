@@ -15,7 +15,7 @@
 
         if( (checkCookie()) && ((stripslashes($_POST['checksubmit']))) ) {
 		$subject = strip_tags($_POST['subject']);
-		$body = strip_tags($_POST['body'],"<p><a><i><b><img><br><ul><li><pre>");
+		$body = strip_tags($_POST['body'],"<p><a><i><b><img><br><ul><li><pre><embed><object>");
 		$updateID = strip_tags($_POST['id']);
 		updateEntry($subject,$body,$updateID);
 		echo " <img src=\"icon_accept.gif\" border=\"0\" /> entry updated. ";
