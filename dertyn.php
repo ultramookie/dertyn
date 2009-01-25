@@ -24,9 +24,11 @@ function showUpdateForm($body) {
         echo "<input type=\"text\" name=\"subject\" /><br />";
 	echo "Posting:<br />";
 	echo "<textarea cols=\"50\" rows=\"24\" name=\"body\">$body</textarea>";
-        echo "<input type=\"hidden\" name=\"checksubmit\" value=\"1\">";
 	echo "<br />";
-        echo "<input type=\"submit\" name=\"submit\" value=\"post\" id=\"submitbutton1\">";
+	echo "Save as draft? <input type=\"checkbox\" name=\"draft\" value=\"1\" />";
+	echo "<br />";
+        echo "<input type=\"hidden\" name=\"checksubmit\" value=\"1\">";
+        echo "<input type=\"submit\" value=\"post\" />";
         echo "</form>";
 }
 
@@ -38,7 +40,7 @@ function printSearchForm($numEntries,$pagenum) {
         echo "<input type=\"hidden\" name=\"numEntries\" value=\"$numEntries\">";
         echo "<input type=\"hidden\" name=\"pagenum\" value=\"$pagenum\">";
         echo "<input type=\"hidden\" name=\"checksubmit\" value=\"1\">";
-        echo "<input type=\"submit\" name=\"submit\" value=\"search\" id=\"submitbutton1\">";
+        echo "<input type=\"submit\" value=\"find\" />";
         echo "</form>";
 	echo "</p>\n";
 }
@@ -51,7 +53,7 @@ function showSearchResults($num,$pnum,$search) {
                 $offset = ($pnum - 1) * $num;
         }
 	
-	$query = "select id from main where match (subject,body) against ('$search') order by entrytime desc limit $offset,$num";
+	$query = "select id from main where match (subject,body) against ('$search') and published = '1' order by entrytime desc limit $offset,$num";
         $result = mysql_query($query);
 
 	$numrows = mysql_num_rows($result);
@@ -149,16 +151,21 @@ function showEditForm($id) {
         echo $_SERVER['PHP_SELF'];
         echo "\"";
         echo " method=\"post\">";
+	echo "Title:<br />";
 	echo "<input type=\"text\" name=\"subject\" value=\"$subject\" />";
+	echo "<br />";
+	echo "Posting:<br />";
 	echo "<textarea cols=\"50\" rows=\"24\" name=\"body\">$body</textarea>";
+	echo "<br />";
+	echo "Save as draft? <input type=\"checkbox\" name=\"draft\" value=\"1\" />";
+	echo "<br />";
         echo "<input type=\"hidden\" name=\"id\" value=\"$id\">";
         echo "<input type=\"hidden\" name=\"checksubmit\" value=\"1\">";
-	echo "<br />";
         echo "<input type=\"submit\" name=\"submit\" value=\"post\" id=\"submitbutton1\">";
         echo "</form>";
 }
 
-function addEntry($subject,$body) {
+function addEntry($subject,$body,$draft) {
 	$subject = mysql_real_escape_string($subject);
 	$body = mysql_real_escape_string($body);
 	$lowersubject = strtolower($subject);
@@ -171,26 +178,49 @@ function addEntry($subject,$body) {
 
         $numrows = mysql_num_rows($result);
 
+	if ($draft) {
+		$published = 0;
+	} else { 
+		$published = 1;
+	}
+
 	if ($numrows > 0) {
 		$slug = $slug . "-" . $date;
 	}
 
-	$query = "insert into main (subject,body,entrytime,slug) values ('$subject','$body',NOW(),'$slug')";
+	$query = "insert into main (subject,body,entrytime,slug,published) values ('$subject','$body',NOW(),'$slug','$published')";
 	$status = mysql_query($query);
 }
 
-function updateEntry($subject,$body,$id) {
+function updateEntry($subject,$body,$id,$draft) {
 	$subject = mysql_real_escape_string($subject);
 	$body = mysql_real_escape_string($body);
+	$draft = mysql_real_escape_string($draft);
 
-	$query = "update main set body='$body',subject='$subject' where id='$id'";
+	if ($draft) {
+		$query = "update main set body='$body',subject='$subject',entrytime=NOW(),published='0' where id='$id'";
+	} else {
+		$query = "update main set body='$body',subject='$subject',published='1' where id='$id'";
+	}
+
 	$status = mysql_query($query);
 }
 
 function showEntriesIndex() {
 
 	$num = getIndexNum();
-        $query = "select id from main order by entrytime desc limit $num";
+        $query = "select id from main where published = '1' order by entrytime desc limit $num";
+        $result = mysql_query($query);
+
+        while ($row = mysql_fetch_array($result)) {
+		printEntry($row['id']);
+        }
+}
+
+function showDraftsIndex() {
+
+	$num = getIndexNum();
+        $query = "select id from main where published = '0' order by entrytime desc limit $num";
         $result = mysql_query($query);
 
         while ($row = mysql_fetch_array($result)) {
@@ -206,7 +236,7 @@ function showEntriesArchive($num,$pnum) {
                 $offset = ($pnum-1) * $num;
         }
 
-        $query = "select id from main order by entrytime desc limit $offset,$num";
+        $query = "select id from main where published = '1' order by entrytime desc limit $offset,$num";
         $result = mysql_query($query);
 
         while ($row = mysql_fetch_array($result)) {
@@ -379,7 +409,7 @@ function getUserName() {
 }
 
 function getNumEntries() {
-	$query = "select count(id) from main";
+	$query = "select count(id) from main where published = '1'";
 	$result = mysql_query($query);
 
 	$row = mysql_fetch_array($result);
@@ -679,7 +709,7 @@ function addUser($user,$email,$pass,$site,$url) {
 		$query = "create table user ( name varchar(30) NOT NULL, email varchar(30) NOT NULL, pass varchar(30) NOT NULL, secret varchar(6), cookie varchar(300) )";
 		$status = mysql_query($query);
 
-		$query = "create table main ( id int NOT NULL AUTO_INCREMENT, entrytime DATETIME NOT NULL, subject varchar(160) NOT NULL, body MEDIUMTEXT, slug varchar(160), PRIMARY KEY (id), FULLTEXT(subject,body)); ";
+		$query = "create table main ( id int NOT NULL AUTO_INCREMENT, entrytime DATETIME NOT NULL, subject varchar(160) NOT NULL, body MEDIUMTEXT, slug varchar(160), published int DEFAULT '0', PRIMARY KEY (id), FULLTEXT(subject,body)); ";
 		$status = mysql_query($query);
 		
 		$query = "create table comments ( cid int NOT NULL AUTO_INCREMENT, pid int NOT NULL, commenttime DATETIME NOT NULL, ip varchar(16), name varchar(40), url varchar(100), comment MEDIUMTEXT, PRIMARY KEY (cid)); ";

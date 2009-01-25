@@ -18,6 +18,7 @@ $wpdb = "DB_NAME";
 $wpprefix = "wp_";
 
 $posts_imported = 0;
+$drats_imported = 0;
 $comments_imported = 0;
 
 $link = mysql_connect("$wpserver","$wplogin","$wppass")
@@ -27,6 +28,9 @@ mysql_select_db("$wpdb") or die('Could not select database');
 
 $query = "select post_date, post_content, post_title, post_name from " . $wpprefix . "posts where post_status='publish' order by post_date desc";
 $wpcontent = mysql_query($query);
+
+$query = "select post_date, post_content, post_title, post_name from " . $wpprefix . "posts where post_status='draft' order by post_date desc";
+$wpdrafts = mysql_query($query);
 
 $query = " select comment_author, comment_author_url, comment_author_IP, comment_content, comment_date, " . $wpprefix . "posts.post_name from " . $wpprefix . "posts, " . $wpprefix . "comments where comment_post_ID=" . $wpprefix . "posts.ID and comment_approved='1' order by comment_date";
 $wpcomments = mysql_query($query);
@@ -45,12 +49,26 @@ while ($row = mysql_fetch_array($wpcontent)) {
 	$slug = mysql_real_escape_string($row['post_name']);
 	$entrytime = mysql_real_escape_string($row['post_date']);
 	
-	$query = "insert into main (subject,body,entrytime,slug) values ('$subject','$body','$entrytime','$slug')";
+	$query = "insert into main (subject,body,entrytime,slug,published) values ('$subject','$body','$entrytime','$slug','1')";
 	$status = mysql_query($query);
 	$posts_imported++;
 }
 
 echo "Dertyn imported $posts_imported posts...<br />\n";
+
+while ($row = mysql_fetch_array($wpdrafts)) {
+	$subject = mysql_real_escape_string($row['post_title']);
+	$body = mysql_real_escape_string($row['post_content']);
+	$slug = mysql_real_escape_string($row['post_name']);
+	$entrytime = mysql_real_escape_string($row['post_date']);
+	
+	$query = "insert into main (subject,body,entrytime,slug,published) values ('$subject','$body','$entrytime','$slug','0')";
+	$status = mysql_query($query);
+	$drafts_imported++;
+}
+
+echo "Dertyn imported $drafts_imported drafts...<br />\n";
+
 
 while ($row = mysql_fetch_array($wpcomments)) {
 	$name = mysql_real_escape_string($row['comment_author']);
