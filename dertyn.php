@@ -458,6 +458,15 @@ function getNumComments($pid) {
 	return($row['count(cid)']);
 }
 
+function getTotalNumComments() {
+	$query = "select count(cid) from comments";
+	$result = mysql_query($query);
+
+        $row = mysql_fetch_array($result);
+
+	return($row['count(cid)']);
+}
+
 function setLoginCookie($user) {
 		$secret = getSecret();
                 $login = sha1($user . $secret);

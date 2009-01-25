@@ -4,6 +4,7 @@ include_once("dertyn.php");
 
 $siteurl = getSiteUrl();
 $rewriteCheck = getrewriteCheck();
+$totalComments = getTotalNumComments();
 
 $id = stripslashes($_GET['id']);
 
@@ -48,7 +49,7 @@ $pagenum = 1;
 	printSearchForm($numEntries,$pagenum);
 	echo "<ul>\n";
 	echo "<li>posts: $numOfEntries</li>\n";
-	echo "<li><a href=\"$siteurl/comments.php\">comments</a></li>\n";
+	echo "<li><a href=\"$siteurl/comments.php\">comments</a>: $totalComments</li>\n";
 	echo "<li><a href=\"$siteurl/rss.php\">rss</a></li>\n";
 
 	if(checkCookie()) {
