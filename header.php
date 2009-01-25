@@ -12,16 +12,32 @@ $siteurl = getSiteUrl();
 
 </head>
 <body>
-<div class="main">
-<h2 class="title"><b><a href="<? echo "$siteurl"; ?>" class="title"><? echo "$sitename"; ?></a></b></h2>
-<p class="menu">
+<div id="wrap">
+
+<div id="header">
+<h2><b><a href="<? echo "$siteurl"; ?>"><? echo "$sitename"; ?></a></b></h2>
+</div>
+
+<div id="sidebar">
 <?php
+
+	echo "<ul>\n";
+	echo "<li>posts: $numOfEntries</li>\n";
+	echo "<li><a href=\"$siteurl/comments.php\">comments</a></li>\n";
+	echo "<li><a href=\"$siteurl/search.php\">search</a></li>\n";
+	echo "<li><a href=\"$siteurl/rss.php\">rss</a></li>\n";
+
 	if(checkCookie()) {
 		$username = getUserName();
-		echo "<a href=\"$siturl/usermod.php\" class=\"menu\">" . $username . "</a> | <a href=\"$siteurl/post.php\" class=\"menu\">post</a> | posts: " . $numOfEntries . " | <a href=\"$siteurl/settings.php\" class=\"menu\">admin</a> | <a href=\"$siteurl/comments.php\" class=\"menu\">comments</a> | <a href=\"$siteurl/search.php\" class=\"menu\">search</a> | <a href=\"$siteurl/rss.php\" class=\"menu\">rss</a> | <a href=\"$siteurl/logout.php\" class=\"menu\">logout</a>";
+		echo "<li><a href=\"$siturl/usermod.php\">" . $username . "</a></li>\n";
+		echo "<li><a href=\"$siteurl/post.php\">post</a></li>\n";
+		echo "<li><a href=\"$siteurl/settings.php\">admin</a></li>\n";
+		echo "<li><a href=\"$siteurl/logout.php\">logout</a></li>\n";
 	} else {
-		echo "posts: " . $numOfEntries . " | <a href=\"$siteurl/login.php\" class=\"menu\">login</a> | <a href=\"$siteurl/comments.php\" class=\"menu\">comments</a> | <a href=\"$siteurl/search.php\" class=\"menu\">search</a> | <a href=\"$siteurl/rss.php\" class=\"menu\">rss</a>";
+		echo "<li><a href=\"$siteurl/login.php\">login</a></li>\n";
 	}
-?>
 
-</p>
+	echo "</ul>\n";
+?>
+</div>
+<div id="main">

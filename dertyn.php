@@ -20,8 +20,8 @@ function showUpdateForm() {
         echo $_SERVER['PHP_SELF'];
         echo "\"";
         echo " method=\"post\">";
-        echo "<input type=\"text\" name=\"subject\" />";
-	echo "<textarea cols=\"70\" rows=\"24\" name=\"body\"></textarea>";
+        echo "<input type=\"text\" name=\"subject\" /><br />";
+	echo "<textarea cols=\"50\" rows=\"24\" name=\"body\"></textarea>";
         echo "<input type=\"hidden\" name=\"checksubmit\" value=\"1\">";
 	echo "<br />";
         echo "<input type=\"submit\" name=\"submit\" value=\"post\" id=\"submitbutton1\">";
@@ -264,10 +264,10 @@ function printEntry($id,$single) {
 	$rewriteCheck = getrewriteCheck();
 
 	if (($rewriteCheck == 1) && ($single)) {
-		$query = "select id,subject,body,date_format(entrytime, '%b %e, %Y @ %h:%i %p') as date from main where slug = '$id'";
+		$query = "select id,subject,body,date_format(entrytime, '%b %e, %Y') as date from main where slug = '$id'";
         	$result = mysql_query($query);
 	} else {
-		$query = "select id,subject,body,date_format(entrytime, '%b %e, %Y @ %h:%i %p') as date from main where id = '$id'";
+		$query = "select id,subject,body,date_format(entrytime, '%b %e, %Y') as date from main where id = '$id'";
         	$result = mysql_query($query);
 	}
         $row = mysql_fetch_array($result);
