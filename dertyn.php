@@ -73,7 +73,7 @@ function printComment($cid,$pid) {
 	while ($row = mysql_fetch_array($result)) {
 		$name = $row['name'];
 		$url = $row['url'];
-		$comment =  makeLinks(nl2br($row['comment']));
+		$comment =  nl2br($row['comment']);
 		$date = $row['date'];
 
 		if(strlen($url) > 0) {
@@ -150,7 +150,7 @@ function showEditForm($id) {
         echo "\"";
         echo " method=\"post\">";
 	echo "<input type=\"text\" name=\"subject\" value=\"$subject\" />";
-	echo "<textarea cols=\"70\" rows=\"24\" name=\"body\">$body</textarea>";
+	echo "<textarea cols=\"50\" rows=\"24\" name=\"body\">$body</textarea>";
         echo "<input type=\"hidden\" name=\"id\" value=\"$id\">";
         echo "<input type=\"hidden\" name=\"checksubmit\" value=\"1\">";
 	echo "<br />";
@@ -278,11 +278,7 @@ function printEntry($id,$single) {
 
 	$commentCount = getNumComments($pid);
 
-	if (ereg(".*http.*",$row['body'])) {
-		$text = makeLinks(nl2br($row['body']));
-	} else {
-		$text = nl2br($row['body']);
-	}
+	$text = nl2br($row['body']);
 
 	echo "\n";
         echo "<p class=\"subject\"><a href=\"" . $permalink . "\">" . $row['subject'] . "</a></p>";
@@ -297,87 +293,6 @@ function printEntry($id,$single) {
         echo "<p class=\"entry\">" . $text . " </p>";
 	echo "\n";
 	echo "<hr />";
-}
-
-function makeYouTube($in_url) {
-
-	list($blah,$args) = split("\?",$in_url,2);
-
-	if ($args) {
-		$argsList = split("\&",$args);
-		$num = count($argsList);
-		for($i=0;$i<=$num;$i++) {
-			list($key,$value) = split("=",$argsList[$i]);
-			$$key = $value;
-		}
-		if ($v) {
-			$youtube = "<object width=\"425\" height=\"344\"><param name=\"movie\" value=\"http://www.youtube.com/v/$v&hl=en&fs=1\"></param><param name=\"allowFullScreen\" value=\"true\"></param><embed src=\"http://www.youtube.com/v/$v&hl=en&fs=1\" type=\"application/x-shockwave-flash\" allowfullscreen=\"true\" width=\"425\" height=\"344\"></embed></object>";
-		} else {
-		$youtube = "<a href=\"$youtube_url\">$youtube_url</a>";
-		}
-	}
-
-	return ($youtube);
-}
-
-function makeFlickr($in_url) {
-
-	$appkey = "260422cecc98a0ef5233856d6b7ffc05";
-
-	list($http,$blah,$base,$photos,$user,$photoid) = split("/",$in_url,7);
-
-	if ($photoid) {
-		$url = "http://api.flickr.com/services/rest/";
-
-		$session = curl_init();
-		curl_setopt ( $session, CURLOPT_URL, $url );
-		curl_setopt ( $session, CURLOPT_HEADER, false );
-		curl_setopt ( $session, CURLOPT_RETURNTRANSFER, 1 );
-		curl_setopt ( $session, CURLOPT_POST, 1);
-		curl_setopt ( $session, CURLOPT_POSTFIELDS,"method=flickr.photos.getSizes" . "&photo_id=" . $photoid . "&api_key=" . $appkey);
-		$result = curl_exec ( $session );
-		curl_close( $session );
-
-		$xml = simplexml_load_string($result);
-
-		if ($xml->attributes() == "ok") {
-			foreach ($xml->sizes->size[3]->attributes() as $key => $value) {
-				$$key = $value;
-			}
-
-			$flickr = "<a href=\"$in_url\"><img src=\"$source\" width=\"$width\" height=\"$height\" border=\"0\" /></a>";
-		} else {
-			$flickr = "<a href=\"$in_url\">$in_url</a>";
-		}
-
-	} else {
-		$flickr = "<a href=\"$in_url\">$in_url</a>";
-	}
-
-	return($flickr);
-}
-
-function makeLinks($text) {
-	$chunk = preg_split("/[\s,]+/", $text);
-	$size = count($chunk);
-
-	for($i=0;$i<$size;$i++) {
-		if(ereg("^http.*youtube\.com.*watch",$chunk[$i])) {
-			$embed = makeYouTube($chunk[$i]);
-			$total = $total . "<br /><br />" . $embed . "<br /><br />";
-		} else if(ereg("^http.*flickr\.com.*photos",$chunk[$i])) {
-			$embed = makeFlickr($chunk[$i]);
-			$total = $total . "<br /><br />" . $embed . "<br /><br />";
-		} else if(ereg("^http",$chunk[$i])) {
-			$url = $chunk[$i];
-			$new = "<a href=\"$url\" rel=\"nofollow\" target=\"blank\">$url</a>";
-			$total = $total . " " . $new;
-		} else {
-			$total = $total . " " . $chunk[$i];
-		}
-	}
-
-	return $total;
 }
 
 function printRSS($num) {

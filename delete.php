@@ -4,8 +4,8 @@ include_once("header.php");
 include_once("db.php");
 include_once("dertyn.php");
 
-$id = $_GET['number'];
-$type = $_GET['type'];
+$id = stripslashes($_GET['number']);
+$type = stripslashes($_GET['type']);
 
 if (!(stripslashes($_POST['checksubmit'])) &&  (checkCookie())) {
         showDelform($id,$type);

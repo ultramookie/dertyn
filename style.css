@@ -135,7 +135,7 @@ hr {
 .entry {
 	font-size: small;
 	word-wrap: break-word;
-	padding: 10px 25px;
+	padding: 0;
 }
 
 .timedate {

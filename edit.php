@@ -5,7 +5,7 @@
 	$cookie = $_COOKIE['dertyn'];
 	$storedcookie = getCookie();
 
-	$id = $_GET['number'];
+	$id = stripslashes($_GET['number']);
 
         if(checkCookie()) {
 		showEditForm($id);

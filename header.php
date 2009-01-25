@@ -5,21 +5,20 @@ include_once("dertyn.php");
 $siteurl = getSiteUrl();
 $rewriteCheck = getrewriteCheck();
 
-$id = $_GET['id'];
+$id = stripslashes($_GET['id']);
 
 $numEntries = getIndexNum();
 $pagenum = 1;
 
 	if ($rewriteCheck == 1) {
-		stripslashes($_POST['id']);
 		$pid = getPid($id);
 	}  else {
-		stripslashes($_POST['id']);
 		$pid = $id;
 	}
 
 	if($pid > 0) {
-		$title = getSubject($pid);
+		$subject = getSubject($pid);
+		$title = "$subject - $sitename";
 	} else {
 		$title = $sitename;
 	}
