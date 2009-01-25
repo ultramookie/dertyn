@@ -99,14 +99,6 @@ h2 {
 	background:#F0F0F0;
 }
 
-.title {
-	font-size: x-large; 
-	background:#FFFFFF;
-	color: #FC7901;
-	letter-spacing: 5px;
-	word-spacing: 1px;
-}
-
 hr {
 	height: 1px;
 	color: #c0c0c0;
@@ -118,6 +110,8 @@ hr {
 	font-weight: bold;
 	background:#FFFFFF;
 	padding:  0px;
+	letter-spacing: -1px;
+	word-spacing: 1px;
 }
 
 .commenter {
@@ -142,8 +136,8 @@ hr {
 	font-size: small;
 	background:#FFFFFF;
 	text-align: left;
-	padding:  0px;
 	color: #848484;
+	margin-top:-20px;
 }
 
 .menu {

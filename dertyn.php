@@ -69,7 +69,7 @@ function showSearchResults($num,$pnum,$search) {
 }
 
 function printComment($cid,$pid) {
-	$query = "select name,url,comment,date_format(commenttime, '%b %e, %Y @ %h:%i %p') as date from comments where cid = '$cid'";
+	$query = "select name,url,comment,date_format(commenttime, '%M %e, %Y @ %h:%i %p') as date from comments where cid = '$cid'";
 	$result = mysql_query($query);
 
 	while ($row = mysql_fetch_array($result)) {
@@ -305,11 +305,11 @@ function printEntry($id,$single) {
 	$rewriteCheck = getrewriteCheck();
 
 	if (($rewriteCheck == 1) && ($single)) {
-		$query = "select id,subject,body,date_format(entrytime, '%b %e, %Y') as date from main where slug = '$id'";
+		$query = "select id,subject,body,date_format(entrytime, '%M %e, %Y') as date from main where slug = '$id'";
         	$result = mysql_query($query);
 		$pid = getPid($id);
 	} else {
-		$query = "select id,subject,body,date_format(entrytime, '%b %e, %Y') as date from main where id = '$id'";
+		$query = "select id,subject,body,date_format(entrytime, '%M %e, %Y') as date from main where id = '$id'";
         	$result = mysql_query($query);
 		$pid = $id;
 	}

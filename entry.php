@@ -39,6 +39,7 @@ if (($rewriteCheck == 1) && ($commented != 1)) {
 }
 
 echo "<p class=\"subject\"><a name=\"comments\">Comments</a></p>";
+echo "<p>Basic XHTML (including links) is allowed, just don't try anything fishy. Your comment will be auto-formatted.</p>\n";
 
 printCommentForm($pid);
 
