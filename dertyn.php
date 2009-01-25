@@ -46,9 +46,9 @@ function printSearchForm($numEntries,$pagenum) {
 function showSearchResults($num,$pnum,$search) {
 
         if($pnum == 1) {
-                $offset = 1;
+                $offset = 0;
         } else {
-                $offset = $pnum * $num;
+                $offset = ($pnum - 1) * $num;
         }
 	
 	$query = "select id from main where match (subject,body) against ('$search') order by entrytime desc limit $offset,$num";
@@ -207,7 +207,7 @@ function showEntriesArchive($num,$pnum) {
 function showRecentComments($num,$pnum) {
 
         if($pnum == 1) {
-                $offset = 1;
+                $offset = 0;
         } else {
                 $offset = ($pnum-1) * $num;
         }
@@ -487,6 +487,15 @@ function getSiteName() {
 	$row = mysql_fetch_array($result);
 
 	return($row['name']);
+}
+
+function getSubject($pid) {
+	$query = "select subject from main where id = '$pid' limit 1";
+	$result = mysql_query($query);
+
+	$row = mysql_fetch_array($result);
+
+	return($row['subject']);
 }
 
 function getSiteUrl() {

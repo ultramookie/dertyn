@@ -4,10 +4,6 @@ include_once("header.php");
 include_once("db.php");
 include_once("dertyn.php");
 
-$rewriteCheck = getrewriteCheck();
-
-$id = $_GET['id'];
-
 if(stripslashes($_POST['checksubmit'])) {
 	$captcha = strip_tags($_POST['captcha']);
 	$pid = strip_tags($_POST['pid']);
