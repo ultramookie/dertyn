@@ -12,7 +12,7 @@
 		$body = strip_tags($_POST['body'],"<p><a><i><b><img><br><ul><li><pre><embed><object>");
 		if(strlen($subject) > 0) {
 			addEntry($subject,$body);
-			echo " <img src=\"icon_accept.gif\" border=\"0\" /> entry posted. ";
+			echo "<p><img src=\"icon_accept.gif\" border=\"0\" /> entry posted.</p>";
 		} else {
 			echo "<p><b>Please enter a title!</b></p>";
 			showUpdateForm($body);
