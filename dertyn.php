@@ -95,7 +95,7 @@ function printComment($cid,$pid) {
 }
 
 function printComments($pid) {
-	$query = "select cid from comments where pid = '$pid' order by commenttime desc";
+	$query = "select cid from comments where pid = '$pid' order by commenttime asc";
 	$result = mysql_query($query);
 
 	while ($row = mysql_fetch_array($result)) {
