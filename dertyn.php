@@ -173,7 +173,6 @@ function addEntry($subject,$body) {
 
 	if ($numrows > 0) {
 		$slug = $slug . "-" . $date;
-		echo "dup";
 	}
 
 	$query = "insert into main (subject,body,entrytime,slug) values ('$subject','$body',NOW(),'$slug')";
