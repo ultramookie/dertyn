@@ -15,7 +15,7 @@ $indexNum = getIndexNum();
 $rssNum = getRssNum();
 $numOfEntries = getNumEntries();
 
-function showUpdateForm() {
+function showUpdateForm($body) {
         echo "<form action=\"";
         echo $_SERVER['PHP_SELF'];
         echo "\"";
@@ -23,7 +23,7 @@ function showUpdateForm() {
 	echo "Title:<br />";
         echo "<input type=\"text\" name=\"subject\" /><br />";
 	echo "Posting:<br />";
-	echo "<textarea cols=\"50\" rows=\"24\" name=\"body\"></textarea>";
+	echo "<textarea cols=\"50\" rows=\"24\" name=\"body\">$body</textarea>";
         echo "<input type=\"hidden\" name=\"checksubmit\" value=\"1\">";
 	echo "<br />";
         echo "<input type=\"submit\" name=\"submit\" value=\"post\" id=\"submitbutton1\">";
