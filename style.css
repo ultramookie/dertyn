@@ -34,13 +34,18 @@ body {
 }
 
 #sidebar ul {
-	margin: 0;
+	margin-left: 10px;
 	padding: 0;
 	list-style: none;
 }
 
 #sidebar li {
-	margin: 0;
+	margin-left: 10px;
+	padding: 0;
+}
+
+#sidebar form {
+	margin-left: 10px;
 	padding: 0;
 }
 
@@ -55,6 +60,11 @@ body {
 	letter-spacing: 10pt;
 	background: #FFFFFF;
 	text-decoration: none;
+}
+
+#header a {
+	color:#000000;
+	text-decoration:none;
 }
 
 #header a:hover {
@@ -112,8 +122,8 @@ hr {
 
 .commenter {
 	word-wrap: break-word;	
+	font-size: medium;
 	font-weight: bold;
-	background:#F0F0F0;
 }
 
 .comment {

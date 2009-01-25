@@ -20,7 +20,9 @@ function showUpdateForm() {
         echo $_SERVER['PHP_SELF'];
         echo "\"";
         echo " method=\"post\">";
+	echo "Title:<br />";
         echo "<input type=\"text\" name=\"subject\" /><br />";
+	echo "Posting:<br />";
 	echo "<textarea cols=\"50\" rows=\"24\" name=\"body\"></textarea>";
         echo "<input type=\"hidden\" name=\"checksubmit\" value=\"1\">";
 	echo "<br />";
@@ -29,16 +31,16 @@ function showUpdateForm() {
 }
 
 function printSearchForm($numEntries,$pagenum) {
-        echo "<form action=\"";
-        echo $_SERVER['PHP_SELF'];
-        echo "\"";
-        echo " method=\"get\">";
+	$siteurl = getSiteUrl();
+	echo "<p>\n";
+        echo "<form action=\"$siteurl/search.php\" method=\"get\">";
         echo "<input type=\"text\" name=\"search\" />";
         echo "<input type=\"hidden\" name=\"numEntries\" value=\"$numEntries\">";
         echo "<input type=\"hidden\" name=\"pagenum\" value=\"$pagenum\">";
         echo "<input type=\"hidden\" name=\"checksubmit\" value=\"1\">";
         echo "<input type=\"submit\" name=\"submit\" value=\"search\" id=\"submitbutton1\">";
         echo "</form>";
+	echo "</p>\n";
 }
 
 function showSearchResults($num,$pnum,$search) {
@@ -74,7 +76,6 @@ function printComment($cid,$pid) {
 		$comment =  makeLinks(nl2br($row['comment']));
 		$date = $row['date'];
 
-		echo "<hr />\n";
 		if(strlen($url) > 0) {
 			echo "<p class=\"commenter\"><a href=\"$url\">$name</a> said on $date...</p>\n";
 		} else {
@@ -83,7 +84,7 @@ function printComment($cid,$pid) {
 		echo "<p class=\"comment\">$comment</p>\n";
 		if($pid > 0) {
 			$permalink = makePermaLink($pid);
-			echo "about <a href=\"$permalink\">this posting</a>...<br /><br />";
+			echo "about <a href=\"$permalink\"><b>this posting</b></a>...<br /><br />";
 		}
         	if(checkCookie()) {
 			echo "<a href=\"$siteurl/delete.php?number=$cid&type=comment\"><img src=\"$siteurl/page_delete.gif\" border=\"0\" /></a> ";

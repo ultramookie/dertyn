@@ -16,6 +16,8 @@ if (stripslashes($_POST['checksubmit'])) {
 
 include_once("header.php");
 
+echo "<p>\n";
+
 if (!(stripslashes($_POST['checksubmit']))) {
 	showLoginform();
 } else {
@@ -25,6 +27,8 @@ if (!(stripslashes($_POST['checksubmit']))) {
 		echo "login failed.  try again.";
 	}
 }
+
+echo "</p>\n";
 
 ?>
 

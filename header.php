@@ -4,6 +4,9 @@ include_once("dertyn.php");
 
 $siteurl = getSiteUrl();
 
+$numEntries = getIndexNum();
+$pagenum = 1;
+
 ?>
 <html>
 <head>
@@ -21,10 +24,10 @@ $siteurl = getSiteUrl();
 <div id="sidebar">
 <?php
 
+	printSearchForm($numEntries,$pagenum);
 	echo "<ul>\n";
 	echo "<li>posts: $numOfEntries</li>\n";
 	echo "<li><a href=\"$siteurl/comments.php\">comments</a></li>\n";
-	echo "<li><a href=\"$siteurl/search.php\">search</a></li>\n";
 	echo "<li><a href=\"$siteurl/rss.php\">rss</a></li>\n";
 
 	if(checkCookie()) {
