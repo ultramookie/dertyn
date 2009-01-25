@@ -37,7 +37,6 @@ function printSearchForm($numEntries,$pagenum) {
         echo "<input type=\"hidden\" name=\"numEntries\" value=\"$numEntries\">";
         echo "<input type=\"hidden\" name=\"pagenum\" value=\"$pagenum\">";
         echo "<input type=\"hidden\" name=\"checksubmit\" value=\"1\">";
-	echo "<br />";
         echo "<input type=\"submit\" name=\"submit\" value=\"search\" id=\"submitbutton1\">";
         echo "</form>";
 }
