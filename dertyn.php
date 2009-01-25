@@ -164,6 +164,17 @@ function addEntry($subject,$body) {
 	$lowersubject = strtolower($subject);
         $slugdashes = preg_replace("/\s/","-",$lowersubject);
         $slug = ereg_replace("[^a-zA-Z0-9-]","",$slugdashes);
+	$date = date('Ymd-Gis');
+	
+	$query = "select slug from main where slug='$slug'";
+	$result = mysql_query($query);
+
+        $numrows = mysql_num_rows($result);
+
+	if ($numrows > 0) {
+		$slug = $slug . "-" . $date;
+		echo "dup";
+	}
 
 	$query = "insert into main (subject,body,entrytime,slug) values ('$subject','$body',NOW(),'$slug')";
 	$status = mysql_query($query);
