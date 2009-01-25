@@ -42,7 +42,7 @@ if (($rewriteCheck == 1) && ($commented != 1)) {
 	$pid = $id;
 }
 
-echo "<p class=\"subject\">Comments</p>";
+echo "<p class=\"subject\"><a name=\"comments\">Comments</a></p>";
 
 printCommentForm($pid);
 

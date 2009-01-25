@@ -267,11 +267,16 @@ function printEntry($id,$single) {
 	if (($rewriteCheck == 1) && ($single)) {
 		$query = "select id,subject,body,date_format(entrytime, '%b %e, %Y') as date from main where slug = '$id'";
         	$result = mysql_query($query);
+		$pid = getPid($id);
 	} else {
 		$query = "select id,subject,body,date_format(entrytime, '%b %e, %Y') as date from main where id = '$id'";
         	$result = mysql_query($query);
+		$pid = $id;
 	}
+
         $row = mysql_fetch_array($result);
+
+	$commentCount = getNumComments($pid);
 
 	if (ereg(".*http.*",$row['body'])) {
 		$text = makeLinks(nl2br($row['body']));
@@ -282,7 +287,7 @@ function printEntry($id,$single) {
 	echo "\n";
         echo "<p class=\"subject\"><a href=\"" . $permalink . "\">" . $row['subject'] . "</a></p>";
 	echo "\n";
-	echo "<p class=\"timedate\">" . $row['date'];
+	echo "<p class=\"timedate\">" . $row['date'] . " : <a href=\"" . $permalink . "#comments\">$commentCount comment(s)</a>";
 	if(checkCookie()) {
 		echo "<a href=\"$siteurl/edit.php?number=" . $row['id'] . "\"><img src=\"$siteurl/page_edit.gif\" border=\"0\" /></a> ";
 		echo "<a href=\"$siteurl/delete.php?number=" . $row['id'] . "&type=post\"><img src=\"$siteurl/page_delete.gif\" border=\"0\" /></a> ";
@@ -518,6 +523,15 @@ function getRssNum() {
         $row = mysql_fetch_array($result);
 
         return($row['rssNum']);
+}
+
+function getNumComments($pid) {
+	$query = "select count(cid) from comments where pid = '$pid'";
+	$result = mysql_query($query);
+
+        $row = mysql_fetch_array($result);
+
+	return($row['count(cid)']);
 }
 
 function setLoginCookie($user) {
