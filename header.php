@@ -17,7 +17,7 @@ $pagenum = 1;
 		$pid = $id;
 	}
 
-	if($pid > 0) {
+	if($id) {
 		$subject = getSubject($pid);
 		$title = "$subject - $sitename";
 	} else {
