@@ -1,16 +1,41 @@
-dertyn
+DERTYN
 http://dertyn.com/
-written by and copyright steve "mookie" kong
+written by and copyright (c) 2009 steve "mookie" kong
 
-licensed under gplv3
-http://www.gnu.org/licenses/gpl-3.0.html
+LICENSE
+	licensed under gplv3
+	http://www.gnu.org/licenses/gpl-3.0.html
 
-a small, fast, and compact blogging application for your own use.
-based on mindof (http://mindof-project.org) code.
+DESCRIPTION
+	a small, fast, and compact blogging application for your own use.
+	based on mindof (http://mindof-project.org) code.
+
+SYSTEM REQUIREMENTS
+	php5 (simplexml is used for flickr integration, that requires php5)
+	mysql
+
+INSTALL INSTRUCTIONS
+
+	copy all files over to wherever you want to host your microblog.
+
+	from that location, move config-example.php to config.php.
+
+	edit config.php and enter the correct mysql database information.
+
+	point your webbrowser to http://<yoursiteurl>/<dertynlocation>/install.php
+
+	fill out information.
+
+	enjoy.
 
 CREDITS
+	dertyn uses icons from the gorgeous mini icon set from famfamfam which is
+	licensed under the Creative Commons Attribution 2.5 license.
+	http://www.famfamfam.com/lab/icons/mini/
 
-mindof uses icons from the gorgeous mini icon set from famfamfam which is
-licensed under the Creative Commons Attribution 2.5 license.
-http://www.famfamfam.com/lab/icons/mini/
+	dertyn uses a nice and quick anti-spam measure stolen from
+	wonko (http://www.wonko.com).  
 
+DEVELOPMENT AND SUPPORT
+	find dertyn development and support at:
+	http://dertyn.com
