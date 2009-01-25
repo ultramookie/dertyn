@@ -29,7 +29,7 @@ $siteurl = getSiteUrl();
 
 	if(checkCookie()) {
 		$username = getUserName();
-		echo "<li><a href=\"$siturl/usermod.php\">" . $username . "</a></li>\n";
+		echo "<li><a href=\"$siturl/usermod.php\">password</a></li>\n";
 		echo "<li><a href=\"$siteurl/post.php\">post</a></li>\n";
 		echo "<li><a href=\"$siteurl/settings.php\">admin</a></li>\n";
 		echo "<li><a href=\"$siteurl/logout.php\">logout</a></li>\n";
