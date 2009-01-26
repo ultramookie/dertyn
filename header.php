@@ -3,6 +3,7 @@ include_once("db.php");
 include_once("dertyn.php");
 
 $siteurl = getSiteUrl();
+$tagline = getTagline();
 $rewriteCheck = getrewriteCheck();
 $totalComments = getTotalNumComments();
 
@@ -40,7 +41,8 @@ $pagenum = 1;
 <div id="wrap">
 
 <div id="header">
-<h2><b><a href="<? echo "$siteurl"; ?>"><? echo "$sitename"; ?></a></b></h2>
+<h2><a href="<? echo "$siteurl"; ?>"><?php echo "$sitename"; ?></a></h2>
+<p><?php echo "$tagline"; ?></p>
 </div>
 
 <?php include_once("sidebar.php"); ?>

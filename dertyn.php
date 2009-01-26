@@ -10,6 +10,7 @@
 error_reporting(E_ERROR | E_PARSE);
 
 $sitename = getSiteName();
+$tagline = getTagline();
 $siteurl = getSiteUrl();
 $indexNum = getIndexNum();
 $rssNum = getRssNum();
@@ -447,6 +448,15 @@ function getSiteName() {
 	return($row['name']);
 }
 
+function getTagline() {
+	$query = "select tagline from site limit 1";
+	$result = mysql_query($query);
+
+	$row = mysql_fetch_array($result);
+
+	return($row['tagline']);
+}
+
 function getSubject($pid) {
 	$query = "select subject from main where id = '$pid' limit 1";
 	$result = mysql_query($query);
@@ -553,6 +563,7 @@ function showAddform() {
 	echo "password: <input type=\"password\" name=\"pass1\"><br />";
 	echo "password (again): <input type=\"password\" name=\"pass2\"><br />";
 	echo "name of site: <input type=\"text\" name=\"site\"><br />";
+	echo "tagline for site: <input type=\"text\" name=\"tagline\"><br />";
 	echo "base url (without http://): <input type=\"text\" name=\"url\"><br />";
 	echo "<input type=\"hidden\" name=\"checksubmit\" value=\"1\">";
 	echo "<input type=\"submit\" name=\"submit\" value=\"install\">";
@@ -570,6 +581,7 @@ function getrewriteCheck() {
 
 function showSettingsform() {
 	$sitename = getSiteName();
+	$tagline = getTagline();
 	$rawsiteurl = getRawSiteUrl();
 	$indexNum = getIndexNum();
 	$rssNum = getRssNum();
@@ -589,6 +601,7 @@ function showSettingsform() {
         echo "user: <input type=\"text\" name=\"user\"><br />";
         echo "pass: <input type=\"password\" name=\"pass\"><br />";
 	echo "name of site: <input type=\"text\" name=\"site\" value=\"" . $sitename . "\"><br />";
+	echo "tagline for site: <input type=\"text\" name=\"tagline\" value=\"" . $tagline . "\"><br />";
 	echo "base url (without http://): <input type=\"text\" name=\"url\" value=\"" . $rawsiteurl . "\"><br />";
 	echo "number of entries to display per page: <input type=\"text\" name=\"index\" value=\"" . $indexNum . "\"><br />";
 	echo "number of entries to display in rss feed: <input type=\"text\" name=\"rss\" value=\"" . $rssNum . "\"><br />";
@@ -678,22 +691,23 @@ function changePass($user,$pass) {
 	echo " <img src=\"icon_accept.gif\" border=\"0\" /> password has been updated!";
 }
 
-function changeSettings($site,$url,$numberIndex,$numberRSS,$rewrite) {
+function changeSettings($site,$url,$numberIndex,$numberRSS,$rewrite,$tagline) {
 
         $site = mysql_real_escape_string($site);
+        $tagline = mysql_real_escape_string($tagline);
         $url = mysql_real_escape_string($url);
         $numberIndex = mysql_real_escape_string($numberIndex);
         $numberRSS = mysql_real_escape_string($numberRSS);
         $rewrite = mysql_real_escape_string($rewrite);
 
-	$query = "update site set name='$site', url='$url', indexNum='$numberIndex', rssNum='$numberRSS', rewrite='$rewrite' limit 1";
+	$query = "update site set name='$site', url='$url', indexNum='$numberIndex', rssNum='$numberRSS', rewrite='$rewrite', tagline='$tagline' limit 1";
 	$result = mysql_query($query);
 
 	echo "your settings have been updated!";
 
 }
 
-function addUser($user,$email,$pass,$site,$url) {
+function addUser($user,$email,$pass,$site,$url,$tagline) {
         $salt = substr("$email",0,2);
         $epass = crypt($pass,$salt);
 
@@ -707,6 +721,7 @@ function addUser($user,$email,$pass,$site,$url) {
 		$email = mysql_real_escape_string($email);
 		$pass = mysql_real_escape_string($pass);
 		$site = mysql_real_escape_string($site);
+		$tagline = mysql_real_escape_string($tagline);
 		$url = mysql_real_escape_string($url);
 		
 		$query = "create table user ( name varchar(30) NOT NULL, email varchar(30) NOT NULL, pass varchar(30) NOT NULL, secret varchar(6), cookie varchar(300) )";
@@ -718,7 +733,7 @@ function addUser($user,$email,$pass,$site,$url) {
 		$query = "create table comments ( cid int NOT NULL AUTO_INCREMENT, pid int NOT NULL, commenttime DATETIME NOT NULL, ip varchar(16), name varchar(40), url varchar(100), comment MEDIUMTEXT, PRIMARY KEY (cid)); ";
 		$status = mysql_query($query);
 		
-		$query = "create table site ( name varchar(160) NOT NULL, url varchar(160) NOT NULL, indexNum int NOT NULL, rssNum int NOT NULL, rewrite int NOT NULL ); ";
+		$query = "create table site ( name varchar(160) NOT NULL, url varchar(160) NOT NULL, indexNum int NOT NULL, rssNum int NOT NULL, rewrite int NOT NULL, tagline varchar(160) ); ";
 		$status = mysql_query($query);
 	
 		$secret = generateCode();
@@ -726,7 +741,7 @@ function addUser($user,$email,$pass,$site,$url) {
 		$query = "insert into user (name,email,pass,secret) values ('$user','$email','$epass','$secret')";
 		$status = mysql_query($query);
 	
-		$query = "insert into site (name,url,indexNum,rssNum,rewrite) values ('$site','$url','10','10','1')";
+		$query = "insert into site (name,url,indexNum,rssNum,rewrite,tagline) values ('$site','$url','10','10','1','$tagline')";
 		$status = mysql_query($query);
 
 		echo "dertyn installed!  thanks!";

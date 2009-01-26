@@ -8,7 +8,7 @@ html {
 
 body {
         font-size: small;
-	font-family: "Verdana", "Arial", Sans;
+	font-family: "Helvetica","Verdana", "Arial", Sans;
 	border-top: 6px solid #FF6600;
 	border-bottom: 6px solid #FF6600;
 	min-width: 750px;
@@ -32,6 +32,8 @@ body {
 
 #sidebar {
 	font-size: medium;
+	font-weight: normal;
+	letter-spacing: 0.5pt;
 	width:200px;
 	float:right;
 	color:#555555;
@@ -51,6 +53,7 @@ body {
 
 #sidebar a {
 	text-decoration: none;
+	font-weight: normal;
 }
 
 #sidebar form {
@@ -61,19 +64,35 @@ body {
 #header {
 	text-decoration:none;
 	text-align:left;
-	border-bottom: 2px solid #000000;
+	border-bottom: 1px solid #8B8B8B;
 }
 
 #header h2 {
-	font-size: X-Large;
-	letter-spacing: 10pt;
+	font-size: xx-large; 
+	font-weight: normal;
+	letter-spacing: 3pt;
 	background: #FFFFFF;
 	text-decoration: none;
+	margin: 0;
+	padding: 0;
+}
+
+#header p {
+	font-size: small;
+	font-weight: normal;
+	background: #FFFFFF;
+	text-decoration: bold;
+	color: #8B8B8B;
+	margin-top:-5px;
+	margin-bottom: 5px;
+	word-spacing: 3px;
+	padding: 0;
 }
 
 #header a {
-	color:#000000;
+	color:#FF8800;
 	text-decoration:none;
+	font-weight: normal;
 }
 
 #header a:hover {
@@ -95,11 +114,13 @@ a {
 	color:#000000;
 	background:inherit;
 	text-decoration:none;
+	font-weight: 550;
 }
 
 a:hover {
 	color:#000000;
 	text-decoration:underline;
+	font-weight: 550;
 }
 
 
@@ -116,7 +137,7 @@ hr {
 .subject {
 	font-size: large;
 	word-wrap: break-word;	
-	font-weight: bold;
+	font-weight: 500;
 	background:#FFFFFF;
 	padding:  0px;
 	letter-spacing: -1px;
@@ -155,6 +176,8 @@ hr {
 
 .timedate a {
 	text-decoration: none;
+	font-weight: normal;
+
 }
 
 .menu {

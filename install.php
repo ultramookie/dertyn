@@ -20,10 +20,11 @@ if ((stripslashes(!$_POST['checksubmit']))) {
 	$newpass1 = stripslashes($_POST['pass1']);
 	$newpass2 = stripslashes($_POST['pass2']);
 	$site = strip_tags($_POST['site']);
+	$tagline = strip_tags($_POST['tagline']);
 	$url = stripslashes($_POST['url']);
 
 	if ((strcmp($newpass1,$newpass2)) == 0) {
-       		addUser($user,$email,$newpass1,$site,$url);
+       		addUser($user,$email,$newpass1,$site,$url,$tagline);
        	} else {
                	echo "either your password was typed wrong or your new passwords did not match.  <a href='". $_SERVER['PHP_SELF'] . "'>try again</a>";
        	}
