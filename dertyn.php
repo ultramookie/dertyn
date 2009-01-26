@@ -274,7 +274,7 @@ function makePermaLink($id,$single) {
 	$rewriteCheck = getrewriteCheck();
 
 	if (($rewriteCheck == 1) && ($single)) {
-		$query = "select slug,date_format(entrytime, '%Y') as year,date_format(entrytime, '%m') as month,date_format(entrytime, '%d') as day  from main where slug = '$id'";
+		$query = "select slug,date_format(entrytime, '%Y') as year,date_format(entrytime, '%m') as month,date_format(entrytime, '%d') as day from main where slug = '$id'";
 		$result = mysql_query($query);
         	$row = mysql_fetch_array($result);
 		$month = $row['month'];
@@ -283,7 +283,7 @@ function makePermaLink($id,$single) {
 		$slug = $row['slug'];
 		$permalink = "$siteurl/wayback/$year/$month/$day/$slug/";
 	} else if ($rewriteCheck == 1) {
-		$query = "select slug,date_format(entrytime, '%Y') as year,date_format(entrytime, '%m') as month,date_format(entrytime, '%d') as day  from main where id = '$id'";
+		$query = "select slug,date_format(entrytime, '%Y') as year,date_format(entrytime, '%m') as month,date_format(entrytime, '%d') as day from main where id = '$id'";
 		$result = mysql_query($query);
         	$row = mysql_fetch_array($result);
 		$month = $row['month'];
@@ -336,14 +336,17 @@ function printEntry($id,$single) {
 }
 
 function printRSS($num) {
-        $query = "select id,subject,body,date_format(entrytime, '%a, %d %b %Y %H:%i:%s') as date from main order by entrytime desc limit $num";
+	$rssSummaryLen = 1024;
+        $query = "select id,subject,body,date_format(entrytime, '%a, %d %b %Y %H:%i:%s') as date from main where published = '1' order by entrytime desc limit $num";
         $result = mysql_query($query);
 
         while ($row = mysql_fetch_array($result)) {
 		$permalink = makePermaLink($row['id']);
+		$shortBody = strip_tags(substr($row['body'],0,$rssSummaryLen));
 		echo "\t<item>\n";
 		echo "\t\t<title>" . $row['subject'] . "</title>\n";
 		echo "\t\t<pubDate>" . $row['date'] . " PST</pubDate>\n";
+		echo "\t\t<description>$shortBody...</description>\n";
 		echo "\t\t<guid>$permalink</guid>\n";
 		echo "\t\t<link>$permalink</link>\n";
 		echo "\t</item>\n";
