@@ -23,6 +23,11 @@ body {
 #main {
 	width:550px;
 	float:left;
+	color: #333333;
+}
+
+#main b {
+	color: #000000;
 }
 
 #sidebar {
@@ -42,6 +47,10 @@ body {
 #sidebar li {
 	margin-left: 10px;
 	padding: 0;
+}
+
+#sidebar a {
+	text-decoration: none;
 }
 
 #sidebar form {
@@ -114,6 +123,10 @@ hr {
 	word-spacing: 1px;
 }
 
+.subject a {
+	text-decoration: none;
+}
+
 .commenter {
 	word-wrap: break-word;	
 	font-size: medium;
@@ -138,6 +151,10 @@ hr {
 	text-align: left;
 	color: #848484;
 	margin-top:-20px;
+}
+
+.timedate a {
+	text-decoration: none;
 }
 
 .menu {
