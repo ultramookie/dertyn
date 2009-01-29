@@ -114,18 +114,22 @@ function addComment($name,$url,$comment,$ipaddy,$pid) {
 	$comment = mysql_real_escape_string($comment);
 	$ipaddy = mysql_real_escape_string($ipaddy);
 	$pid = mysql_real_escape_string($pid);
+	$site = mysql_real_escape_string($site);
 
 	$query = "insert into comments (name,url,comment,ip,pid,commenttime) values ('$name','$url','$comment','$ipaddy','$pid',NOW())";
 	$status = mysql_query($query);
 }
 
 function printCommentForm($id) {
+	$sitename = getSiteName();
+
         echo "<form action=\"";
         echo $_SERVER['PHP_SELF'];
         echo "\"";
         echo " method=\"post\">";
         echo "Name: <input type=\"text\" name=\"name\" /><br />\n";
         echo "URL: <input type=\"text\" name=\"url\" /><br />\n";
+	echo "Name of this site (no quotes: \"$sitename\"): <input type=\"text\" name=\"site\" /><br />\n";
 	echo "Comment: <br />\n";
 	echo "<textarea cols=\"50\" rows=\"10\" name=\"comment\"></textarea>\n";
 	echo "<p class=\"noseeum\">\n";
