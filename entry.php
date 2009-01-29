@@ -9,12 +9,13 @@ $sitename = getSiteName();
 
 if(stripslashes($_POST['checksubmit'])) {
 	$captcha = strip_tags($_POST['captcha']);
-	$id = $pid;
+	$pid = strip_tags($_POST['pid']);
 	$name = strip_tags($_POST['name']);
 	$url = strip_tags($_POST['url']);
 	$comment = strip_tags($_POST['comment'],"<p><a><i><b><img><br><ul><li><pre>");
 	$ipaddy = strip_tags($_POST['ipaddy']);
 	$site = trim(strip_tags($_POST['site']));
+	$id = $pid;
 
 	$errmsg = "name " . $name . ", url " . $url . ", comment " . $comment . ", captcha " . $captcha . ", pid " . $pid;
 
