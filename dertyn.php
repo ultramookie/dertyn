@@ -127,13 +127,22 @@ function addComment($name,$url,$comment,$ipaddy,$pid) {
 function printCommentForm($id) {
 	$sitename = getSiteName();
 
+	$front = "";
+	$back = "";
+
+	if (date('s') % 2) {
+		$front = "xyz";
+	} else {
+		$back = "xyz";
+	}
+
         echo "<form action=\"";
         echo $_SERVER['PHP_SELF'];
         echo "\"";
         echo " method=\"post\">";
         echo "Name:<br /><input type=\"text\" name=\"name\" /><br />\n";
         echo "URL:<br /><input type=\"text\" name=\"url\" /><br />\n";
-	echo "Name of this site (no quotes: \"$sitename\"):<br /><input type=\"text\" name=\"site\" /><br />\n";
+	echo "Remove the \"xyz\":<br /><input type=\"text\" name=\"site\" value=\"" . $front . $sitename . $back . "\" /><br />\n";
 	echo "Comment: <br />\n";
 	echo "<textarea cols=\"50\" rows=\"10\" name=\"comment\"></textarea>\n";
 	echo "<p class=\"noseeum\">\n";
