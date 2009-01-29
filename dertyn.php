@@ -82,7 +82,7 @@ function printComment($cid,$pid) {
 		$date = $row['date'];
 
 		if(strlen($url) > 0) {
-			echo "<p class=\"commenter\"><a href=\"$url\">$name</a> said on $date...</p>\n";
+			echo "<p class=\"commenter\"><a href=\"$url\" rel=\"nofollow\">$name</a> said on $date...</p>\n";
 		} else {
 			echo "<p class=\"commenter\">$name said on $date...</p>\n";
 		}
