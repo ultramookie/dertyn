@@ -124,9 +124,14 @@ function addComment($name,$url,$comment,$ipaddy,$pid) {
 	$status = mysql_query($query);
 }
 
-function printCommentForm($id) {
+function printCommentForm($id,$name,$url,$comment) {
 	$sitename = getSiteName();
 
+	$id = mysql_real_escape_string($id);
+	$name = mysql_real_escape_string($name);
+	$url = mysql_real_escape_string($url);
+	$comment = mysql_real_escape_string($comment);
+	
 	$front = "";
 	$back = "";
 
@@ -140,11 +145,11 @@ function printCommentForm($id) {
         echo $_SERVER['PHP_SELF'];
         echo "\"";
         echo " method=\"post\">";
-        echo "Name:<br /><input type=\"text\" name=\"name\" /><br />\n";
-        echo "URL:<br /><input type=\"text\" name=\"url\" /><br />\n";
+        echo "Name:<br /><input type=\"text\" name=\"name\" value=\"$name\" /><br />\n";
+        echo "URL:<br /><input type=\"text\" name=\"url\" value=\"$url\" /><br />\n";
 	echo "Remove the \"xyz\":<br /><input type=\"text\" name=\"site\" value=\"" . $front . $sitename . $back . "\" /><br />\n";
 	echo "Comment: <br />\n";
-	echo "<textarea cols=\"50\" rows=\"10\" name=\"comment\"></textarea>\n";
+	echo "<textarea cols=\"50\" rows=\"10\" name=\"comment\">$comment</textarea>\n";
 	echo "<p class=\"noseeum\">\n";
 	echo "Don't type anything here unless you're an evil robot:<br />\n";
 	echo "<input type=\"text\" id=\"captcha\" name=\"captcha\" maxlength=\"50\" />\n";

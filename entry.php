@@ -5,21 +5,22 @@ include_once("db.php");
 include_once("dertyn.php");
 
 $sitename = getSiteName();
+	$pid = strip_tags($_POST['pid']);
 
 if(stripslashes($_POST['checksubmit'])) {
 	$captcha = strip_tags($_POST['captcha']);
-	$pid = strip_tags($_POST['pid']);
+	$id = $pid;
 	$name = strip_tags($_POST['name']);
 	$url = strip_tags($_POST['url']);
 	$comment = strip_tags($_POST['comment'],"<p><a><i><b><img><br><ul><li><pre>");
 	$ipaddy = strip_tags($_POST['ipaddy']);
-	$id = $pid;
 	$site = trim(strip_tags($_POST['site']));
 
 	$errmsg = "name " . $name . ", url " . $url . ", comment " . $comment . ", captcha " . $captcha . ", pid " . $pid;
 
 	if (strlen($captcha) > 0) {
 		echo "<br /><b>go away spammer!</b>";
+		$name = $comment = "i am a stupid spammer from ip address $ipaddy.";
 		logerr("spammer " . $errmsg, "entry");
 	} else if (strlen($name) < 1) {
 		echo "<br /><b>need to enter a name please</b>";
@@ -36,6 +37,7 @@ if(stripslashes($_POST['checksubmit'])) {
 	} else {
 		$commented = 1;
 		addComment($name,$url,$comment,$ipaddy,$pid);
+		$name = $url = $comment = "";
 	}
 
 }
@@ -53,7 +55,7 @@ if (($rewriteCheck == 1) && ($commented != 1)) {
 echo "<p class=\"subject\"><a name=\"comments\">Comments</a></p>";
 echo "<p>Basic XHTML (including links) is allowed, just don't try anything fishy. Your comment will be auto-formatted.</p>\n";
 
-printCommentForm($pid);
+printCommentForm($pid,$name,$url,$comment);
 
 printComments($pid);
 
