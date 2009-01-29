@@ -32,7 +32,7 @@ if(stripslashes($_POST['checksubmit'])) {
 		logerr("empty comment " . $errmsg, "entry");
 		$commented = 1;
 	} else if (strcmp($site,$sitename) != 0) {
-		echo "<br /><b>you failed to type in the site name...</b>";
+		echo "<br /><b>you failed to remove stuff from a field...</b>";
 		logerr("no sitename " . $errmsg, "entry");
 		$commented = 1;
 	} else {
