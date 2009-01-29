@@ -385,6 +385,26 @@ function printRSS($num) {
         }
 }
 
+function printCommentsRSS($num) {
+	$rssSummaryLen = 1024;
+	$subjectLen = 50;
+        $query = "select cid,pid,name,url,comment,date_format(commenttime, '%a, %d %b %Y %H:%i:%s') as date from comments order by commenttime desc limit $num";
+        $result = mysql_query($query);
+
+        while ($row = mysql_fetch_array($result)) {
+		$permalink = makePermaLink($row['pid']);
+		$shortComment = strip_tags(substr($row['comment'],0,$rssSummaryLen));
+		$subjComment = strip_tags(substr($row['comment'],0,$subjectLen));
+		echo "\t<item>\n";
+		echo "\t\t<title>$subjComment</title>\n";
+		echo "\t\t<pubDate>" . $row['date'] . " PST</pubDate>\n";
+		echo "\t\t<description>$shortComment..</description>\n";
+		echo "\t\t<guid>" . $row['cid'] . "</guid>\n";
+		echo "\t\t<link>$permalink#comments</link>\n";
+		echo "\t</item>\n";
+        }
+}
+
 function showLoginForm() {
 	echo "<form action=\"";
 	echo $_SERVER['PHP_SELF'];

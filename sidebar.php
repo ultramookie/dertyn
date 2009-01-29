@@ -5,6 +5,7 @@
 	echo "<ul>\n";
 	echo "<li>posts: $numOfEntries</li>\n";
 	echo "<li><a href=\"$siteurl/comments.php\">comments</a>: $totalComments</li>\n";
+	echo "<li><a href=\"$siteurl/comments-rss.php\">comments rss</a></li>\n";
 	echo "<li><a href=\"$siteurl/atom.php\">atom</a></li>\n";
 	echo "<li><a href=\"$siteurl/rss.php\">rss</a></li>\n";
 	echo "</ul>\n";
