@@ -11,7 +11,7 @@ DESCRIPTION
 	based on mindof (http://mindof-project.org) code.
 
 SYSTEM REQUIREMENTS
-	php5 (simplexml is used for flickr integration, that requires php5)
+	php5
 	mysql
 
 INSTALL INSTRUCTIONS
