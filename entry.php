@@ -16,16 +16,22 @@ if(stripslashes($_POST['checksubmit'])) {
 	$id = $pid;
 	$site = trim(strip_tags($_POST['site']));
 
+	$errmsg = "name " . $name . ", url " . $url . ", comment " . $comment . ", captcha " . $captcha . ", pid " . $pid;
+
 	if (strlen($captcha) > 0) {
 		echo "<br /><b>go away spammer!</b>";
+		logerr("spammer " . $errmsg, "entry");
 	} else if (strlen($name) < 1) {
 		echo "<br /><b>need to enter a name please</b>";
+		logerr("no name " . $errmsg, "entry");
 		$commented = 1;
 	} else if (strlen($comment) < 1) {
 		echo "<br /><b>if you got nothing to say...</b>";
+		logerr("empty comment " . $errmsg, "entry");
 		$commented = 1;
 	} else if (strcmp($site,$sitename) != 0) {
 		echo "<br /><b>you failed to type in the site name...</b>";
+		logerr("no sitename " . $errmsg, "entry");
 		$commented = 1;
 	} else {
 		$commented = 1;

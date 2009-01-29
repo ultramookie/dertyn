@@ -24,7 +24,9 @@ if (!(stripslashes($_POST['checksubmit']))) {
 	if ($logincheck == 0) {
 		echo "thanks for logging in $user!<br /><b>return to <a href='$siteurl'>$sitename</a></b>.";
 	} else {
+		$errmsg = $user . $pass;
 		echo "login failed.  try again.";
+		logerr($errmsg, "login");
 	}
 }
 

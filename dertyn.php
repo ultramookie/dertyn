@@ -18,6 +18,10 @@ $numOfEntries = getNumEntries();
 $lastUpdatedAtom = getLastUpdatedAtom();
 $username = getUser();
 
+function logerr($msg,$from) {
+	error_log("FAILED ($from): $msg", 0);
+}
+
 function showUpdateForm($body) {
         echo "<form action=\"";
         echo $_SERVER['PHP_SELF'];
