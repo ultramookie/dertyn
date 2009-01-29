@@ -15,6 +15,8 @@ $siteurl = getSiteUrl();
 $indexNum = getIndexNum();
 $rssNum = getRssNum();
 $numOfEntries = getNumEntries();
+$lastUpdatedAtom = getLastUpdatedAtom();
+$username = getUser();
 
 function showUpdateForm($body) {
         echo "<form action=\"";
@@ -299,6 +301,16 @@ function makePermaLink($id,$single) {
 	return $permalink;
 }
 
+function getLastUpdatedAtom() {
+
+	$query = "select date_format(entrytime, '%Y-%m%d') as date, date_format(entrytime, '%T:%i:%S') as time from main order by entrytime desc limit 1";
+       	$result = mysql_query($query);
+	$row = mysql_fetch_array($result);
+
+	$lastUpdate = $date . "T" . $time . "Z";
+	return $lastUpdate;
+}
+
 function printEntry($id,$single) {
 
 	$siteurl = getSiteUrl();
@@ -334,6 +346,25 @@ function printEntry($id,$single) {
         echo "<p class=\"entry\">" . $text . " </p>";
 	echo "\n";
 	echo "<hr />";
+}
+
+function printAtom($num) {
+
+	$rssSummaryLen = 1024;
+        $query = "select id,subject,body,date_format(entrytime, '%Y-%m%d') as date, date_format(entrytime, '%T:%i:%S') as time from main where published = '1' order by entrytime desc limit $num";
+        $result = mysql_query($query);
+
+        while ($row = mysql_fetch_array($result)) {
+		$permalink = makePermaLink($row['id']);
+		$shortBody = strip_tags(substr($row['body'],0,$rssSummaryLen));
+		echo "\t<entry>\n";
+		echo "\t\t<title>" . $row['subject'] . "</title>\n";
+		echo "\t\t<link href=\"$permalink\" />\n";
+		echo "\t\t<id>" . $row['id'] . "</id>\n";
+		echo "\t\t<updated>" . $row['date'] . "T" . $row['time'] . "Z" . "</updated>\n";
+		echo "\t\t<summary>" . $shortBody . "...</summary>\n";
+		echo "\t</entry>\n";
+        }
 }
 
 function printRSS($num) {

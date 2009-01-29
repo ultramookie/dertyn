@@ -3,4 +3,15 @@ RewriteEngine On
 RewriteBase /
 RewriteRule ^wayback/([0-9]{4})/([0-9]{1,2})/([0-9]{1,2})/([^/]+)/page/?([0-9]{1,})/?$ /entry.php?&id=$4 [QSA,L]
 RewriteRule ^wayback/([0-9]{4})/([0-9]{1,2})/([0-9]{1,2})/([^/]+)/?([0-9]+)?/?$ /entry.php?id=$4 [QSA,L]
+RewriteRule ^feed$ /rss.php [QSA,L]
+RewriteRule ^feed/$ /rss.php [QSA,L]
+RewriteRule ^feed/rss$ /rss.php [QSA,L]
+RewriteRule ^feed/rss/$ /rss.php [QSA,L]
+RewriteRule ^feed/rss2$ /rss.php [QSA,L]
+RewriteRule ^feed/rss2/$ /rss.php [QSA,L]
+RewriteRule ^wp-rss.php$ /rss.php [QSA,L]
+RewriteRule ^wp-rss2.php$ /rss.php [QSA,L]
+RewriteRule ^feed/atom$ /atom.php [QSA,L]
+RewriteRule ^feed/atom/$ /atom.php [QSA,L]
+RewriteRule ^wp-atom.php$ /atom.php [QSA,L]
 </IfModule>
