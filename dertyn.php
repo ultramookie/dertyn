@@ -52,16 +52,64 @@ function printSearchForm($numEntries,$pagenum) {
 	echo "</p>\n";
 }
 
+function query($name,$params = array()) {
+
+	// This function is based on work by Ryan Grove.
+	// His tutorial can be found here:
+	// http://wonko.com/post/a_simple_and_elegant_phpmysql_web_application_framework_part_2_g
+
+	$queriesXml = simplexml_load_file('db/queries.xml');
+	$queries = array();
+
+	foreach($queriesXml as $query) {
+		$queries[(string)$query['name']] = (string)$query;
+	}
+
+	if(!isset($queries[$name])) {
+		echo "Unknown query $name!\n";
+	}
+
+	$sql = $queries[$name];
+
+	if(count($params)) {
+		$formattedParams = array();
+
+		// Add a ":" to each parameter name and make it safe
+		foreach($params as $paramName => $paramValue) {
+			if(!is_numeric($paramValue)) {
+				if(is_null($paramValue)) {
+					$paramValue = 'NULL';
+				} else {
+					$paramValue = "'" . mysql_real_escape_string($paramValue) . "'";
+				}
+			}
+
+			$formattedParams[":$paramName"] = $paramValue;
+		}
+
+		$sql = strtr($sql,$formattedParams);
+	}
+
+	return mysql_query($sql);
+}
+
 function showSearchResults($num,$pnum,$search) {
+
+	$search = mysql_real_escape_string($search);
 
         if($pnum == 1) {
                 $offset = 0;
         } else {
                 $offset = ($pnum - 1) * $num;
         }
-	
-	$query = "select id from main where match (subject,body) against ('$search') and published = '1' order by entrytime desc limit $offset,$num";
-        $result = mysql_query($query);
+
+	$params = array(
+			'num' => $num,
+			'offset' => $offset, 
+			'search' => $search
+	);
+
+	$result = query("main.showSearchResults",$params);
 
 	$numrows = mysql_num_rows($result);
 
@@ -70,7 +118,7 @@ function showSearchResults($num,$pnum,$search) {
 			printEntry($row['id']);
        		}
 	} else {
-		echo "Search term $search not fouund.<br />";
+		echo "Search term $search not found.<br />";
 		printSearchForm();
 	}
 }

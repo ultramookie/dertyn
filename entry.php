@@ -12,7 +12,7 @@ if(stripslashes($_POST['checksubmit'])) {
 	$pid = strip_tags($_POST['pid']);
 	$name = strip_tags($_POST['name']);
 	$url = strip_tags($_POST['url']);
-	$comment = strip_tags($_POST['comment'],"<p><a><i><b><img><br><ul><li><pre>");
+	$comment = strip_tags($_POST['comment']);
 	$ipaddy = strip_tags($_POST['ipaddy']);
 	$site = trim(strip_tags($_POST['site']));
 	$id = $pid;
@@ -54,7 +54,7 @@ if (($rewriteCheck == 1) && ($commented != 1)) {
 }
 
 echo "<p class=\"subject\"><a name=\"comments\">Comments</a></p>";
-echo "<p>Basic XHTML (including links) is allowed, just don't try anything fishy. Your comment will be auto-formatted.</p>\n";
+echo "<p>Your comment will be auto-formatted.</p>\n";
 
 printCommentForm($pid,$name,$url,$comment);
 

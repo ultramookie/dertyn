@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<queries>
+  <!-- Table: main -->
+	<query name="main.showSearchResults">
+		<![CDATA[
+			SELECT id
+			FROM main
+			WHERE match (subject,body) AGAINST (:search) AND published = '1'
+			ORDER BY entrytime DESC LIMIT :offset,:num
+		]]>
+	</query>
+</queries>
