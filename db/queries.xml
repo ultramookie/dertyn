@@ -3,33 +3,69 @@
   <!-- Table: main -->
 	<query name="main.showSearchResults">
 		<![CDATA[
-			SELECT id
-			FROM main
-			WHERE match (subject,body) AGAINST (:search) AND published = '1'
+			SELECT	 id
+			FROM	 main
+			WHERE MATCH (subject,body) AGAINST (:search) AND published = '1'
 			ORDER BY entrytime DESC LIMIT :offset,:num
 		]]>
 	</query>
+
+	<query name="main.showEditForm">
+		<![CDATA[
+			SELECT	subject,
+				body
+			FROM 	main
+			WHERE id = :id
+		]]>
+	</query>
+
+	<query name="main.addEntryFindSlug">
+		<![CDATA[
+			SELECT 	slug
+			FROM	main
+			WHERE	slug=:slug
+		]]>
+	</query>
   
+	<query name="main.addEntry">
+		<![CDATA[
+			INSERT INTO main (
+						subject,
+						body,
+						entrytime,
+						slug,
+						published
+						)
+			VALUES (		:subject,
+						:body,
+						NOW(),
+						:slug,
+						:published
+						)
+		]]>
+	</query>
+
   <!-- Table: comments -->
 	<query name="comments.printComment">
 		<![CDATA[
-			SELECT 
-				name,
+			SELECT  name,
 				url,
 				comment,
 				date_format(commenttime, '%M %e, %Y @ %h:%i %p') AS date
-			FROM comments
-			WHERE cid = :cid
+			FROM 	comments
+			WHERE 	cid = :cid
 		]]>
 	</query>
+
 	<query name="comments.printComments">
 		<![CDATA[
-			SELECT cid
-			FROM comments
-			WHERE pid = :pid
+			SELECT 	cid
+			FROM 	comments
+			WHERE 	pid = :pid
 			ORDER BY commenttime ASC
 		]]>
 	</query>
+
 	<query name="comments.addComment">
 		<![CDATA[
 			INSERT INTO comments (
@@ -41,12 +77,12 @@
 						commenttime
 						)
 			VALUES (
-				:name,
-				:url,
-				:comment,
-				:ipaddy,
-				:pid,
-				NOW()
+						:name,
+						:url,
+						:comment,
+						:ipaddy,
+						:pid,
+						NOW()
 				)
 		]]>
 	</query>

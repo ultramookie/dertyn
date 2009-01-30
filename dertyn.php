@@ -81,7 +81,6 @@ function query($name,$params = array()) {
 					$paramValue = 'NULL';
 				} else {
 					$paramValue = "'" . mysql_real_escape_string($paramValue) . "'";
-					echo "escaped! $paramValue<br />";
 				}
 			}
 
@@ -222,8 +221,12 @@ function printCommentForm($id,$name,$url,$comment) {
 
 function showEditForm($id) {
 
-	$query = "select subject,body from main where id = '$id'";
-	$result = mysql_query($query);
+	$params = array(
+			'id' => $id
+		);
+
+	$result = query("main.showEditForm",$params);
+
 	$row = mysql_fetch_array($result);
 
 	$subject = $row['subject'];
@@ -248,16 +251,15 @@ function showEditForm($id) {
 }
 
 function addEntry($subject,$body,$draft) {
-	$subject = mysql_real_escape_string($subject);
-	$body = mysql_real_escape_string($body);
 	$lowersubject = strtolower($subject);
         $slugdashes = preg_replace("/\s/","-",$lowersubject);
         $slug = ereg_replace("[^a-zA-Z0-9-]","",$slugdashes);
-	$date = date('Ymd-Gis');
-	
-	$query = "select slug from main where slug='$slug'";
-	$result = mysql_query($query);
 
+	$params = array(
+			'slug' => $slug
+		);
+
+	$result = query("main.addEntryFindSlug",$params);
         $numrows = mysql_num_rows($result);
 
 	if ($draft) {
@@ -267,11 +269,18 @@ function addEntry($subject,$body,$draft) {
 	}
 
 	if ($numrows > 0) {
+		$date = date('Ymd-Gis');
 		$slug = $slug . "-" . $date;
 	}
 
-	$query = "insert into main (subject,body,entrytime,slug,published) values ('$subject','$body',NOW(),'$slug','$published')";
-	$status = mysql_query($query);
+	$params = array(
+			'subject' => $subject,
+			'body' => $body,
+			'slug' => $slug,
+			'published' => $published
+		);
+
+	$result = query("main.addEntry",$params);
 }
 
 function updateEntry($subject,$body,$id,$draft) {
