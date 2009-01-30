@@ -34,7 +34,8 @@ $pagenum = 1;
 <title><? echo "$title"; ?> </title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <link rel="stylesheet" type="text/css" media="screen" href="<? echo "$siteurl"; ?>/style.css" />
-<link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="<? echo "$siteurl"; ?>/rss.php"  />
+<link rel="alternate" type="application/rss+xml" title="<? echo "$sitename"; ?> (RSS 2.0)" href="<? echo "$siteurl"; ?>/rss.php"  />
+<link rel="alternate" type="application/atom+xml" title="<? echo "$sitename"; ?> (Atom 0.3)" href="<? echo "$siteurl"; ?>/atom.php" />
 <meta name="generator" content="Dertyn <? echo "$version"; ?>" />
 </head>
 <body>
