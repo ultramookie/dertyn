@@ -45,6 +45,27 @@
 		]]>
 	</query>
 
+	<query name="main.updateEntryDraft">
+		<![CDATA[
+			UPDATE 	main
+			SET 	body=:body,
+				subject=:subject,
+				entrytime=NOW(),
+				published='0'
+			WHERE id=:id
+		]]>
+	</query>
+
+	<query name="main.updateEntryNotDraft">
+		<![CDATA[
+			UPDATE 	main
+			SET 	body=:body,
+				subject=:subject,
+				published='1'
+			WHERE id=:id
+		]]>
+	</query>
+
   <!-- Table: comments -->
 	<query name="comments.printComment">
 		<![CDATA[

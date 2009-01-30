@@ -254,6 +254,7 @@ function addEntry($subject,$body,$draft) {
 	$lowersubject = strtolower($subject);
         $slugdashes = preg_replace("/\s/","-",$lowersubject);
         $slug = ereg_replace("[^a-zA-Z0-9-]","",$slugdashes);
+	$draft = mysql_real_escape_string($draft);
 
 	$params = array(
 			'slug' => $slug
@@ -284,17 +285,22 @@ function addEntry($subject,$body,$draft) {
 }
 
 function updateEntry($subject,$body,$id,$draft) {
-	$subject = mysql_real_escape_string($subject);
-	$body = mysql_real_escape_string($body);
 	$draft = mysql_real_escape_string($draft);
+	
+	$params = array(
+			'subject' => $subject,
+			'body' => $body,
+			'id' => $id
+		);
 
 	if ($draft) {
-		$query = "update main set body='$body',subject='$subject',entrytime=NOW(),published='0' where id='$id'";
+		$name = "main.updateEntryDraft";
 	} else {
-		$query = "update main set body='$body',subject='$subject',published='1' where id='$id'";
+		$name = "main.updateEntryNotDraft";
 	}
 
-	$status = mysql_query($query);
+	
+	$result = query($name,$params);
 }
 
 function showEntriesIndex() {
