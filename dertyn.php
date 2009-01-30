@@ -306,8 +306,12 @@ function updateEntry($subject,$body,$id,$draft) {
 function showEntriesIndex() {
 
 	$num = getIndexNum();
-        $query = "select id from main where published = '1' order by entrytime desc limit $num";
-        $result = mysql_query($query);
+
+	$params = array(
+			'num' => $num
+		);
+
+        $result = query("main.showEntriesIndex",$params);
 
         while ($row = mysql_fetch_array($result)) {
 		printEntry($row['id']);
@@ -317,9 +321,13 @@ function showEntriesIndex() {
 function showDraftsIndex() {
 
 	$num = getIndexNum();
-        $query = "select id from main where published = '0' order by entrytime desc limit $num";
-        $result = mysql_query($query);
+	
+	$params = array(
+			'num' => $num
+		);
 
+        $result = query("main.showDraftsIndex",$params);
+       
         while ($row = mysql_fetch_array($result)) {
 		printEntry($row['id']);
         }

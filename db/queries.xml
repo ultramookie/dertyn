@@ -65,6 +65,26 @@
 			WHERE id=:id
 		]]>
 	</query>
+	
+	<query name="main.showEntriesIndex">
+		<![CDATA[
+			SELECT 	id
+			FROM 	main
+			WHERE	published = '1'
+			ORDER BY entrytime DESC
+			LIMIT :num
+		]]>
+	</query>
+	
+	<query name="main.showDraftsIndex">
+		<![CDATA[
+			SELECT 	id
+			FROM 	main
+			WHERE	published = '0'
+			ORDER BY entrytime DESC
+			LIMIT :num
+		]]>
+	</query>
 
   <!-- Table: comments -->
 	<query name="comments.printComment">
