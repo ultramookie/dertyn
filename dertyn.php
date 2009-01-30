@@ -18,6 +18,15 @@ $numOfEntries = getNumEntries();
 $lastUpdatedAtom = getLastUpdatedAtom();
 $username = getUser();
 
+// Loading SQL queries
+$queriesXml = simplexml_load_file('db/queries.xml');
+$queries = array();
+
+foreach($queriesXml as $query) {
+	$queries[(string)$query['name']] = (string)$query;
+}
+// Done loading
+
 function logerr($msg,$from) {
 	error_log("FAILED ($from): $msg", 0);
 }
@@ -58,12 +67,7 @@ function query($name,$params = array()) {
 	// His tutorial can be found here:
 	// http://wonko.com/post/a_simple_and_elegant_phpmysql_web_application_framework_part_2_g
 
-	$queriesXml = simplexml_load_file('db/queries.xml');
-	$queries = array();
-
-	foreach($queriesXml as $query) {
-		$queries[(string)$query['name']] = (string)$query;
-	}
+	global $queries;
 
 	if(!isset($queries[$name])) {
 		echo "Unknown query $name!\n";
