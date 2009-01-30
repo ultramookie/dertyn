@@ -54,7 +54,7 @@ function printSearchForm($numEntries,$pagenum) {
 
 function query($name,$params = array()) {
 
-	// This function is based on work by Ryan Grove.
+	// This function is based on the work of Ryan Grove.
 	// His tutorial can be found here:
 	// http://wonko.com/post/a_simple_and_elegant_phpmysql_web_application_framework_part_2_g
 
@@ -81,6 +81,7 @@ function query($name,$params = array()) {
 					$paramValue = 'NULL';
 				} else {
 					$paramValue = "'" . mysql_real_escape_string($paramValue) . "'";
+					echo "escaped! $paramValue<br />";
 				}
 			}
 
@@ -94,8 +95,6 @@ function query($name,$params = array()) {
 }
 
 function showSearchResults($num,$pnum,$search) {
-
-	$search = mysql_real_escape_string($search);
 
         if($pnum == 1) {
                 $offset = 0;
@@ -124,8 +123,12 @@ function showSearchResults($num,$pnum,$search) {
 }
 
 function printComment($cid,$pid) {
-	$query = "select name,url,comment,date_format(commenttime, '%M %e, %Y @ %h:%i %p') as date from comments where cid = '$cid'";
-	$result = mysql_query($query);
+
+	$params = array(
+			'cid' => $cid
+		);
+
+	$result = query("comments.printComment",$params);
 
 	while ($row = mysql_fetch_array($result)) {
 		$name = $row['name'];
@@ -150,8 +153,12 @@ function printComment($cid,$pid) {
 }
 
 function printComments($pid) {
-	$query = "select cid from comments where pid = '$pid' order by commenttime asc";
-	$result = mysql_query($query);
+
+	$params = array(
+			'pid' => $pid
+	);
+	
+	$result = query("comments.printComments",$params);
 
 	while ($row = mysql_fetch_array($result)) {
 		$cid = $row['cid'];
@@ -161,15 +168,17 @@ function printComments($pid) {
 }
 
 function addComment($name,$url,$comment,$ipaddy,$pid) {
-	$name = mysql_real_escape_string($name);
-	$url = mysql_real_escape_string($url);
-	$comment = mysql_real_escape_string($comment);
-	$ipaddy = mysql_real_escape_string($ipaddy);
-	$pid = mysql_real_escape_string($pid);
-	$site = mysql_real_escape_string($site);
 
-	$query = "insert into comments (name,url,comment,ip,pid,commenttime) values ('$name','$url','$comment','$ipaddy','$pid',NOW())";
-	$status = mysql_query($query);
+	$params = array(
+			'name' => $name,
+			'url' => $url,
+			'comment' => $comment,
+			'ipaddy' => $ipaddy,
+			'pid' => $pid,
+			'site' => $site
+	);
+
+	$status = query("comments.addComment",$params);
 }
 
 function printCommentForm($id,$name,$url,$comment) {

@@ -9,4 +9,45 @@
 			ORDER BY entrytime DESC LIMIT :offset,:num
 		]]>
 	</query>
+  
+  <!-- Table: comments -->
+	<query name="comments.printComment">
+		<![CDATA[
+			SELECT 
+				name,
+				url,
+				comment,
+				date_format(commenttime, '%M %e, %Y @ %h:%i %p') AS date
+			FROM comments
+			WHERE cid = :cid
+		]]>
+	</query>
+	<query name="comments.printComments">
+		<![CDATA[
+			SELECT cid
+			FROM comments
+			WHERE pid = :pid
+			ORDER BY commenttime ASC
+		]]>
+	</query>
+	<query name="comments.addComment">
+		<![CDATA[
+			INSERT INTO comments (
+						name,
+						url,
+						comment,
+						ip,
+						pid,
+						commenttime
+						)
+			VALUES (
+				:name,
+				:url,
+				:comment,
+				:ipaddy,
+				:pid,
+				NOW()
+				)
+		]]>
+	</query>
 </queries>
