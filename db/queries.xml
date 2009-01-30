@@ -85,6 +85,47 @@
 			LIMIT :num
 		]]>
 	</query>
+	
+	<query name="main.showEntriesArchive">
+		<![CDATA[
+			SELECT	id
+			FROM	main
+			WHERE	published = '1'
+			ORDER BY entrytime DESC
+			LIMIT 	:offset,
+				:num
+		]]>
+	</query>
+	
+	<query name="main.getPid">
+		<![CDATA[
+			SELECT	id
+			FROM	main
+			WHERE	slug = :slug
+		]]>
+	</query>
+	
+	<query name="main.makePermaLinkSingle">
+		<![CDATA[
+			SELECT	slug,
+				date_format(entrytime, '%Y') as year,
+				date_format(entrytime, '%m') as month,
+				date_format(entrytime, '%d') as day
+			FROM	main
+			WHERE 	slug = :id
+		]]>
+	</query>
+	
+	<query name="main.makePermaLink">
+		<![CDATA[
+			SELECT	slug,
+				date_format(entrytime, '%Y') as year,
+				date_format(entrytime, '%m') as month,
+				date_format(entrytime, '%d') as day
+			FROM	main
+			WHERE 	id = :id
+		]]>
+	</query>
 
   <!-- Table: comments -->
 	<query name="comments.printComment">
@@ -127,4 +168,16 @@
 				)
 		]]>
 	</query>
+	
+	<query name="comments.showRecentComments">
+		<![CDATA[
+			SELECT 	cid,
+				pid
+			FROM	comments
+			ORDER BY commenttime DESC
+			LIMIT 	:offset,
+				:num
+		]]>
+	</query>
+
 </queries>

@@ -307,9 +307,7 @@ function showEntriesIndex() {
 
 	$num = getIndexNum();
 
-	$params = array(
-			'num' => $num
-		);
+	$params = array( 'num' => $num );
 
         $result = query("main.showEntriesIndex",$params);
 
@@ -322,9 +320,7 @@ function showDraftsIndex() {
 
 	$num = getIndexNum();
 	
-	$params = array(
-			'num' => $num
-		);
+	$params = array( 'num' => $num );
 
         $result = query("main.showDraftsIndex",$params);
        
@@ -341,9 +337,13 @@ function showEntriesArchive($num,$pnum) {
                 $offset = ($pnum-1) * $num;
         }
 
-        $query = "select id from main where published = '1' order by entrytime desc limit $offset,$num";
-        $result = mysql_query($query);
+	$params = array(
+			'num' => $num,
+			'offset' => $offset
+		);
 
+        $result = query("main.showEntriesArchive",$params);
+	
         while ($row = mysql_fetch_array($result)) {
 		printEntry($row['id']);
         }
@@ -356,9 +356,13 @@ function showRecentComments($num,$pnum) {
         } else {
                 $offset = ($pnum-1) * $num;
         }
+	
+	$params = array(
+			'num' => $num,
+			'offset' => $offset
+		);
 
-        $query = "select cid,pid from comments order by commenttime desc limit $offset,$num";
-        $result = mysql_query($query);
+        $result = query("comments.showRecentComments",$params);
 
         while ($row = mysql_fetch_array($result)) {
 		printComment($row['cid'],$row['pid']);
@@ -366,8 +370,11 @@ function showRecentComments($num,$pnum) {
 }
 
 function getPid($slug) {
-	$query = "select id from main where slug = '$slug'";
-	$result = mysql_query($query);
+
+	$params = array( 'slug' => $slug ); 
+
+	$result = query("main.getPid",$params);
+
 	$row = mysql_fetch_array($result);
 
 	return $row['id'];
@@ -378,19 +385,23 @@ function makePermaLink($id,$single) {
 	$siteurl = getSiteUrl();
 	$rewriteCheck = getrewriteCheck();
 
+	$params = array( 'id' => $id ); 
+
 	if (($rewriteCheck == 1) && ($single)) {
-		$query = "select slug,date_format(entrytime, '%Y') as year,date_format(entrytime, '%m') as month,date_format(entrytime, '%d') as day from main where slug = '$id'";
-		$result = mysql_query($query);
-        	$row = mysql_fetch_array($result);
+
+		$result = query("main.makePermaLinkSingle",$params);
+        	
+		$row = mysql_fetch_array($result);
 		$month = $row['month'];
 		$day = $row['day'];
 		$year = $row['year'];
 		$slug = $row['slug'];
 		$permalink = "$siteurl/wayback/$year/$month/$day/$slug/";
 	} else if ($rewriteCheck == 1) {
-		$query = "select slug,date_format(entrytime, '%Y') as year,date_format(entrytime, '%m') as month,date_format(entrytime, '%d') as day from main where id = '$id'";
-		$result = mysql_query($query);
-        	$row = mysql_fetch_array($result);
+		
+		$result = query("main.makePermaLink",$params);
+        
+		$row = mysql_fetch_array($result);
 		$month = $row['month'];
 		$day = $row['day'];
 		$year = $row['year'];
