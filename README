@@ -29,12 +29,18 @@ INSTALL INSTRUCTIONS
 	enjoy.
 
 CREDITS
+	dertyn uses the fantastic rich text editor from the yui library:
+	http://yuilibrary.com/
+	thank you yui team for creating such an awesome tool!
+
 	dertyn uses icons from the gorgeous mini icon set from famfamfam which is
 	licensed under the Creative Commons Attribution 2.5 license.
 	http://www.famfamfam.com/lab/icons/mini/
 
 	dertyn uses a nice and quick anti-spam measure stolen from
-	wonko (http://www.wonko.com).  
+	wonko (http://www.wonko.com).  dertyn also employs a technique for
+	stripping sql stuff out of functions in which external input is needed.
+	this technique was lifted from wonko (ryan grove) also.
 
 DEVELOPMENT AND SUPPORT
 	find dertyn development and support at:
