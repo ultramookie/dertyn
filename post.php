@@ -1,20 +1,8 @@
 <?php
 	include_once("header.php");
+	include_once("editor.php");
 
 ?>
-
-<!-- YUI Editor Rendering -->
-
-<script type="text/javascript">
-	var myEditor = new YAHOO.widget.Editor('body', {
-	height: '300px',
-	width: '522px',
-	dompath: true, //Turns on the bar at the bottom
-	animate: true, //Animates the opening, closing and moving of Editor windows
-	handleSubmit: true
-	});
-	myEditor.render();
-</script>
 
 <?php
 	$numEntries = getIndexNum();

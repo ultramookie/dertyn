@@ -36,9 +36,9 @@ function showUpdateForm($body) {
         echo $_SERVER['PHP_SELF'];
         echo "\"";
         echo " method=\"post\">";
+	echo "<br />";
 	echo "Title:<br />";
-        echo "<input type=\"text\" name=\"subject\" /><br />";
-	echo "Posting:<br />";
+        echo "<input type=\"text\" name=\"subject\" /><br /><br />";
 	echo "<textarea cols=\"50\" rows=\"24\" name=\"body\" id=\"body\">$body</textarea>";
 	echo "<br />";
 	echo "Save as draft? <input type=\"checkbox\" name=\"draft\" value=\"1\" />";
@@ -234,10 +234,10 @@ function showEditForm($id) {
         echo $_SERVER['PHP_SELF'];
         echo "\"";
         echo " method=\"post\">";
+	echo "<br />";
 	echo "Title:<br />";
 	echo "<input type=\"text\" name=\"subject\" value=\"$subject\" />";
-	echo "<br />";
-	echo "Posting:<br />";
+	echo "<br /><br />";
 	echo "<textarea cols=\"50\" rows=\"24\" name=\"body\" id=\"body\">$body</textarea>";
 	echo "<br />";
 	echo "Save as draft? <input type=\"checkbox\" name=\"draft\" value=\"1\" />";
