@@ -11,7 +11,7 @@ DESCRIPTION
 	based on mindof (http://mindof-project.org) code.
 
 SYSTEM REQUIREMENTS
-	php5
+	php5 (with magic_quotes_gpc set to "off")
 	mysql
 
 INSTALL INSTRUCTIONS
