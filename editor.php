@@ -18,6 +18,8 @@
 	animate: false, //Animates the opening, closing and moving of Editor windows
 	handleSubmit: true
 	});
+	myEditor._defaultToolbar.titlebar = false;
+	myEditor._defaultToolbar.buttonType = 'advanced';
 	myEditor.render();
 </script>
 
