@@ -193,19 +193,12 @@
 		]]>
 	</query>
 
-	<query name="main.slugCheck">
+	<query name="main.checkPostExists">
 		<![CDATA[
 			SELECT 	count(id)
 			FROM	main
-			WHERE	slug=:id
-		]]>
-	</query>
-	
-	<query name="main.idCheck">
-		<![CDATA[
-			SELECT 	count(id)
-			FROM	main
-			WHERE	id=:id
+			WHERE	slug=:id OR
+				id=:id
 		]]>
 	</query>
 	
