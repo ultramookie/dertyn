@@ -185,6 +185,14 @@
 		]]>
 	</query>
 
+	<query name="main.deleteEntry">
+		<![CDATA[
+			DELETE
+			FROM	main
+			WHERE	id=:id
+		]]>
+	</query>
+
   <!-- Table: comments -->
 	<query name="comments.printComment">
 		<![CDATA[
@@ -260,14 +268,31 @@
 		]]>
 	</query>
 
-	<query name="comments.getNumComments">
+
+	<query name="comments.deleteEntry">
+		<![CDATA[
+			DELETE
+			FROM	comments
+			WHERE	cid=:id
+		]]>
+	</query>
+
+  <!-- Table: user -->
+	<query name="user.checkLogin">
+		<![CDATA[
+			SELECT	*
+			FROM	user
+			WHERE	name
+			LIKE	:user AND pass LIKE :epass
+		]]>
+	</query>
+	
+	<query name="user.setLoginCookie">
 		<![CDATA[
 			UPDATE	user
 			SET	cookie=:login
 			WHERE	name LIKE :user
 		]]>
 	</query>
-
-  <!-- Table: user -->
 
 </queries>

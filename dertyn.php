@@ -704,7 +704,7 @@ function setLoginCookie($user) {
 				'user' => $user
 				); 
 
-		$result = query("comments.setLoginCookie",$params);
+		$result = query("user.setLoginCookie",$params);
 }
 
 function killCookie() {
@@ -719,8 +719,12 @@ function checkLogin($user,$pass) {
         $salt = substr("$user",0,2);
         $epass = crypt($pass,$salt);
 
-	$query = "select * from user where name like '$user' and pass like '$epass'";
-	$result = mysql_query($query);
+	$params = array( 
+			'user' => $user,
+			'epass' => $epass
+			); 
+
+	$result = query("user.checkLogin",$params);
 
 	if (mysql_num_rows($result)==1) {
 		return 0;
@@ -790,7 +794,7 @@ function showSettingsform() {
 }
 
 function showDelform($id,$type) {
-	echo "hey! are you SURE you want to delete this entry?";
+	echo "<p>Hey! Are you <b>SURE</b> you want to delete this entry?</p>";
 	$siteurl = getSiteUrl();
         echo "<form action=\"";
         echo $_SERVER['PHP_SELF'];
@@ -819,13 +823,13 @@ function showForgotform() {
 
 
 function deleteEntry($id,$type) {
+	$params = array( 'id' => $id ); 
+
 	if(ereg("^post",$type)) {
-		$query = "delete from main where id='$id'";
-		$result = mysql_query($query);
+		$result = query("main.deleteEntry",$params);
 		echo "post " . $id . " deleted!";
 	} else if (ereg("^comment",$type)) {
-		$query = "delete from comments where cid='$id'";
-		$result = mysql_query($query);
+		$result = query("comments.deleteEntry",$params);
 		echo "comment " . $id . " deleted!";
 	}
 }
