@@ -193,6 +193,22 @@
 		]]>
 	</query>
 
+	<query name="main.slugCheck">
+		<![CDATA[
+			SELECT 	count(id)
+			FROM	main
+			WHERE	slug=:id
+		]]>
+	</query>
+	
+	<query name="main.idCheck">
+		<![CDATA[
+			SELECT 	count(id)
+			FROM	main
+			WHERE	id=:id
+		]]>
+	</query>
+	
   <!-- Table: comments -->
 	<query name="comments.printComment">
 		<![CDATA[

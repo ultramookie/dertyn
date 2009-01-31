@@ -384,6 +384,27 @@ function getPid($slug) {
 	return $row['id'];
 }
 
+function checkPostExists($id) {
+
+	$siteurl = getSiteUrl();
+
+	$params = array( 'id' => $id );
+
+	$result = query("main.slugCheck",$params);
+	$row = mysql_fetch_array($result);
+	$slugcheck = $row['count(id)'];
+	
+	$result = query("main.idCheck",$params);
+	$row = mysql_fetch_array($result);
+	$idcheck = $row['count(id)'];
+
+	$exists = $slugcheck + $idcheck;
+
+	if ($exists < 1) {
+		exit ("<p><img src=\"$siteurl/logo.png\" border=\"0\"></p><h2>Sorry, the post you are looking for does not exist.</h2><a href=\"$siteurl\">Home</a>");
+	}
+}
+
 function makePermaLink($id,$single) {
 
 	$siteurl = getSiteUrl();

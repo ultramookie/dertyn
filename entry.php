@@ -5,14 +5,17 @@ include_once("db.php");
 include_once("dertyn.php");
 
 $sitename = getSiteName();
-	$pid = strip_tags($_POST['pid']);
+$id = strip_tags($_GET['id']);
+
+// Check that a post exists.  Else, exit.
+checkPostExists($id);
 
 if($_POST['checksubmit']) {
 	$captcha = strip_tags($_POST['captcha']);
-	$pid = strip_tags($_POST['pid']);
 	$name = strip_tags($_POST['name']);
 	$url = strip_tags($_POST['url']);
 	$comment = strip_tags($_POST['comment']);
+	$pid = strip_tags($_POST['pid']);
 	$ipaddy = strip_tags($_POST['ipaddy']);
 	$site = trim(strip_tags($_POST['site']));
 	$id = $pid;
