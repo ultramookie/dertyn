@@ -52,6 +52,7 @@ body {
 }
 
 #sidebar a {
+	color:#000000;
 	text-decoration: none;
 	font-weight: normal;
 }
@@ -111,7 +112,7 @@ body {
 }
 
 a {
-	color:#000000;
+	color:#FF6600;
 	background:inherit;
 	text-decoration:none;
 	font-weight: 550;
@@ -145,6 +146,7 @@ hr {
 }
 
 .subject a {
+	color:#000000;
 	text-decoration: none;
 }
 

@@ -41,17 +41,6 @@ $pagenum = 1;
 <!-- YUI for Editor -->
 <!-- Skin CSS file -->
 <link rel="stylesheet" type="text/css" href="<?php echo "$siteurl"; ?>/yui/build/assets/skins/sam/skin.css">
-<!-- Utility Dependencies -->
-<script type="text/javascript" src="<?php echo "$siteurl"; ?>/yui/build/yahoo-dom-event/yahoo-dom-event.js"></script> 
-<script type="text/javascript" src="<?php echo "$siteurl"; ?>/yui/build/element/element-beta-min.js"></script> 
-<!-- Needed for Menus, Buttons and Overlays used in the Toolbar -->
-<script src="<?php echo "$siteurl"; ?>/yui/build/container/container_core-min.js"></script>
-<script src="<?php echo "$siteurl"; ?>/yui/build/menu/menu-min.js"></script>
-<script src="<?php echo "$siteurl"; ?>/yui/build/button/button-min.js"></script>
-<!-- Source file for Rich Text Editor-->
-<script src="<?php echo "$siteurl"; ?>/yui/build/editor/editor-min.js"></script>
-
-
 <!-- End YUI -->
 
 </head>
