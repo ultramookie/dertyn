@@ -127,6 +127,64 @@
 		]]>
 	</query>
 
+	<query name="main.printEntrySingle">
+		<![CDATA[
+			SELECT	id,
+				subject,
+				body,
+				date_format(entrytime, '%M %e, %Y') as date
+			FROM	main
+			WHERE	slug = :id
+		]]>
+	</query>
+	
+	<query name="main.printEntry">
+		<![CDATA[
+			SELECT	id,
+				subject,
+				body,
+				date_format(entrytime, '%M %e, %Y') as date
+			FROM	main
+			WHERE	id = :id
+		]]>
+	</query>
+
+	<query name="main.printAtom">
+		<![CDATA[
+			SELECT	id,
+				subject,
+				body,
+				date_format(entrytime, '%Y-%m%d') as date, 
+				date_format(entrytime, '%T:%i:%S') as time
+			FROM	main
+			WHERE	published = '1'
+			ORDER BY entrytime DESC
+			LIMIT	:num
+		]]>
+	</query>
+
+	<query name="main.printRSS">
+		<![CDATA[
+			SELECT	id,
+				subject,
+				body,
+				date_format(entrytime, '%a, %d %b %Y %H:%i:%s') as date
+			FROM	main
+			WHERE	published = '1'
+			ORDER BY entrytime DESC
+			LIMIT	:num
+		]]>
+	</query>
+
+	<query name="main.getSubject">
+		<![CDATA[
+			SELECT	subject
+			FROM	main
+			WHERE	id = :id
+			LIMIT	1
+		]]>
+	</query>
+
   <!-- Table: comments -->
 	<query name="comments.printComment">
 		<![CDATA[
@@ -179,5 +237,37 @@
 				:num
 		]]>
 	</query>
+
+	<query name="comments.printCommentsRSS">
+		<![CDATA[
+			SELECT	cid,
+				pid,
+				name,
+				url,
+				comment,
+				date_format(commenttime, '%a, %d %b %Y %H:%i:%s') as date
+			FROM	comments
+			ORDER BY commenttime DESC
+			LIMIT	:num
+		]]>
+	</query>
+	
+	<query name="comments.getNumComments">
+		<![CDATA[
+			SELECT	count(cid)
+			FROM	comments
+			WHERE	pid = :pid
+		]]>
+	</query>
+
+	<query name="comments.getNumComments">
+		<![CDATA[
+			UPDATE	user
+			SET	cookie=:login
+			WHERE	name LIKE :user
+		]]>
+	</query>
+
+  <!-- Table: user -->
 
 </queries>

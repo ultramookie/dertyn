@@ -70,7 +70,7 @@ function query($name,$params = array()) {
 	global $queries;
 
 	if(!isset($queries[$name])) {
-		echo "Unknown query $name!\n";
+		echo "Unknown query $name!<br />$queries[$name]<br />\n";
 	}
 
 	$sql = $queries[$name];
@@ -127,9 +127,7 @@ function showSearchResults($num,$pnum,$search) {
 
 function printComment($cid,$pid) {
 
-	$params = array(
-			'cid' => $cid
-		);
+	$params = array( 'cid' => $cid );
 
 	$result = query("comments.printComment",$params);
 
@@ -157,9 +155,7 @@ function printComment($cid,$pid) {
 
 function printComments($pid) {
 
-	$params = array(
-			'pid' => $pid
-	);
+	$params = array( 'pid' => $pid );
 	
 	$result = query("comments.printComments",$params);
 
@@ -225,9 +221,7 @@ function printCommentForm($id,$name,$url,$comment) {
 
 function showEditForm($id) {
 
-	$params = array(
-			'id' => $id
-		);
+	$params = array( 'id' => $id );
 
 	$result = query("main.showEditForm",$params);
 
@@ -260,9 +254,7 @@ function addEntry($subject,$body,$draft) {
         $slug = ereg_replace("[^a-zA-Z0-9-]","",$slugdashes);
 	$draft = mysql_real_escape_string($draft);
 
-	$params = array(
-			'slug' => $slug
-		);
+	$params = array( 'slug' => $slug );
 
 	$result = query("main.addEntryFindSlug",$params);
         $numrows = mysql_num_rows($result);
@@ -420,8 +412,9 @@ function makePermaLink($id,$single) {
 
 function getLastUpdatedAtom() {
 
-	$query = "select date_format(entrytime, '%Y-%m%d') as date, date_format(entrytime, '%T:%i:%S') as time from main order by entrytime desc limit 1";
-       	$result = mysql_query($query);
+	$query  = "select date_format(entrytime, '%Y-%m%d') as date, date_format(entrytime, '%T:%i:%S') as time from main order by entrytime desc limit 1";
+	$result = mysql_query($query);
+
 	$row = mysql_fetch_array($result);
 
 	$lastUpdate = $date . "T" . $time . "Z";
@@ -434,13 +427,13 @@ function printEntry($id,$single) {
 	$permalink = makePermaLink($id,$single);
 	$rewriteCheck = getrewriteCheck();
 
+	$params = array( 'id' => $id ); 
+	
 	if (($rewriteCheck == 1) && ($single)) {
-		$query = "select id,subject,body,date_format(entrytime, '%M %e, %Y') as date from main where slug = '$id'";
-        	$result = mysql_query($query);
+        	$result = query("main.printEntrySingle",$params);
 		$pid = getPid($id);
 	} else {
-		$query = "select id,subject,body,date_format(entrytime, '%M %e, %Y') as date from main where id = '$id'";
-        	$result = mysql_query($query);
+        	$result = query("main.printEntry",$params);
 		$pid = $id;
 	}
 
@@ -468,8 +461,10 @@ function printEntry($id,$single) {
 function printAtom($num) {
 
 	$rssSummaryLen = 1024;
-        $query = "select id,subject,body,date_format(entrytime, '%Y-%m%d') as date, date_format(entrytime, '%T:%i:%S') as time from main where published = '1' order by entrytime desc limit $num";
-        $result = mysql_query($query);
+
+	$params = array( 'num' => $num ); 
+
+	$result = query("main.printAtom",$params);
 
         while ($row = mysql_fetch_array($result)) {
 		$permalink = makePermaLink($row['id']);
@@ -486,8 +481,10 @@ function printAtom($num) {
 
 function printRSS($num) {
 	$rssSummaryLen = 1024;
-        $query = "select id,subject,body,date_format(entrytime, '%a, %d %b %Y %H:%i:%s') as date from main where published = '1' order by entrytime desc limit $num";
-        $result = mysql_query($query);
+
+	$params = array( 'num' => $num ); 
+
+	$result = query("main.printRSS",$params);
 
         while ($row = mysql_fetch_array($result)) {
 		$permalink = makePermaLink($row['id']);
@@ -505,8 +502,10 @@ function printRSS($num) {
 function printCommentsRSS($num) {
 	$rssSummaryLen = 1024;
 	$subjectLen = 50;
-        $query = "select cid,pid,name,url,comment,date_format(commenttime, '%a, %d %b %Y %H:%i:%s') as date from comments order by commenttime desc limit $num";
-        $result = mysql_query($query);
+
+	$params = array( 'num' => $num ); 
+
+	$result = query("comments.printCommentsRSS",$params);
 
         while ($row = mysql_fetch_array($result)) {
 		$permalink = makePermaLink($row['pid']);
@@ -599,8 +598,9 @@ function getEmail() {
 }
 
 function getUser() {
-        $query = "select name from user limit 1";
-        $result = mysql_query($query);
+
+	$query = "select name from site limit 1";
+	$result = mysql_query($query);
 
         $row = mysql_fetch_array($result);
 
@@ -626,8 +626,10 @@ function getTagline() {
 }
 
 function getSubject($pid) {
-	$query = "select subject from main where id = '$pid' limit 1";
-	$result = mysql_query($query);
+	
+	$params = array( 'id' => $pid ); 
+
+	$result = query("main.getSubject",$params);
 
 	$row = mysql_fetch_array($result);
 
@@ -671,8 +673,10 @@ function getRssNum() {
 }
 
 function getNumComments($pid) {
-	$query = "select count(cid) from comments where pid = '$pid'";
-	$result = mysql_query($query);
+
+	$params = array( 'pid' => $pid ); 
+
+	$result = query("comments.getNumComments",$params);
 
         $row = mysql_fetch_array($result);
 
@@ -695,8 +699,12 @@ function setLoginCookie($user) {
 		setcookie('user',$user,"$expiry");
                 setcookie('dertyn',$login,"$expiry");
 
-	        $query = "update user set cookie='$login' where name like '$user'";
-        	$result = mysql_query($query);
+		$params = array( 
+				'login' => $login,
+				'user' => $user
+				); 
+
+		$result = query("comments.setLoginCookie",$params);
 }
 
 function killCookie() {
