@@ -9,13 +9,14 @@ if (!(stripslashes($_POST['checksubmit']))) {
 } else if ((stripslashes($_POST['checksubmit']))) {
 	$email = getEmail();
 	$user = getUser();
-	$postemail = stripslashes($_POST['email']);
-	$postuser = stripslashes($_POST['user']);
+	$postemail = $_POST['email'];
+	$postuser = $_POST['user'];
 
 	$errmsg = "user " . $postuser . ",email " . $postemail;
+	$errmsg = "ruser " . $user . ",remail " . $email;
 
 	if ( ( (strcmp($email,$postemail)) == 0) && ( (strcmp($user,$postuser)) == 0) ) {
-		sendRandomPass($email,"lost");
+		sendRandomPass($email);
 	} else {
 		echo "things didn't match.  <a href=\"forgot.php\">try again</a>!";
 		logerr($errmsg, "forgot");

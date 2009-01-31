@@ -599,7 +599,7 @@ function getEmail() {
 
 function getUser() {
 
-	$query = "select name from site limit 1";
+	$query = "select name from user limit 1";
 	$result = mysql_query($query);
 
         $row = mysql_fetch_array($result);
@@ -865,23 +865,28 @@ function changePass($user,$pass) {
         $salt = substr("$email",0,2);
         $epass = crypt($pass,$salt);
 
-	$query = "update user set pass='$epass' where name like '$user'";
-	$result = mysql_query($query);
+	$params = array( 
+			'user' => $user,
+			'epass' => $epass
+			); 
 
+	$result = query("user.changePass",$params);
+	
 	echo " <img src=\"icon_accept.gif\" border=\"0\" /> password has been updated!";
 }
 
 function changeSettings($site,$url,$numberIndex,$numberRSS,$rewrite,$tagline) {
 
-        $site = mysql_real_escape_string($site);
-        $tagline = mysql_real_escape_string($tagline);
-        $url = mysql_real_escape_string($url);
-        $numberIndex = mysql_real_escape_string($numberIndex);
-        $numberRSS = mysql_real_escape_string($numberRSS);
-        $rewrite = mysql_real_escape_string($rewrite);
+	$params = array( 
+			'site' => $site,
+			'url' => $url,
+			'indexNum' => $numberIndex,
+			'rssNum' => $numberRSS,
+			'rewrite' => $rewrite,
+			'tagline' => $tagline
+			);
 
-	$query = "update site set name='$site', url='$url', indexNum='$numberIndex', rssNum='$numberRSS', rewrite='$rewrite', tagline='$tagline' limit 1";
-	$result = mysql_query($query);
+	$result = query("site.changeSettings",$params);
 
 	echo "your settings have been updated!";
 
@@ -903,7 +908,18 @@ function addUser($user,$email,$pass,$site,$url,$tagline) {
 		$site = mysql_real_escape_string($site);
 		$tagline = mysql_real_escape_string($tagline);
 		$url = mysql_real_escape_string($url);
+		$secret = generateCode();
 		
+		$params = array( 
+				'user' => $user,
+				'email' => $email,
+				'pass' => $epass,
+				'site' => $site,
+				'tagline' => $tagline,
+				'url' => $url,
+				'secret' => $secret
+				);
+
 		$query = "create table user ( name varchar(30) NOT NULL, email varchar(30) NOT NULL, pass varchar(30) NOT NULL, secret varchar(6), cookie varchar(300) )";
 		$status = mysql_query($query);
 
@@ -916,19 +932,14 @@ function addUser($user,$email,$pass,$site,$url,$tagline) {
 		$query = "create table site ( name varchar(160) NOT NULL, url varchar(160) NOT NULL, indexNum int NOT NULL, rssNum int NOT NULL, rewrite int NOT NULL, tagline varchar(160) ); ";
 		$status = mysql_query($query);
 	
-		$secret = generateCode();
-	
-		$query = "insert into user (name,email,pass,secret) values ('$user','$email','$epass','$secret')";
-		$status = mysql_query($query);
-	
-		$query = "insert into site (name,url,indexNum,rssNum,rewrite,tagline) values ('$site','$url','10','10','1','$tagline')";
-		$status = mysql_query($query);
+		$result = query("user.initialInsert",$params);
+		$result = query("site.initialInsert",$params);
 
 		echo "dertyn installed!  thanks!";
 	}
 }
 
-function sendRandomPass($email,$func) {
+function sendRandomPass($email) {
         $pass = generateCode();
 	$salt = substr("$email",0,2);
 	$epass = crypt($pass,$salt);
@@ -936,23 +947,20 @@ function sendRandomPass($email,$func) {
 	$email = mysql_real_escape_string($email);
 	
 	$to = "$email";
-	$from = "From: webmaster@ultramookie.com";
+	$from = "From: nobody@change.this.now";
 	$subject = "password";
 	$body = "hi, your password is $pass. please login using your email address and the password.  feel free to change your password at anytime.";
 	if (mail($to, $subject, $body, $from)) {
-		if ((strcmp($func,"new")) == 0) {
-			$query = "insert into user (email,pass) values ('$email','$epass')";
-			$status = mysql_query($query);
-		} else if ((strcmp($func,"lost")) == 0) {
-			$query = "update user set pass='$epass' where email like '$email'";
-			$status = mysql_query($query);
-		} else {
-			echo "nothing to do!";
-		}
+
+		$params = array( 
+				'email' => $email,
+				'pass' => $epass
+				);
+
+		$result = query("user.sendRandomPass",$params);
 
 		echo "<p>Your new password has been sent!  <a href='login.php'>login</a> after you receive your password.</p>";
 	} else {
 		echo("<p>Message delivery failed...</p>");
 	}
 }
-

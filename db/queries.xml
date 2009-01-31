@@ -295,4 +295,69 @@
 		]]>
 	</query>
 
+	<query name="user.changePass">
+		<![CDATA[
+			UPDATE	user
+			SET	pass=:epass
+			WHERE	name
+			LIKE	:user
+		]]>
+	</query>
+	
+	<query name="user.initialInsert">
+		<![CDATA[
+			INSERT INTO	user (	name,
+						email,
+						pass,
+						secret
+						) 
+			VALUES		(	:user,
+						:email,
+						:pass,
+						:secret
+						)
+		]]>
+	</query>
+
+	<query name="user.sendRandomPass">
+		<![CDATA[
+			UPDATE	user
+			SET	pass=:pass
+			WHERE	email like :email
+		]]>
+	</query>
+
+  <!-- Table: site -->
+	<query name="site.changeSettings">
+		<![CDATA[
+			UPDATE	site
+			SET	name=:site,
+				url=:url,
+				indexNum=:indexNum,
+				rssNum=:rssNum,
+				rewrite=:rewrite,
+				tagline=:tagline
+			LIMIT 1
+		]]>
+	</query>
+
+	<query name="site.initialInsert">
+		<![CDATA[
+			INSERT INTO 	site (	name,
+						url,
+						indexNum,
+						rssNum,
+						rewrite,
+						tagline
+						)
+			VALUES (		:site,
+						:url,
+						'10',
+						'10',
+						'1',
+						:tagline
+						)
+		]]>
+	</query>
+
 </queries>
