@@ -9,6 +9,14 @@
 
 error_reporting(E_ERROR | E_PARSE);
 
+// We no likey having magic quotes. We will bomb if they
+// are on!
+
+if(get_magic_quotes_gpc()) {
+        echo "Magic quotes are enabled!  Please disable.";
+	exit();
+}
+
 $sitename = getSiteName();
 $tagline = getTagline();
 $siteurl = getSiteUrl();
