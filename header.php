@@ -7,7 +7,7 @@ $tagline = getTagline();
 $rewriteCheck = getrewriteCheck();
 $totalComments = getTotalNumComments();
 
-$id = stripslashes($_GET['id']);
+$id = $_GET['id'];
 
 $numEntries = getIndexNum();
 $pagenum = 1;

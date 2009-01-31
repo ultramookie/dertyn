@@ -4,9 +4,9 @@ include_once("header.php");
 include_once("db.php");
 include_once("dertyn.php");
 
-if (!(stripslashes($_POST['checksubmit']))) {
+if (!($_POST['checksubmit'])) {
 	showForgotform();
-} else if ((stripslashes($_POST['checksubmit']))) {
+} else if ($_POST['checksubmit']) {
 	$email = getEmail();
 	$user = getUser();
 	$postemail = $_POST['email'];

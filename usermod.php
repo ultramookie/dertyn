@@ -4,14 +4,14 @@ include_once("header.php");
 include_once("db.php");
 include_once("dertyn.php");
 
-if (!(stripslashes($_POST['checksubmit']))) {
+if (!($_POST['checksubmit'])) {
 	showPasswordChangeform();
 } else {
 	$username = getUserName();
         $user = $username;
-        $pass  = stripslashes($_POST['oldpass']);
-	$newpass1 = stripslashes($_POST['newpass1']);
-	$newpass2 = stripslashes($_POST['newpass2']);
+        $pass  = $_POST['oldpass'];
+	$newpass1 = $_POST['newpass1'];
+	$newpass2 = $_POST['newpass2'];
 
 	$logincheck = checkLogin($user,$pass);
 

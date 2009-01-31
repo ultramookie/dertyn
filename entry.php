@@ -7,7 +7,7 @@ include_once("dertyn.php");
 $sitename = getSiteName();
 	$pid = strip_tags($_POST['pid']);
 
-if(stripslashes($_POST['checksubmit'])) {
+if($_POST['checksubmit']) {
 	$captcha = strip_tags($_POST['captcha']);
 	$pid = strip_tags($_POST['pid']);
 	$name = strip_tags($_POST['name']);
@@ -44,11 +44,9 @@ if(stripslashes($_POST['checksubmit'])) {
 }
 
 if (($rewriteCheck == 1) && ($commented != 1)) {
-	stripslashes($_POST['id']);
 	printEntry($id,"single");
 	$pid = getPid($id);
 } else {
-	stripslashes($_POST['id']);
 	printEntry($id);
 	$pid = $id;
 }

@@ -9,7 +9,7 @@
 	$cookie = $_COOKIE['dertyn'];
 	$storedcookie = getCookie();
 
-        if( (checkCookie()) && ((stripslashes($_POST['checksubmit']))) ) {
+        if( (checkCookie()) && ($_POST['checksubmit']) ) {
 		$subject = strip_tags($_POST['subject']);
 		$body = $_POST['body'];
 		$draft = strip_tags($_POST['draft']);

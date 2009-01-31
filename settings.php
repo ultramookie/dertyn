@@ -4,19 +4,19 @@
 	include_once("db.php");
 	include_once("dertyn.php");
 
-if ((stripslashes(!$_POST['checksubmit'])) && (checkCookie()) ) {
+if ( (!$_POST['checksubmit']) && (checkCookie()) ) {
 	showSettingsform();
 } else if (checkCookie()) {
 
 	$username = getUserName();
 	$site = strip_tags($_POST['site']);
 	$tagline = strip_tags($_POST['tagline']);
-	$url = stripslashes($_POST['url']);
-	$numberIndex = stripslashes($_POST['index']);
-	$numberRSS = stripslashes($_POST['rss']);
-	$rewrite = stripslashes($_POST['rewrite']);
+	$url = $_POST['url'];
+	$numberIndex = $_POST['index'];
+	$numberRSS = $_POST['rss'];
+	$rewrite = $_POST['rewrite'];
         $user = $username;
-        $pass  = stripslashes($_POST['pass']);
+        $pass  = $_POST['pass'];
 
         $logincheck = checkLogin($user,$pass);
 

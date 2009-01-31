@@ -6,7 +6,7 @@
 	$cookie = $_COOKIE['dertyn'];
 	$storedcookie = getCookie();
 
-	$id = stripslashes($_GET['number']);
+	$id = $_GET['number'];
 ?>
 
 <?php
@@ -16,7 +16,7 @@
 		echo "please <a href=\"login.php\">login</a>.";
 	}
 
-        if( (checkCookie()) && ((stripslashes($_POST['checksubmit']))) ) {
+        if( (checkCookie()) && ($_POST['checksubmit']) ) {
 		$subject = strip_tags($_POST['subject']);
 		$body = $_POST['body'];
 		$draft = strip_tags($_POST['draft']);

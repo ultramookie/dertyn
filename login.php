@@ -2,9 +2,9 @@
 include_once("db.php");
 include_once("dertyn.php");
 
-if (stripslashes($_POST['checksubmit'])) {
-        $user = stripslashes($_POST['user']);
-        $pass  = stripslashes($_POST['pass']);
+if ($_POST['checksubmit']) {
+        $user = $_POST['user'];
+        $pass  = $_POST['pass'];
 
 	$logincheck = checkLogin($user,$pass);
 
@@ -18,7 +18,7 @@ include_once("header.php");
 
 echo "<p>\n";
 
-if (!(stripslashes($_POST['checksubmit']))) {
+if (!($_POST['checksubmit'])) {
 	showLoginform();
 } else {
 	if ($logincheck == 0) {

@@ -13,16 +13,16 @@ include_once("db.php");
 include_once("dertyn.php");
 
 	
-if ((stripslashes(!$_POST['checksubmit']))) {
+if (!$_POST['checksubmit']) {
 	showAddform();
 } else {
-	$user = stripslashes($_POST['user']);
-	$email = stripslashes($_POST['email']);
-	$newpass1 = stripslashes($_POST['pass1']);
-	$newpass2 = stripslashes($_POST['pass2']);
+	$user = $_POST['user'];
+	$email = $_POST['email'];
+	$newpass1 = $_POST['pass1'];
+	$newpass2 = $_POST['pass2'];
 	$site = strip_tags($_POST['site']);
 	$tagline = strip_tags($_POST['tagline']);
-	$url = stripslashes($_POST['url']);
+	$url = $_POST['url'];
 
 	if ((strcmp($newpass1,$newpass2)) == 0) {
        		addUser($user,$email,$newpass1,$site,$url,$tagline);
