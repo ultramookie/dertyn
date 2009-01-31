@@ -39,7 +39,7 @@ function showUpdateForm($body) {
 	echo "Title:<br />";
         echo "<input type=\"text\" name=\"subject\" /><br />";
 	echo "Posting:<br />";
-	echo "<textarea cols=\"50\" rows=\"24\" name=\"body\">$body</textarea>";
+	echo "<textarea cols=\"50\" rows=\"24\" name=\"body\" id=\"body\">$body</textarea>";
 	echo "<br />";
 	echo "Save as draft? <input type=\"checkbox\" name=\"draft\" value=\"1\" />";
 	echo "<br />";
@@ -238,7 +238,7 @@ function showEditForm($id) {
 	echo "<input type=\"text\" name=\"subject\" value=\"$subject\" />";
 	echo "<br />";
 	echo "Posting:<br />";
-	echo "<textarea cols=\"50\" rows=\"24\" name=\"body\">$body</textarea>";
+	echo "<textarea cols=\"50\" rows=\"24\" name=\"body\" id=\"body\">$body</textarea>";
 	echo "<br />";
 	echo "Save as draft? <input type=\"checkbox\" name=\"draft\" value=\"1\" />";
 	echo "<br />";
@@ -441,7 +441,7 @@ function printEntry($id,$single) {
 
 	$commentCount = getNumComments($pid);
 
-	$text = nl2br($row['body']);
+	$text = $row['body'];
 
 	echo "\n";
         echo "<p class=\"subject\"><a href=\"" . $permalink . "\">" . $row['subject'] . "</a></p>";
