@@ -5,7 +5,6 @@ include_once("db.php");
 include_once("dertyn.php");
 
 $sitename = getSiteName();
-$id = strip_tags($_GET['id']);
 
 // Check that a post exists.  Else, exit.
 checkPostExists($id);
