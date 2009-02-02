@@ -4,6 +4,7 @@ include_once("db.php");
 include_once("dertyn.php");
 
 $numRss = getRssNum();
+$realname = getRealName();
 
 echo "<?xml version=\"1.0\" encoding=\"utf-8\"?>";
 ?>
@@ -21,7 +22,7 @@ echo "<?xml version=\"1.0\" encoding=\"utf-8\"?>";
 	<id><?php echo $siteurl; ?>/atom.php</id>
 	<link rel="self" type="application/atom+xml" href="<?php echo $siteurl; ?>/atom.php" />
 	<author>
-		<name><?php echo $username; ?></name>
+		<name><?php echo $realname; ?></name>
 	</author>
 
 <?php

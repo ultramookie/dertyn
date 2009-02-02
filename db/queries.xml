@@ -317,11 +317,13 @@
 		<![CDATA[
 			INSERT INTO	user (	name,
 						email,
+						realname,
 						pass,
 						secret
 						) 
 			VALUES		(	:user,
 						:email,
+						:realname,
 						:pass,
 						:secret
 						)
@@ -333,6 +335,14 @@
 			UPDATE	user
 			SET	pass=:pass
 			WHERE	email like :email
+		]]>
+	</query>
+	
+	<query name="user.changeSettings">
+		<![CDATA[
+			UPDATE	user
+			SET	realname=:realname
+			LIMIT	1
 		]]>
 	</query>
 

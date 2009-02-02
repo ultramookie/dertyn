@@ -18,6 +18,7 @@ if (!$_POST['checksubmit']) {
 } else {
 	$user = $_POST['user'];
 	$email = $_POST['email'];
+	$realname = $_POST['realname'];
 	$newpass1 = $_POST['pass1'];
 	$newpass2 = $_POST['pass2'];
 	$site = strip_tags($_POST['site']);
@@ -25,7 +26,7 @@ if (!$_POST['checksubmit']) {
 	$url = $_POST['url'];
 
 	if ((strcmp($newpass1,$newpass2)) == 0) {
-       		addUser($user,$email,$newpass1,$site,$url,$tagline);
+       		addUser($user,$email,$realname,$newpass1,$site,$url,$tagline);
        	} else {
                	echo "either your password was typed wrong or your new passwords did not match.  <a href='". $_SERVER['PHP_SELF'] . "'>try again</a>";
        	}

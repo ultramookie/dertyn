@@ -447,6 +447,7 @@ function getLastUpdatedAtom() {
 function printEntry($id,$single) {
 
 	$siteurl = getSiteUrl();
+	$realname = getRealName();
 	$permalink = makePermaLink($id,$single);
 	$rewriteCheck = getrewriteCheck();
 
@@ -469,7 +470,7 @@ function printEntry($id,$single) {
 	echo "\n";
         echo "<p class=\"subject\"><a href=\"" . $permalink . "\">" . $row['subject'] . "</a></p>";
 	echo "\n";
-	echo "<p class=\"timedate\">" . $row['date'] . " : <a href=\"" . $permalink . "#comments\">$commentCount comment(s)</a>";
+	echo "<p class=\"timedate\">" . strtolower($row['date']) . " : " . $realname . " : <a href=\"" . $permalink . "#comments\">$commentCount comment(s)</a>";
 	if(checkCookie()) {
 		echo "<a href=\"$siteurl/edit.php?number=" . $row['id'] . "\"><img src=\"$siteurl/page_edit.gif\" border=\"0\" /></a> ";
 		echo "<a href=\"$siteurl/delete.php?number=" . $row['id'] . "&type=post\"><img src=\"$siteurl/page_delete.gif\" border=\"0\" /></a> ";
@@ -630,6 +631,16 @@ function getUser() {
         return($row['name']);
 }
 
+function getRealName() {
+
+	$query = "select realname from user limit 1";
+	$result = mysql_query($query);
+
+        $row = mysql_fetch_array($result);
+
+        return($row['realname']);
+}
+
 function getSiteName() {
 	$query = "select name from site limit 1";
 	$result = mysql_query($query);
@@ -763,6 +774,7 @@ function showAddform() {
 	echo " method=\"post\">";
 	echo "user: <input type=\"text\" name=\"user\"><br />";
 	echo "email: <input type=\"text\" name=\"email\"><br />";
+	echo "real name: <input type=\"text\" name=\"realname\"><br />";
 	echo "password: <input type=\"password\" name=\"pass1\"><br />";
 	echo "password (again): <input type=\"password\" name=\"pass2\"><br />";
 	echo "name of site: <input type=\"text\" name=\"site\"><br />";
@@ -783,6 +795,7 @@ function getrewriteCheck() {
 }
 
 function showSettingsform() {
+	$realname = getRealName();
 	$sitename = getSiteName();
 	$tagline = getTagline();
 	$rawsiteurl = getRawSiteUrl();
@@ -803,6 +816,7 @@ function showSettingsform() {
 	echo " method=\"post\">";
         echo "user: <input type=\"text\" name=\"user\"><br />";
         echo "pass: <input type=\"password\" name=\"pass\"><br />";
+        echo "real name: <input type=\"text\" name=\"realname\" value=\"" . $realname . "\"><br />";
 	echo "name of site: <input type=\"text\" name=\"site\" value=\"" . $sitename . "\"><br />";
 	echo "tagline for site: <input type=\"text\" name=\"tagline\" value=\"" . $tagline . "\"><br />";
 	echo "base url (without http://): <input type=\"text\" name=\"url\" value=\"" . $rawsiteurl . "\"><br />";
@@ -898,7 +912,7 @@ function changePass($user,$pass) {
 	echo " <img src=\"icon_accept.gif\" border=\"0\" /> password has been updated!";
 }
 
-function changeSettings($site,$url,$numberIndex,$numberRSS,$rewrite,$tagline) {
+function changeSettings($site,$url,$realname,$numberIndex,$numberRSS,$rewrite,$tagline) {
 
 	$params = array( 
 			'site' => $site,
@@ -911,11 +925,15 @@ function changeSettings($site,$url,$numberIndex,$numberRSS,$rewrite,$tagline) {
 
 	$result = query("site.changeSettings",$params);
 
+	$params = array( 'realname' => $realname );
+
+	$result = query("user.changeSettings",$params);
+
 	echo "your settings have been updated!";
 
 }
 
-function addUser($user,$email,$pass,$site,$url,$tagline) {
+function addUser($user,$email,$realname,$pass,$site,$url,$tagline) {
         $salt = substr("$email",0,2);
         $epass = crypt($pass,$salt);
 
@@ -927,6 +945,7 @@ function addUser($user,$email,$pass,$site,$url,$tagline) {
 	} else {
 		$user = mysql_real_escape_string($user);
 		$email = mysql_real_escape_string($email);
+		$realname = mysql_real_escape_string($realname);
 		$pass = mysql_real_escape_string($pass);
 		$site = mysql_real_escape_string($site);
 		$tagline = mysql_real_escape_string($tagline);
@@ -936,6 +955,7 @@ function addUser($user,$email,$pass,$site,$url,$tagline) {
 		$params = array( 
 				'user' => $user,
 				'email' => $email,
+				'realname' => $realname,
 				'pass' => $epass,
 				'site' => $site,
 				'tagline' => $tagline,
@@ -943,7 +963,7 @@ function addUser($user,$email,$pass,$site,$url,$tagline) {
 				'secret' => $secret
 				);
 
-		$query = "create table user ( name varchar(30) NOT NULL, email varchar(30) NOT NULL, pass varchar(30) NOT NULL, secret varchar(6), cookie varchar(300) )";
+		$query = "create table user ( name varchar(30) NOT NULL, email varchar(30) NOT NULL, realname varchar(60), pass varchar(30) NOT NULL, secret varchar(6), cookie varchar(300) )";
 		$status = mysql_query($query);
 
 		$query = "create table main ( id int NOT NULL AUTO_INCREMENT, entrytime DATETIME NOT NULL, subject varchar(160) NOT NULL, body MEDIUMTEXT, slug varchar(160), published int DEFAULT '0', PRIMARY KEY (id), FULLTEXT(subject,body)); ";

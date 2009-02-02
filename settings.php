@@ -11,6 +11,7 @@ if ( (!$_POST['checksubmit']) && (checkCookie()) ) {
 	$username = getUserName();
 	$site = strip_tags($_POST['site']);
 	$tagline = strip_tags($_POST['tagline']);
+	$realname = strip_tags($_POST['realname']);
 	$url = $_POST['url'];
 	$numberIndex = $_POST['index'];
 	$numberRSS = $_POST['rss'];
@@ -21,7 +22,7 @@ if ( (!$_POST['checksubmit']) && (checkCookie()) ) {
         $logincheck = checkLogin($user,$pass);
 
 	if ($logincheck == 0) {
-  		changeSettings($site,$url,$numberIndex,$numberRSS,$rewrite,$tagline);
+  		changeSettings($site,$url,$realname,$numberIndex,$numberRSS,$rewrite,$tagline);
 	} else {
 		echo "the username and/or password you entered was wrong.  please <a href='settings.php'>try again</a>.";
 	}
