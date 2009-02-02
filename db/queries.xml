@@ -193,15 +193,6 @@
 		]]>
 	</query>
 
-	<query name="main.checkPostExists">
-		<![CDATA[
-			SELECT 	count(id)
-			FROM	main
-			WHERE	slug=:id OR
-				id=:id
-		]]>
-	</query>
-	
   <!-- Table: comments -->
 	<query name="comments.printComment">
 		<![CDATA[
