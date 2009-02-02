@@ -136,6 +136,9 @@ function printComment($cid,$pid) {
 
 	$params = array( 'cid' => $cid );
 
+	$cid = strip_tags($cid);
+	$cid = mysql_real_escape_string($cid);
+
 	$result = query("comments.printComment",$params);
 
 	while ($row = mysql_fetch_array($result)) {
@@ -145,9 +148,9 @@ function printComment($cid,$pid) {
 		$date = $row['date'];
 
 		if(strlen($url) > 0) {
-			echo "<p class=\"commenter\"><a href=\"$url\" rel=\"nofollow\">$name</a> said on $date...</p>\n";
+			echo "<p class=\"commenter\"><a name=\"$cid\"><a href=\"$url\" rel=\"nofollow\">$name</a> said on $date...</a></p>>\n";
 		} else {
-			echo "<p class=\"commenter\">$name said on $date...</p>\n";
+			echo "<p class=\"commenter\"><a name=\"$cid\">$name said on $date...</a></p>\n";
 		}
 		echo "<p class=\"comment\">$comment</p>\n";
 		if($pid > 0) {
@@ -541,12 +544,15 @@ function printCommentsRSS($num) {
 		$permalink = makePermaLink($row['pid']);
 		$shortComment = strip_tags(substr($row['comment'],0,$rssSummaryLen));
 		$subjComment = strip_tags(substr($row['comment'],0,$subjectLen));
+		$shortBody = ereg_replace("&nbsp;|\n|\r|\t","",$shortBody);
+		$cleanbody = ereg_replace("&nbsp;|\n|\r|\t","",$row['body']);
 		echo "\t<item>\n";
 		echo "\t\t<title>$subjComment</title>\n";
 		echo "\t\t<pubDate>" . $row['date'] . " PST</pubDate>\n";
 		echo "\t\t<description>$shortComment..</description>\n";
-		echo "\t\t<guid>" . $row['cid'] . "</guid>\n";
-		echo "\t\t<link>$permalink#comments</link>\n";
+		echo "\t\t<content:encoded><![CDATA[" . $cleanbody . "]]></content:encoded>\n";
+		echo "\t\t<guid>$permalink#" . $row['cid'] . "</guid>\n";
+		echo "\t\t<link>$permalink#" . $row['cid'] . "</link>\n";
 		echo "\t</item>\n";
         }
 }
