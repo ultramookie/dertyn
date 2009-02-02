@@ -154,8 +154,8 @@
 			SELECT	id,
 				subject,
 				body,
-				date_format(entrytime, '%Y-%m%d') as date, 
-				date_format(entrytime, '%T:%i:%S') as time
+				date_format(entrytime, '%Y-%m-%d') as date, 
+				date_format(entrytime, '%T') as time
 			FROM	main
 			WHERE	published = '1'
 			ORDER BY entrytime DESC

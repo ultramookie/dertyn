@@ -23,7 +23,6 @@ $siteurl = getSiteUrl();
 $indexNum = getIndexNum();
 $rssNum = getRssNum();
 $numOfEntries = getNumEntries();
-$lastUpdatedAtom = getLastUpdatedAtom();
 $username = getUser();
 
 // Loading SQL queries
@@ -435,13 +434,14 @@ function makePermaLink($id,$single) {
 
 function getLastUpdatedAtom() {
 
-	$query  = "select date_format(entrytime, '%Y-%m%d') as date, date_format(entrytime, '%T:%i:%S') as time from main order by entrytime desc limit 1";
+	$query  = "select date_format(entrytime, '%Y-%m-%d') as date, date_format(entrytime, '%T') as time from main order by entrytime desc limit 1";
 	$result = mysql_query($query);
 
 	$row = mysql_fetch_array($result);
 
-	$lastUpdate = $date . "T" . $time . "Z";
-	return $lastUpdate;
+	$lastUpdate = $row['date'] . "T" . $row['time'] . "Z";
+	
+	echo $lastUpdate;
 }
 
 function printEntry($id,$single) {
@@ -493,12 +493,15 @@ function printAtom($num) {
         while ($row = mysql_fetch_array($result)) {
 		$permalink = makePermaLink($row['id']);
 		$shortBody = strip_tags(substr($row['body'],0,$rssSummaryLen));
+		$shortBody = ereg_replace("&nbsp;|\n|\r|\t","",$shortBody);
+		$cleanbody = ereg_replace("&nbsp;|\n|\r|\t","",$row['body']);
 		echo "\t<entry>\n";
 		echo "\t\t<title>" . $row['subject'] . "</title>\n";
 		echo "\t\t<link href=\"$permalink\" />\n";
-		echo "\t\t<id>" . $row['id'] . "</id>\n";
+		echo "\t\t<id>$permalink</id>\n";
 		echo "\t\t<updated>" . $row['date'] . "T" . $row['time'] . "Z" . "</updated>\n";
 		echo "\t\t<summary>" . $shortBody . "...</summary>\n";
+		echo "\t\t<content type=\"html\"><![CDATA[>" . $cleanbody . "]]></content>\n";
 		echo "\t</entry>\n";
         }
 }
@@ -513,10 +516,13 @@ function printRSS($num) {
         while ($row = mysql_fetch_array($result)) {
 		$permalink = makePermaLink($row['id']);
 		$shortBody = strip_tags(substr($row['body'],0,$rssSummaryLen));
+		$shortBody = ereg_replace("&nbsp;|\n|\r|\t","",$shortBody);
+		$cleanbody = ereg_replace("&nbsp;|\n|\r|\t","",$row['body']);
 		echo "\t<item>\n";
 		echo "\t\t<title>" . $row['subject'] . "</title>\n";
 		echo "\t\t<pubDate>" . $row['date'] . " PST</pubDate>\n";
-		echo "\t\t<description>$shortBody...</description>\n";
+		echo "\t\t<description><![CDATA[" . $shortBody . "]]>...</description>\n";
+		echo "\t\t<content:encoded><![CDATA[>" . $cleanbody . "]]></content:encoded>\n";
 		echo "\t\t<guid>$permalink</guid>\n";
 		echo "\t\t<link>$permalink</link>\n";
 		echo "\t</item>\n";
