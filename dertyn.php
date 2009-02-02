@@ -148,9 +148,9 @@ function printComment($cid,$pid) {
 		$date = $row['date'];
 
 		if(strlen($url) > 0) {
-			echo "<p class=\"commenter\"><a name=\"$cid\"><a href=\"$url\" rel=\"nofollow\">$name</a> said on $date...</a></p>>\n";
+			echo "<p class=\"commenter\"><a name=\"$cid\"><a href=\"$url\" rel=\"nofollow\">$name</a> said on $date...</a></p>";
 		} else {
-			echo "<p class=\"commenter\"><a name=\"$cid\">$name said on $date...</a></p>\n";
+			echo "<p class=\"commenter\"><a name=\"$cid\">$name said on $date...</a></p>";
 		}
 		echo "<p class=\"comment\">$comment</p>\n";
 		if($pid > 0) {
@@ -158,7 +158,7 @@ function printComment($cid,$pid) {
 			echo "about <a href=\"$permalink\"><b>this posting</b></a>...<br /><br />";
 		}
         	if(checkCookie()) {
-			echo "<a href=\"$siteurl/delete.php?number=$cid&type=comment\"><img src=\"$siteurl/page_delete.gif\" border=\"0\" /></a> ";
+			echo "<a href=\"$siteurl/delete.php?number=$cid&type=comment\"><img src=\"$siteurl/page_delete.gif\" border=\"0\" /></a>";
 		}
 	}
 }
