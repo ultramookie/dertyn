@@ -501,7 +501,7 @@ function printAtom($num) {
 		echo "\t\t<id>$permalink</id>\n";
 		echo "\t\t<updated>" . $row['date'] . "T" . $row['time'] . "Z" . "</updated>\n";
 		echo "\t\t<summary>" . $shortBody . "...</summary>\n";
-		echo "\t\t<content type=\"html\"><![CDATA[>" . $cleanbody . "]]></content>\n";
+		echo "\t\t<content type=\"html\"><![CDATA[" . $cleanbody . "]]></content>\n";
 		echo "\t</entry>\n";
         }
 }
@@ -522,7 +522,7 @@ function printRSS($num) {
 		echo "\t\t<title>" . $row['subject'] . "</title>\n";
 		echo "\t\t<pubDate>" . $row['date'] . " PST</pubDate>\n";
 		echo "\t\t<description><![CDATA[" . $shortBody . "]]>...</description>\n";
-		echo "\t\t<content:encoded><![CDATA[>" . $cleanbody . "]]></content:encoded>\n";
+		echo "\t\t<content:encoded><![CDATA[" . $cleanbody . "]]></content:encoded>\n";
 		echo "\t\t<guid>$permalink</guid>\n";
 		echo "\t\t<link>$permalink</link>\n";
 		echo "\t</item>\n";
