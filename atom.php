@@ -7,7 +7,7 @@ include_once("dertyn.php");
 $numRss = getRssNum();
 $realname = getRealName();
 
-echo "<?xml version=\"1.0\" encoding=\"iso-8859-1\"?>";
+echo "<?xml version=\"1.0\" encoding=\"utf-8\"?>";
 ?>
 
 <feed xmlns="http://www.w3.org/2005/Atom"
