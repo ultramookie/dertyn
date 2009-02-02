@@ -6,8 +6,6 @@ include_once("dertyn.php");
 
 $sitename = getSiteName();
 
-// Check that a post exists.  Else, exit.
-
 if($_POST['checksubmit']) {
 	$captcha = strip_tags($_POST['captcha']);
 	$name = strip_tags($_POST['name']);
