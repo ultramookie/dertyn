@@ -54,8 +54,6 @@ echo "<p class=\"subject\" id=\"comments\">Comments</a></p>";
 
 printComments($pid);
 
-echo "<hr />\n";
-
 printCommentForm($pid,$name,$url,$comment);
 ?>
 

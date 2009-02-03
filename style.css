@@ -170,6 +170,11 @@ hr {
 	font-size: medium;
 	font-weight: bolder;
 	margin-bottom:-10px;
+	color:black;
+}
+
+.commentsubject a {
+	color:black;
 }
 
 .commentdate {

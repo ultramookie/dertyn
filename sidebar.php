@@ -14,18 +14,16 @@
 	echo "<li><a href=\"$siteurl/comments-rss.php\">comments</a></li>\n";
 	echo "</ul>\n";
 
-	echo "<p>admin</p>\n";
-	echo "<ul>\n";
 	if(checkCookie()) {
+		echo "<p>admin</p>\n";
+		echo "<ul>\n";
 		echo "<li><a href=\"$siteurl/post.php\">new post</a></li>\n";
 		echo "<li><a href=\"$siteurl/drafts.php\">drafts</a></li>\n";
 		echo "<li><a href=\"$siturl/usermod.php\">password</a></li>\n";
 		echo "<li><a href=\"$siteurl/settings.php\">settings</a></li>\n";
 		echo "<li><a href=\"$siteurl/logout.php\">logout</a></li>\n";
-	} else {
-		echo "<li><a href=\"$siteurl/login.php\">login</a></li>\n";
+		echo "</ul>\n";
 	}
-	echo "</ul>\n";
 
 ?>
 </div>
