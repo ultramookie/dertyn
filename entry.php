@@ -50,13 +50,13 @@ if (($rewriteCheck == 1) && ($commented != 1)) {
 	$pid = $id;
 }
 
-echo "<p class=\"subject\"><a name=\"comments\">Comments</a></p>";
-echo "<p>Your comment will be auto-formatted.</p>\n";
-
-printCommentForm($pid,$name,$url,$comment);
+echo "<p class=\"subject\" id=\"comments\">Comments</a></p>";
 
 printComments($pid);
 
+echo "<hr />\n";
+
+printCommentForm($pid,$name,$url,$comment);
 ?>
 
 <?php

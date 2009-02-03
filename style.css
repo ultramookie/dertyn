@@ -156,15 +156,25 @@ hr {
 }
 
 .commenter {
+	font-size: small;
+	font-weight: 500;
 	word-wrap: break-word;	
-	font-size: medium;
-	font-weight: bold;
 }
 
 .comment {
 	font-size: small;
 	word-wrap: break-word;
-	padding: 10px 25px;
+}
+
+.commentsubject {
+	font-size: medium;
+	font-weight: bolder;
+	margin-bottom:-10px;
+}
+
+.commentdate {
+	font-size: xx-small;
+	margin-top:-10px;
 }
 
 .entry {

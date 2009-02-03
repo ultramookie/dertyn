@@ -137,7 +137,6 @@ function printComment($cid,$pid) {
 	$params = array( 'cid' => $cid );
 
 	$cid = strip_tags($cid);
-	$cid = mysql_real_escape_string($cid);
 
 	$result = query("comments.printComment",$params);
 
@@ -147,19 +146,22 @@ function printComment($cid,$pid) {
 		$comment =  nl2br($row['comment']);
 		$date = $row['date'];
 
-		if(strlen($url) > 0) {
-			echo "<p class=\"commenter\"><a name=\"$cid\"><a href=\"$url\" rel=\"nofollow\">$name</a> said on $date...</a></p>";
-		} else {
-			echo "<p class=\"commenter\"><a name=\"$cid\">$name said on $date...</a></p>";
-		}
-		echo "<p class=\"comment\">$comment</p>\n";
 		if($pid > 0) {
 			$permalink = makePermaLink($pid);
-			echo "about <a href=\"$permalink\"><b>this posting</b></a>...<br /><br />";
+			$subject = getSubject($pid);
+			echo "<p class=\"commentsubject\"><a href=\"$permalink#$cid\">$subject</a></p>";
 		}
+		echo "<p class=\"comment\" id=\"$cid\">$comment</p>\n";
+		if(strlen($url) > 0) {
+			echo "<p class=\"commenter\"><a href=\"$url\" rel=\"nofollow\">$name</a></p>";
+		} else {
+			echo "<p class=\"commenter\">$name</p>";
+		}
+		echo "<p class=\"commentdate\">$date</p>";
         	if(checkCookie()) {
 			echo "<a href=\"$siteurl/delete.php?number=$cid&type=comment\"><img src=\"$siteurl/page_delete.gif\" border=\"0\" /></a>";
 		}
+		echo "<hr />";
 	}
 }
 
