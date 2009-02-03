@@ -2,15 +2,19 @@
 <?php
 
 	printSearchForm($numEntries,$pagenum);
+	echo "<p>stuff</p>\n";
 	echo "<ul>\n";
 	echo "<li>posts: $numOfEntries</li>\n";
 	echo "<li><a href=\"$siteurl/comments.php\">comments</a>: $totalComments</li>\n";
-	echo "<li><a href=\"$siteurl/comments-rss.php\">comments rss</a></li>\n";
+	echo "</ul>\n";
+	echo "<p>feeds</p>\n";
+	echo "<ul>\n";
 	echo "<li><a href=\"$siteurl/atom.php\">atom</a></li>\n";
 	echo "<li><a href=\"$siteurl/rss.php\">rss</a></li>\n";
+	echo "<li><a href=\"$siteurl/comments-rss.php\">comments</a></li>\n";
 	echo "</ul>\n";
 
-	echo "admin menu\n";
+	echo "<p>admin</p>\n";
 	echo "<ul>\n";
 	if(checkCookie()) {
 		echo "<li><a href=\"$siteurl/post.php\">new post</a></li>\n";
