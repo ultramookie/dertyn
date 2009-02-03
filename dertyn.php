@@ -864,6 +864,17 @@ function deleteEntry($id,$type) {
 	if(ereg("^post",$type)) {
 		$result = query("main.deleteEntry",$params);
 		echo "post " . $id . " deleted!";
+	
+		$params = array( 'pid' => $id );
+	
+		$result = query("comments.printComments",$params);
+
+		while ($row = mysql_fetch_array($result)) {
+			$cid = $row['cid'];
+			echo "<br />removing related comment...<br />";
+			deleteEntry($cid,"comment");
+		}
+
 	} else if (ereg("^comment",$type)) {
 		$result = query("comments.deleteEntry",$params);
 		echo "comment " . $id . " deleted!";
