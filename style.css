@@ -138,6 +138,7 @@ h2 {
 hr {
 	height: 1px;
 	color: #c0c0c0;
+	border-style: none none dotted;
 }
 
 .subject {
