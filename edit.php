@@ -1,12 +1,16 @@
 <?php
 	include_once("header.php");
-	include_once("editor.php");
 
 	$numEntries = getIndexNum();
 	$cookie = $_COOKIE['dertyn'];
 	$storedcookie = getCookie();
 
 	$id = $_GET['number'];
+	$type = $_GET['type'];
+
+	if(ereg($type,"^rich$")) {
+		include_once("editor.php");
+	}
 ?>
 
 <?php

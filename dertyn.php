@@ -462,8 +462,9 @@ function printEntry($id,$single) {
 	echo "\n";
 	echo "<p class=\"timedate\">" . strtolower($row['date']) . " : " . $realname . " : <a href=\"" . $permalink . "#comments\">$commentCount comment(s)</a>";
 	if(checkCookie()) {
-		echo "<a href=\"$siteurl/edit.php?number=" . $row['id'] . "\"><img src=\"$siteurl/page_edit.gif\" border=\"0\" /></a> ";
-		echo "<a href=\"$siteurl/delete.php?number=" . $row['id'] . "&type=post\"><img src=\"$siteurl/page_delete.gif\" border=\"0\" /></a> ";
+		echo " <a href=\"$siteurl/edit.php?number=" . $row['id'] . "&type=rich\"><img src=\"$siteurl/page_edit.gif\" border=\"0\" title=\"edit with rich editor\" /></a> ";
+		echo "<a href=\"$siteurl/edit.php?number=" . $row['id'] . "&type=raw\"><img src=\"$siteurl/page_edit_code.gif\" border=\"0\" title=\"edit raw code\" /></a> ";
+		echo "<a href=\"$siteurl/delete.php?number=" . $row['id'] . "&type=post\"><img src=\"$siteurl/page_delete.gif\" border=\"0\" title=\"delete entry and all comments\" /></a> ";
 	}
 	echo "</p>";
 	echo "\n";
