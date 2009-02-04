@@ -82,7 +82,8 @@
 			FROM 	main
 			WHERE	published = '0'
 			ORDER BY entrytime DESC
-			LIMIT :num
+			LIMIT :offset,
+			      :num
 		]]>
 	</query>
 	

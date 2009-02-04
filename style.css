@@ -209,12 +209,12 @@ hr {
 	padding: 5px;
 }
 
-.box { 
+.bottomnav { 
 	border: 1px 
 	solid #cecece; 
 	padding: 4px 15px; 
 	margin: 1px;
-	text-align:right;
+	text-align:center;
 }
 
 .count {

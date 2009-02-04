@@ -324,11 +324,20 @@ function showEntriesIndex() {
         }
 }
 
-function showDraftsIndex() {
+function showDraftsIndex($pnum) {
 
 	$num = getIndexNum();
 	
-	$params = array( 'num' => $num );
+        if($pnum == 1) {
+                $offset = 0;
+        } else {
+                $offset = ($pnum-1) * $num;
+        }
+
+	$params = array( 
+			'num' => $num,
+			'offset' => $offset
+			);
 
         $result = query("main.showDraftsIndex",$params);
        

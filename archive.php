@@ -5,6 +5,7 @@
 <?php
 
 	$numEntries = getIndexNum();
+	$siteUrl = getSiteUrl();
 
         if (!$_GET['pagenum']) {
                 $pagenum = 1;
@@ -14,9 +15,10 @@
 
 	showEntriesArchive($numEntries,$pagenum);
 
+	$prev = $pagenum-1;
 	$pagenum++;
 
-	echo "<a href=\"" . $_SERVER['PHP_SELF'] . "?pagenum=" . $pagenum . "\" class=\"box\">older &#187;</a>";
+	echo "<div class=\"bottomnav\"><a href=\"" . $siteurl . "/archive.php?pagenum=$prev\"><< back</a> ( <a href=\"" . $siteUrl . "\">home</a> ) <a href=\"" . $siteUrl  . "/archive.php?pagenum=$pagenum\">next >></a></div>";
 ?>
 
 <?php

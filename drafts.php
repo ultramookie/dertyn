@@ -1,9 +1,22 @@
 <?php
 	include_once("header.php");
 	
-	showDraftsIndex();
+        if (!$_GET['pagenum']) {
+                $pagenum = 1;
+        } else {
+                $pagenum = $_GET['pagenum'];
+        }
 
-	echo "<a href=\"" . $siteUrl  . "archive.php?pagenum=2\" class=\"box\">older &#187;</a>";
+	showDraftsIndex($pagenum);
+
+	$prev = $pagenum-1;
+	$pagenum++;
+
+	if($pagenum == 2) {
+		echo "<div class=\"bottomnav\">( <a href=\"" . $siteUrl . "\">home</a> ) <a href=\"" . $siteUrl  . "/drafts.php?pagenum=$pagenum\">next >></a></div>";
+	} else {
+		echo "<div class=\"bottomnav\"><a href=\"" . $siteurl . "/drafts.php?pagenum=$prev\"><< back</a> ( <a href=\"" . $siteUrl . "\">home</a> ) <a href=\"" . $siteUrl  . "/drafts.php?pagenum=$pagenum\">next >></a></div>";
+	}
 	
 	include_once("footer.php");
 ?>
