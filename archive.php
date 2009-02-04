@@ -18,7 +18,7 @@
 	$prev = $pagenum-1;
 	$pagenum++;
 
-	echo "<div class=\"bottomnav\"><a href=\"" . $siteurl . "/archive.php?pagenum=$prev\"><< back</a> ( <a href=\"" . $siteUrl . "\">home</a> ) <a href=\"" . $siteUrl  . "/archive.php?pagenum=$pagenum\">next >></a></div>";
+	echo "<div class=\"bottomnav\"><a href=\"" . $siteUrl . "/archive.php?pagenum=$prev\"><< back</a> ( <a href=\"" . $siteUrl . "\">home</a> ) <a href=\"" . $siteUrl  . "/archive.php?pagenum=$pagenum\">next >></a></div>";
 ?>
 
 <?php
