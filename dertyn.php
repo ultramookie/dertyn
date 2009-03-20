@@ -143,7 +143,7 @@ function printComment($cid,$pid) {
 	while ($row = mysql_fetch_array($result)) {
 		$name = $row['name'];
 		$url = $row['url'];
-		$comment =  nl2br($row['comment']);
+		$comment =  rn2html($row['comment']);
 		$date = $row['date'];
 
 		if($pid > 0) {
@@ -464,7 +464,7 @@ function printEntry($id,$single) {
 
 	$commentCount = getNumComments($pid);
 
-	$text = $row['body'];
+	$text = rn2html($row['body']);
 
 	echo "\n";
         echo "<p class=\"subject\"><a href=\"" . $permalink . "\">" . $row['subject'] . "</a></p>";
@@ -1027,3 +1027,12 @@ function sendRandomPass($email) {
 		echo("<p>Message delivery failed...</p>");
 	}
 }
+
+function rn2html($content)
+{
+	$content = "<p>" . str_replace("\r\n", "<br/>", $content) . "";
+	$content = "" . str_replace("<br/><br/>", "</p><p>", $content) . "";
+	return "" . str_replace("<br/><li>", "<li>", $content) . "";
+}
+
+?>
