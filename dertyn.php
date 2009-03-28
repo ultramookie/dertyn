@@ -494,6 +494,7 @@ function printAtom($num) {
 		$permalink = makePermaLink($row['id']);
 		$shortBody = strip_tags(substr($row['body'],0,$rssSummaryLen));
 		$shortBody = ereg_replace("&nbsp;|\n|\r|\t","",$shortBody);
+		$shortBody = htmlspecialchars($shortBody,ENT_COMPAT,UTF-8);
 		$cleanbody = ereg_replace("&nbsp;|\n|\r|\t","",$row['body']);
 		echo "\t<entry>\n";
 		echo "\t\t<title>" . $row['subject'] . "</title>\n";
@@ -517,6 +518,7 @@ function printRSS($num) {
 		$permalink = makePermaLink($row['id']);
 		$shortBody = strip_tags(substr($row['body'],0,$rssSummaryLen));
 		$shortBody = ereg_replace("&nbsp;|\n|\r|\t","",$shortBody);
+		$shortBody = htmlspecialchars($shortBody,ENT_COMPAT,UTF-8);
 		$cleanbody = ereg_replace("&nbsp;|\n|\r|\t","",$row['body']);
 		echo "\t<item>\n";
 		echo "\t\t<title>" . $row['subject'] . "</title>\n";
