@@ -143,7 +143,7 @@ function printComment($cid,$pid) {
 	while ($row = mysql_fetch_array($result)) {
 		$name = $row['name'];
 		$url = $row['url'];
-		$comment =  rn2html($row['comment']);
+		$comment =  rn2html(stripslashes($row['comment']));
 		$date = $row['date'];
 
 		if($pid > 0) {
