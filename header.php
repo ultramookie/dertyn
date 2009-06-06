@@ -40,7 +40,12 @@ $pagenum = 1;
 
 <!-- YUI for Editor -->
 <!-- Skin CSS file -->
-<link rel="stylesheet" type="text/css" href="<?php echo "$siteurl"; ?>/yui/build/assets/skins/sam/skin.css">
+<!-- Only need when user is logged in -->
+<?php
+if(checkCookie()) {
+	echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"$siteurl/yui/build/assets/skins/sam/skin.css\">";
+}
+?>
 <!-- End YUI -->
 
 </head>
