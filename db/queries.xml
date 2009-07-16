@@ -284,7 +284,7 @@
 			SELECT	*
 			FROM	user
 			WHERE	name
-			LIKE	:user AND pass LIKE :epass
+			=	:user AND pass = :epass
 		]]>
 	</query>
 	
@@ -292,7 +292,7 @@
 		<![CDATA[
 			UPDATE	user
 			SET	cookie=:login
-			WHERE	name LIKE :user
+			WHERE	name = :user
 		]]>
 	</query>
 
@@ -301,7 +301,7 @@
 			UPDATE	user
 			SET	pass=:epass
 			WHERE	name
-			LIKE	:user
+			=	:user
 		]]>
 	</query>
 	
@@ -326,7 +326,7 @@
 		<![CDATA[
 			UPDATE	user
 			SET	pass=:pass
-			WHERE	email like :email
+			WHERE	email = :email
 		]]>
 	</query>
 	
