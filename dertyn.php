@@ -921,7 +921,7 @@ function showPasswordChangeform() {
 
 function changePass($user,$pass) {
 	$email = getEmail();
-        $salt = substr("$email",0,2);
+        $salt = substr("$user",0,2);
         $epass = crypt($pass,$salt);
 
 	$params = array( 
@@ -956,7 +956,7 @@ function changeSettings($site,$url,$realname,$numberIndex,$numberRSS,$rewrite,$t
 }
 
 function addUser($user,$email,$realname,$pass,$site,$url,$tagline) {
-        $salt = substr("$email",0,2);
+        $salt = substr("$user",0,2);
         $epass = crypt($pass,$salt);
 
 	$query = "select * from user";
@@ -1005,8 +1005,14 @@ function addUser($user,$email,$realname,$pass,$site,$url,$tagline) {
 }
 
 function sendRandomPass($email) {
+        $query = "select user from user where email='$email'";
+        $status = mysql_query($query);
+        $row = mysql_fetch_array($status);
+
+        $user = $row['user'];
+
         $pass = generateCode();
-	$salt = substr("$email",0,2);
+	$salt = substr("$user",0,2);
 	$epass = crypt($pass,$salt);
 
 	$email = mysql_real_escape_string($email);
