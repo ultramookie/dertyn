@@ -1005,11 +1005,11 @@ function addUser($user,$email,$realname,$pass,$site,$url,$tagline) {
 }
 
 function sendRandomPass($email) {
-        $query = "select user from user where email='$email'";
+        $query = "select name from user where email='$email'";
         $status = mysql_query($query);
         $row = mysql_fetch_array($status);
 
-        $user = $row['user'];
+        $user = $row['name'];
 
         $pass = generateCode();
 	$salt = substr("$user",0,2);
