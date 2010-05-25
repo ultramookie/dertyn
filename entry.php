@@ -14,10 +14,12 @@ if($_POST['checksubmit']) {
 	$pid = strip_tags($_POST['pid']);
 	$ipaddy = strip_tags($_POST['ipaddy']);
 	$key = strip_tags($_POST['key']);
+	$sig = strip_tags($_POST['sig']);
 	$mynum = strip_tags($_POST['mynum']);
 	$id = $pid;
 
 	$realkey = crypt($mynum,$_SERVER['REMOTE_ADDR']);
+	$realsig = crypt($id,$realkey);
 
 	$errmsg = "name " . $name . ", url " . $url . ", comment " . $comment . ", captcha " . $captcha . ", pid " . $pid;
 
@@ -36,6 +38,10 @@ if($_POST['checksubmit']) {
 	} else if ($key != $realkey) {
 		echo "<br /><b>try your addition again.</b>";
 		logerr("addition was wrong " . $errmsg, "entry");
+		$commented = 1;
+	} else if ($sig != $realsig) {
+		echo "<br /><b>there's something wrong. most likely, you're a bot.</b>";
+		logerr("bad sig " . $errmsg, "entry");
 		$commented = 1;
 	} else {
 		$commented = 1;
