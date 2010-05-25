@@ -200,14 +200,13 @@ function printCommentForm($id,$name,$url,$comment) {
 	$url = mysql_real_escape_string($url);
 	$comment = mysql_real_escape_string($comment);
 	
-	$front = "";
-	$back = "";
+	$first = rand(0,256);
+	$second = rand(0,256);
 
-	if (date('s') % 2) {
-		$front = "xyz";
-	} else {
-		$back = "xyz";
-	}
+	$total = $first + $second;
+
+
+	$key = crypt($total,$_SERVER['REMOTE_ADDR']);
 
         echo "<form action=\"";
         echo $_SERVER['PHP_SELF'];
@@ -215,7 +214,7 @@ function printCommentForm($id,$name,$url,$comment) {
         echo " method=\"post\">";
         echo "Name:<br /><input type=\"text\" name=\"name\" value=\"$name\" /><br />\n";
         echo "URL:<br /><input type=\"text\" name=\"url\" value=\"$url\" /><br />\n";
-	echo "Remove the \"xyz\":<br /><input type=\"text\" name=\"site\" value=\"" . $front . $sitename . $back . "\" /><br />\n";
+	echo "What is <b>$first + $second</b> ?:<br /><input type=\"text\" name=\"mynum\" /><br />\n";
 	echo "Comment: <br />\n";
 	echo "<textarea cols=\"50\" rows=\"10\" name=\"comment\">$comment</textarea>\n";
 	echo "<p class=\"noseeum\">\n";
@@ -226,6 +225,7 @@ function printCommentForm($id,$name,$url,$comment) {
         echo "<input type=\"hidden\" name=\"pid\" value=\"$id\">\n";
         echo "<input type=\"hidden\" name=\"ipaddy\" value=\"" . $_SERVER['REMOTE_ADDR'] . "\">\n";
         echo "<input type=\"hidden\" name=\"checksubmit\" value=\"1\">\n";
+	echo "<input type=\"hidden\" name=\"key\" value=\"$key\">\n";
 	echo "<br />";
         echo "<input type=\"submit\" name=\"submit\" value=\"post\" id=\"submitbutton1\">\n";
         echo "</form>";

@@ -13,8 +13,11 @@ if($_POST['checksubmit']) {
 	$comment = strip_tags($_POST['comment']);
 	$pid = strip_tags($_POST['pid']);
 	$ipaddy = strip_tags($_POST['ipaddy']);
-	$site = trim(strip_tags($_POST['site']));
+	$key = strip_tags($_POST['key']);
+	$mynum = strip_tags($_POST['mynum']);
 	$id = $pid;
+
+	$realkey = crypt($mynum,$_SERVER['REMOTE_ADDR']);
 
 	$errmsg = "name " . $name . ", url " . $url . ", comment " . $comment . ", captcha " . $captcha . ", pid " . $pid;
 
@@ -30,9 +33,9 @@ if($_POST['checksubmit']) {
 		echo "<br /><b>if you got nothing to say...</b>";
 		logerr("empty comment " . $errmsg, "entry");
 		$commented = 1;
-	} else if (strcmp($site,$sitename) != 0) {
-		echo "<br /><b>you failed to remove stuff from a field...</b>";
-		logerr("no sitename " . $errmsg, "entry");
+	} else if ($key != $realkey) {
+		echo "<br /><b>try your addition again.</b>";
+		logerr("addition was wrong " . $errmsg, "entry");
 		$commented = 1;
 	} else {
 		$commented = 1;
