@@ -205,8 +205,10 @@ function printCommentForm($id,$name,$url,$comment) {
 
 	$total = $first + $second;
 
+	$time = time();
+
 	$key = crypt($total,$_SERVER['REMOTE_ADDR']);
-	$sig = crypt($id,$key);
+	$sig = crypt($id,$time);
 
         echo "<form action=\"";
         echo $_SERVER['PHP_SELF'];
@@ -226,6 +228,7 @@ function printCommentForm($id,$name,$url,$comment) {
         echo "<input type=\"hidden\" name=\"ipaddy\" value=\"" . $_SERVER['REMOTE_ADDR'] . "\">\n";
         echo "<input type=\"hidden\" name=\"checksubmit\" value=\"1\">\n";
 	echo "<input type=\"hidden\" name=\"key\" value=\"$key\">\n";
+	echo "<input type=\"hidden\" name=\"time\" value=\"$time\">\n";
 	echo "<input type=\"hidden\" name=\"sig\" value=\"$sig\">\n";
 	echo "<br />";
         echo "<input type=\"submit\" name=\"submit\" value=\"post\" id=\"submitbutton1\">\n";

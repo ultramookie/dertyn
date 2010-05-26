@@ -15,11 +15,15 @@ if($_POST['checksubmit']) {
 	$ipaddy = strip_tags($_POST['ipaddy']);
 	$key = strip_tags($_POST['key']);
 	$sig = strip_tags($_POST['sig']);
+	$time = strip_tags($_POST['time']);
 	$mynum = strip_tags($_POST['mynum']);
 	$id = $pid;
+	$nowtime = time();
 
 	$realkey = crypt($mynum,$_SERVER['REMOTE_ADDR']);
-	$realsig = crypt($id,$realkey);
+	$realsig = crypt($id,$time);
+
+	$timediff = $nowtime - $time;
 
 	$errmsg = "name " . $name . ", url " . $url . ", comment " . $comment . ", captcha " . $captcha . ", pid " . $pid;
 
@@ -39,9 +43,9 @@ if($_POST['checksubmit']) {
 		echo "<br /><b>try your addition again.</b>";
 		logerr("addition was wrong " . $errmsg, "entry");
 		$commented = 1;
-	} else if ($sig != $realsig) {
-		echo "<br /><b>there's something wrong. most likely, you're a bot.</b>";
-		logerr("bad sig " . $errmsg, "entry");
+	} else if ( ($sig != $realsig) || ($timediff < 20) ) {
+		echo "<br /><b>there's something wrong with the time. most likely, you're a bot and you submited this in less than 20 seconds. c'mon!</b>";
+		logerr("bad time " . $errmsg, "entry");
 		$commented = 1;
 	} else {
 		$commented = 1;
