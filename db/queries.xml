@@ -338,6 +338,59 @@
 		]]>
 	</query>
 
+  <!-- Table: spam -->
+	<query name="spam.showPatternform">
+		<![CDATA[
+			SELECT	patternid,
+				pattern,
+				count
+			FROM	spam
+			ORDER BY
+				pattern
+		]]>
+	</query>
+	<query name="spam.addPattern">
+		<![CDATA[
+			SELECT 	pattern
+			FROM	spam
+			WHERE	pattern = :pattern
+		]]>
+	</query>
+	<query name="spam.addPatternGo">
+		<![CDATA[
+			INSERT INTO	spam	( pattern,
+						  entrytime
+						)
+			VALUES
+						( :pattern,
+						  NOW()
+						)
+		]]>
+	</query>
+	<query name="spam.deletePattern">
+		<![CDATA[
+			DELETE
+			FROM	spam
+			WHERE	patternid=:patternid
+		]]>
+	</query>
+	<query name="spam.patternCheck">
+		<![CDATA[
+			SELECT
+				patternid,
+				pattern,
+				count
+			FROM	spam
+		]]>
+	</query>
+	<query name="spam.patternCheckUpdate">
+		<![CDATA[
+			UPDATE	spam
+			SET	count=:count
+			WHERE	patternid=:patternid
+		]]>
+	</query>
+ 
   <!-- Table: site -->
 	<query name="site.changeSettings">
 		<![CDATA[

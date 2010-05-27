@@ -19,6 +19,7 @@ if($_POST['checksubmit']) {
 	$mynum = strip_tags($_POST['mynum']);
 	$id = $pid;
 	$nowtime = time();
+	$patterncheck = patternCheck($url);
 
 	$realkey = crypt($mynum,$_SERVER['REMOTE_ADDR']);
 	$realsig = crypt($id,$time);
@@ -31,6 +32,13 @@ if($_POST['checksubmit']) {
 		echo "<br /><b>go away spammer!</b>";
 		$name = $comment = "i am a stupid spammer from ip address $ipaddy.";
 		logerr("spammer " . $errmsg, "entry");
+	} else if ($patterncheck > 0) {
+		echo "<br /><b>go away spammer, your url is not welcome here!</b>";
+		logerr("pattern dumped " . $errmsg, "entry");
+		$url = '';
+		$name = '';
+		$comment = '';
+		$commented = 1;
 	} else if (strlen($name) < 1) {
 		echo "<br /><b>need to enter a name please</b>";
 		logerr("no name " . $errmsg, "entry");

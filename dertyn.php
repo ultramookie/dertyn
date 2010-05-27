@@ -55,6 +55,105 @@ function showUpdateForm($body) {
         echo "</form>";
 }
 
+function showPatternform() {
+
+        echo "<ul>";
+
+	$params = array(
+			'patternid' => $patternid,
+			'pattern' => $pattern,
+			'count' => $count
+		);
+
+        $status = query("spam.showPatternform",$params);
+
+        while ($row = mysql_fetch_array($status)) {
+                $pattern = $row['pattern'];
+                $patternid = $row['patternid'];
+                $count = $row['count'];
+                print "<li>$pattern [$count] [<a href=\"patterndel.php?patternid=$patternid\">d</a>]</li>";
+        }
+        echo "</ul>";
+}
+
+function showPatternAddform() {
+        echo "<p><b>add a pattern:</b></p>";
+        echo "<form action=\"";
+        echo $_SERVER['PHP_SELF'];
+        echo "\"";
+        echo " method=\"post\">";
+        echo "pattern: <input type=\"text\" name=\"pattern\" \"><br />";
+        echo "<input type=\"hidden\" name=\"checksubmit\" value=\"1\">";
+        echo "<input type=\"submit\" name=\"submit\" value=\"update\">";
+        echo "</form>";
+}
+
+function addPattern($pattern) {
+
+        $pattern = mysql_real_escape_string($pattern);
+
+	$params = array(
+			'pattern' => $pattern
+		);
+
+        $status = query('spam.addPattern',$params);
+
+        if (mysql_num_rows($status) >= 1) {
+                echo "already have a pattern named $pattern!";
+        } else {
+		$params = array(
+				'pattern' => $pattern,
+				'entrytime' => $entrytime
+			);
+
+                $result = query('spam.addPatternGo',$params);
+                echo "$pattern has been added!";
+        }
+}
+
+function deletePattern($patternid) {
+	$params = array(
+			'patternid' => $patternid
+		);
+	$result = query('spam.deletePattern',$params);
+
+	echo "pattern deleted.";
+}
+
+function patternCheck($url) {
+	$patternmatchcount = 0;
+
+	$params = array(
+			'patternid' => $patternid,
+			'pattern' => $pattern,
+			'count' => $count
+		);
+
+	$result = query('spam.patternCheck',$params);
+
+        while ($row = mysql_fetch_array($result)) {
+                $patternid = $row['patternid'];
+                $pattern = $row['pattern'];
+		$count = $row['count'];
+
+		$pos = strpos($url,$pattern);
+
+		if ($pos === false) {
+		} else {
+			$patternmatchcount++;
+			$count++;
+			$params = array(
+					'count' => $count,
+					'patternid' => $patternid
+				);
+
+			$countresult =query('spam.patternCheckUpdate',$params);
+		}
+        }
+
+	return($patternmatchcount);
+}
+
 function printSearchForm($numEntries,$pagenum) {
 	$siteurl = getSiteUrl();
 	echo "<p>\n";
@@ -153,7 +252,7 @@ function printComment($cid,$pid) {
 		}
 		echo "<p class=\"comment\" id=\"$cid\">$comment</p>\n";
 		if(strlen($url) > 0) {
-			echo "<p class=\"commenter\"><a href=\"$url\" rel=\"nofollow\">$name</a></p>";
+			echo "<p class=\"commenter\"><a href=\"http://google.com/url?sa=D&q=$url\" rel=\"nofollow\">$name</a></p>";
 		} else {
 			echo "<p class=\"commenter\">$name</p>";
 		}
@@ -999,6 +1098,9 @@ function addUser($user,$email,$realname,$pass,$site,$url,$tagline) {
 		$status = mysql_query($query);
 		
 		$query = "create table site ( name varchar(160) NOT NULL, url varchar(160) NOT NULL, indexNum int NOT NULL, rssNum int NOT NULL, rewrite int NOT NULL, tagline varchar(160) ); ";
+		$status = mysql_query($query);
+
+		$query = "create table spam ( patternid int NOT NULL AUTO_INCREMENT, entrytime DATETIME NOT NULL, pattern varchar(160) NOT NULL, count int DEFAULT '0', PRIMARY KEY (patternid) ); ";
 		$status = mysql_query($query);
 	
 		$result = query("user.initialInsert",$params);

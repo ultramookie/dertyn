@@ -20,6 +20,7 @@
 		echo "<li><a href=\"$siteurl/post.php\">new post</a></li>\n";
 		echo "<li><a href=\"$siteurl/drafts.php\">drafts</a></li>\n";
 		echo "<li><a href=\"$siturl/usermod.php\">password</a></li>\n";
+		echo "<li><a href=\"$siturl/patternlist.php\">url blacklist</a></li>\n";
 		echo "<li><a href=\"$siteurl/settings.php\">settings</a></li>\n";
 		echo "<li><a href=\"$siteurl/logout.php\">logout</a></li>\n";
 		echo "</ul>\n";
