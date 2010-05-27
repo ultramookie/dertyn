@@ -30,6 +30,9 @@ INSTALL INSTRUCTIONS
 
 	login.
 
+	(remove .htaccess if you don't have mod_rewrite installed or working,
+	 otherwise your default install will look *very* strange!)
+
 	enjoy.
 
 CREDITS
@@ -45,6 +48,9 @@ CREDITS
 	wonko (http://www.wonko.com).  dertyn also employs a technique for
 	stripping sql stuff out of functions in which external input is needed.
 	this technique was lifted from wonko (ryan grove) also.
+
+	dertyn uses the "google link killer" technique that was an idea
+	given to mookie from jrconlin (http://jrconlin.com).
 
 DEVELOPMENT AND SUPPORT
 	find dertyn development and support at:
