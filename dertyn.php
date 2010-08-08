@@ -644,10 +644,10 @@ function printCommentsRSS($num) {
 
         while ($row = mysql_fetch_array($result)) {
 		$permalink = makePermaLink($row['pid']);
-		$shortComment = strip_tags(substr($row['comment'],0,$rssSummaryLen));
+		$shortComment = htmlentities(strip_tags(substr($row['comment'],0,$rssSummaryLen)),ENT_QUOTES);
 		$subjComment = strip_tags(substr($row['comment'],0,$subjectLen));
 		$shortBody = ereg_replace("&nbsp;|\n|\r|\t","",$shortBody);
-		$cleanbody = ereg_replace("&nbsp;|\n|\r|\t","",$row['body']);
+		$cleanbody = htmlentities(ereg_replace("&nbsp;|\n|\r|\t","",$row['body']),ENT_QUOTES);
 		echo "\t<item>\n";
 		echo "\t\t<title>$subjComment</title>\n";
 		echo "\t\t<pubDate>" . $row['date'] . " PST</pubDate>\n";
