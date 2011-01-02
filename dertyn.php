@@ -1144,7 +1144,7 @@ function sendRandomPass($email) {
 
 function rn2html($content)
 {
-	$content = "<p>" . str_replace("\r\n", "<br/>", $content) . "";
+	// $content = "<p>" . str_replace("\r\n", "<br/>", $content) . "";
 	$content = "" . str_replace("<br/><br/>", "</p><p>", $content) . "";
 	return "" . str_replace("<br/><li>", "<li>", $content) . "";
 }
