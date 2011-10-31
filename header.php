@@ -21,6 +21,7 @@ $pagenum = 1;
 	if($id) {
 		$subject = getSubject($pid);
 		$title = "$subject - $sitename";
+                $description = getArticleDesc($pid);
 	} else {
 		$title = $sitename;
 	}

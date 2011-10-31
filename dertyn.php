@@ -500,6 +500,21 @@ function getPid($slug) {
 	return $row['id'];
 }
 
+function getArticleDesc($id) {
+
+	$params = array( 'id' => $id ); 
+
+	$result = query("main.getArticleDesc",$params);
+
+	$row = mysql_fetch_array($result);
+
+	$shortdesc = mysql_real_escape_string(strip_tags(substr($row['body'],0,251)));
+
+	$returndesc = $shortdesc . "...";
+
+	return $returndesc;
+}
+
 function makePermaLink($id,$single) {
 
 	$siteurl = getSiteUrl();
