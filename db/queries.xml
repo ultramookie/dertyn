@@ -1,15 +1,6 @@
 <?xml version="1.0"?>
 <queries>
   <!-- Table: main -->
-	<query name="main.showSearchResults">
-		<![CDATA[
-			SELECT	 id
-			FROM	 main
-			WHERE MATCH (subject,body) AGAINST (:search) AND published = '1'
-			ORDER BY entrytime DESC LIMIT :offset,:num
-		]]>
-	</query>
-
 	<query name="main.showEditForm">
 		<![CDATA[
 			SELECT	subject,
@@ -139,6 +130,14 @@
 		]]>
 	</query>
 	
+	<query name="main.getArticleDesc">
+		<![CDATA[
+			SELECT	body
+			FROM	main
+			WHERE	id = :id
+		]]>
+	</query>
+	
 	<query name="main.printEntry">
 		<![CDATA[
 			SELECT	id,
@@ -191,90 +190,6 @@
 			DELETE
 			FROM	main
 			WHERE	id=:id
-		]]>
-	</query>
-
-  <!-- Table: comments -->
-	<query name="comments.printComment">
-		<![CDATA[
-			SELECT  name,
-				url,
-				comment,
-				date_format(commenttime, '%M %e, %Y @ %h:%i %p') AS date
-			FROM 	comments
-			WHERE 	cid = :cid
-		]]>
-	</query>
-
-	<query name="comments.printComments">
-		<![CDATA[
-			SELECT 	cid
-			FROM 	comments
-			WHERE 	pid = :pid
-			ORDER BY commenttime ASC
-		]]>
-	</query>
-
-	<query name="comments.addComment">
-		<![CDATA[
-			INSERT INTO comments (
-						name,
-						url,
-						comment,
-						ip,
-						pid,
-						commenttime
-						)
-			VALUES (
-						:name,
-						:url,
-						:comment,
-						:ipaddy,
-						:pid,
-						NOW()
-				)
-		]]>
-	</query>
-	
-	<query name="comments.showRecentComments">
-		<![CDATA[
-			SELECT 	cid,
-				pid
-			FROM	comments
-			ORDER BY commenttime DESC
-			LIMIT 	:offset,
-				:num
-		]]>
-	</query>
-
-	<query name="comments.printCommentsRSS">
-		<![CDATA[
-			SELECT	cid,
-				pid,
-				name,
-				url,
-				comment,
-				date_format(commenttime, '%a, %d %b %Y %H:%i:%s') as date
-			FROM	comments
-			ORDER BY commenttime DESC
-			LIMIT	:num
-		]]>
-	</query>
-	
-	<query name="comments.getNumComments">
-		<![CDATA[
-			SELECT	count(cid)
-			FROM	comments
-			WHERE	pid = :pid
-		]]>
-	</query>
-
-
-	<query name="comments.deleteEntry">
-		<![CDATA[
-			DELETE
-			FROM	comments
-			WHERE	cid=:id
 		]]>
 	</query>
 
@@ -338,59 +253,6 @@
 		]]>
 	</query>
 
-  <!-- Table: spam -->
-	<query name="spam.showPatternform">
-		<![CDATA[
-			SELECT	patternid,
-				pattern,
-				count
-			FROM	spam
-			ORDER BY
-				pattern
-		]]>
-	</query>
-	<query name="spam.addPattern">
-		<![CDATA[
-			SELECT 	pattern
-			FROM	spam
-			WHERE	pattern = :pattern
-		]]>
-	</query>
-	<query name="spam.addPatternGo">
-		<![CDATA[
-			INSERT INTO	spam	( pattern,
-						  entrytime
-						)
-			VALUES
-						( :pattern,
-						  NOW()
-						)
-		]]>
-	</query>
-	<query name="spam.deletePattern">
-		<![CDATA[
-			DELETE
-			FROM	spam
-			WHERE	patternid=:patternid
-		]]>
-	</query>
-	<query name="spam.patternCheck">
-		<![CDATA[
-			SELECT
-				patternid,
-				pattern,
-				count
-			FROM	spam
-		]]>
-	</query>
-	<query name="spam.patternCheckUpdate">
-		<![CDATA[
-			UPDATE	spam
-			SET	count=:count
-			WHERE	patternid=:patternid
-		]]>
-	</query>
- 
   <!-- Table: site -->
 	<query name="site.changeSettings">
 		<![CDATA[

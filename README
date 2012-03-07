@@ -33,6 +33,10 @@ INSTALL INSTRUCTIONS
 	(remove .htaccess if you don't have mod_rewrite installed or working,
 	 otherwise your default install will look *very* strange!)
 
+	if you want commenting, it has been taken out of the code. please use
+        an outside commenting system like disqus (http://www.disqus.com) if you 
+        want commenting. add the disqus code to the entry.php file.
+
 	enjoy.
 
 CREDITS

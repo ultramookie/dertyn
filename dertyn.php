@@ -55,118 +55,6 @@ function showUpdateForm($body) {
         echo "</form>";
 }
 
-function showPatternform() {
-
-        echo "<ul>";
-
-	$params = array(
-			'patternid' => $patternid,
-			'pattern' => $pattern,
-			'count' => $count
-		);
-
-        $status = query("spam.showPatternform",$params);
-
-        while ($row = mysql_fetch_array($status)) {
-                $pattern = $row['pattern'];
-                $patternid = $row['patternid'];
-                $count = $row['count'];
-                print "<li>$pattern [$count] [<a href=\"patterndel.php?patternid=$patternid\">d</a>]</li>";
-        }
-        echo "</ul>";
-}
-
-function showPatternAddform() {
-        echo "<p><b>add a pattern:</b></p>";
-        echo "<form action=\"";
-        echo $_SERVER['PHP_SELF'];
-        echo "\"";
-        echo " method=\"post\">";
-        echo "pattern: <input type=\"text\" name=\"pattern\" \"><br />";
-        echo "<input type=\"hidden\" name=\"checksubmit\" value=\"1\">";
-        echo "<input type=\"submit\" name=\"submit\" value=\"update\">";
-        echo "</form>";
-}
-
-function addPattern($pattern) {
-
-        $pattern = mysql_real_escape_string($pattern);
-
-	$params = array(
-			'pattern' => $pattern
-		);
-
-        $status = query('spam.addPattern',$params);
-
-        if (mysql_num_rows($status) >= 1) {
-                echo "already have a pattern named $pattern!";
-        } else {
-		$params = array(
-				'pattern' => $pattern,
-				'entrytime' => $entrytime
-			);
-
-                $result = query('spam.addPatternGo',$params);
-                echo "$pattern has been added!";
-        }
-}
-
-function deletePattern($patternid) {
-	$params = array(
-			'patternid' => $patternid
-		);
-	$result = query('spam.deletePattern',$params);
-
-	echo "pattern deleted.";
-}
-
-function patternCheck($url) {
-	$patternmatchcount = 0;
-
-	$params = array(
-			'patternid' => $patternid,
-			'pattern' => $pattern,
-			'count' => $count
-		);
-
-	$result = query('spam.patternCheck',$params);
-
-        while ($row = mysql_fetch_array($result)) {
-                $patternid = $row['patternid'];
-                $pattern = $row['pattern'];
-		$count = $row['count'];
-
-		$pos = strpos($url,$pattern);
-
-		if ($pos === false) {
-		} else {
-			$patternmatchcount++;
-			$count++;
-			$params = array(
-					'count' => $count,
-					'patternid' => $patternid
-				);
-
-			$countresult =query('spam.patternCheckUpdate',$params);
-		}
-        }
-
-	return($patternmatchcount);
-}
-
-function printSearchForm($numEntries,$pagenum) {
-	$siteurl = getSiteUrl();
-	echo "<p>\n";
-        echo "<form action=\"$siteurl/search.php\" method=\"get\">";
-        echo "<input type=\"text\" name=\"search\" />";
-        echo "<input type=\"hidden\" name=\"numEntries\" value=\"$numEntries\">";
-        echo "<input type=\"hidden\" name=\"pagenum\" value=\"$pagenum\">";
-        echo "<input type=\"hidden\" name=\"checksubmit\" value=\"1\">";
-        echo "<input type=\"submit\" value=\"find\" />";
-        echo "</form>";
-	echo "</p>\n";
-}
-
 function query($name,$params = array()) {
 
 	// This function is based on the work of Ryan Grove.
@@ -201,137 +89,6 @@ function query($name,$params = array()) {
 	}
 
 	return mysql_query($sql);
-}
-
-function showSearchResults($num,$pnum,$search) {
-
-        if($pnum == 1) {
-                $offset = 0;
-        } else {
-                $offset = ($pnum - 1) * $num;
-        }
-
-	$params = array(
-			'num' => $num,
-			'offset' => $offset, 
-			'search' => $search
-	);
-
-	$result = query("main.showSearchResults",$params);
-
-	$numrows = mysql_num_rows($result);
-
-	if($numrows > 0) {
-        	while ($row = mysql_fetch_array($result)) {
-			printEntry($row['id']);
-       		}
-	} else {
-		echo "Search term $search not found.<br />";
-		printSearchForm();
-	}
-}
-
-function printComment($cid,$pid) {
-
-	$params = array( 'cid' => $cid );
-
-	$cid = strip_tags($cid);
-
-	$result = query("comments.printComment",$params);
-
-	while ($row = mysql_fetch_array($result)) {
-		$name = $row['name'];
-		$url = $row['url'];
-		$comment =  rn2html(stripslashes($row['comment']));
-		$date = $row['date'];
-
-		if($pid > 0) {
-			$permalink = makePermaLink($pid);
-			$subject = getSubject($pid);
-			echo "<p class=\"commentsubject\"><a href=\"$permalink#$cid\">$subject</a></p>";
-		}
-		echo "<p class=\"comment\" id=\"$cid\">$comment</p>\n";
-		if(strlen($url) > 0) {
-			echo "<p class=\"commenter\"><a href=\"http://google.com/url?sa=D&q=$url\" rel=\"nofollow\">$name</a></p>";
-		} else {
-			echo "<p class=\"commenter\">$name</p>";
-		}
-		echo "<p class=\"commentdate\">$date</p>";
-        	if(checkCookie()) {
-			echo "<a href=\"$siteurl/delete.php?number=$cid&type=comment\"><img src=\"$siteurl/page_delete.gif\" border=\"0\" /></a>";
-		}
-		echo "<hr />";
-	}
-}
-
-function printComments($pid) {
-
-	$params = array( 'pid' => $pid );
-	
-	$result = query("comments.printComments",$params);
-
-	while ($row = mysql_fetch_array($result)) {
-		$cid = $row['cid'];
-		printComment($cid);
-	}
-
-}
-
-function addComment($name,$url,$comment,$ipaddy,$pid) {
-
-	$params = array(
-			'name' => $name,
-			'url' => $url,
-			'comment' => $comment,
-			'ipaddy' => $ipaddy,
-			'pid' => $pid,
-			'site' => $site
-	);
-
-	$status = query("comments.addComment",$params);
-}
-
-function printCommentForm($id,$name,$url,$comment) {
-	$sitename = getSiteName();
-
-	$id = mysql_real_escape_string($id);
-	$name = mysql_real_escape_string($name);
-	$url = mysql_real_escape_string($url);
-	$comment = mysql_real_escape_string($comment);
-	
-	$first = rand(0,256);
-	$second = rand(0,256);
-
-	$total = $first + $second;
-
-	$time = time();
-
-	$key = crypt($total,$_SERVER['REMOTE_ADDR']);
-	$sig = crypt($id,$time);
-
-        echo "<form action=\"";
-        echo $_SERVER['PHP_SELF'];
-        echo "\"";
-        echo " method=\"post\">";
-        echo "Name:<br /><input type=\"text\" name=\"name\" value=\"$name\" /><br />\n";
-        echo "URL:<br /><input type=\"text\" name=\"url\" value=\"$url\" /><br />\n";
-	echo "What is <b>$first + $second</b> ?:<br /><input type=\"text\" name=\"mynum\" /><br />\n";
-	echo "Comment: <br />\n";
-	echo "<textarea cols=\"50\" rows=\"10\" name=\"comment\">$comment</textarea>\n";
-	echo "<p class=\"noseeum\">\n";
-	echo "Don't type anything here unless you're an evil robot:<br />\n";
-	echo "<input type=\"text\" id=\"captcha\" name=\"captcha\" maxlength=\"50\" />\n";
-	echo "<br /><br />\n";
-	echo "</p>\n";
-        echo "<input type=\"hidden\" name=\"pid\" value=\"$id\">\n";
-        echo "<input type=\"hidden\" name=\"ipaddy\" value=\"" . $_SERVER['REMOTE_ADDR'] . "\">\n";
-        echo "<input type=\"hidden\" name=\"checksubmit\" value=\"1\">\n";
-	echo "<input type=\"hidden\" name=\"key\" value=\"$key\">\n";
-	echo "<input type=\"hidden\" name=\"time\" value=\"$time\">\n";
-	echo "<input type=\"hidden\" name=\"sig\" value=\"$sig\">\n";
-	echo "<br />";
-        echo "<input type=\"submit\" name=\"submit\" value=\"post\" id=\"submitbutton1\">\n";
-        echo "</form>";
 }
 
 function showEditForm($id) {
@@ -469,26 +226,6 @@ function showEntriesArchive($num,$pnum) {
         }
 }
 
-function showRecentComments($num,$pnum) {
-
-        if($pnum == 1) {
-                $offset = 0;
-        } else {
-                $offset = ($pnum-1) * $num;
-        }
-	
-	$params = array(
-			'num' => $num,
-			'offset' => $offset
-		);
-
-        $result = query("comments.showRecentComments",$params);
-
-        while ($row = mysql_fetch_array($result)) {
-		printComment($row['cid'],$row['pid']);
-        }
-}
-
 function getPid($slug) {
 
 	$params = array( 'slug' => $slug ); 
@@ -580,18 +317,15 @@ function printEntry($id,$single) {
 
         $row = mysql_fetch_array($result);
 
-	$commentCount = getNumComments($pid);
-
 	$text = rn2html($row['body']);
 
 	echo "\n";
         echo "<p class=\"subject\"><a href=\"" . $permalink . "\">" . $row['subject'] . "</a></p>";
 	echo "\n";
-	echo "<p class=\"timedate\">" . strtolower($row['date']) . " : " . $realname . " : <a href=\"" . $permalink . "#comments\">$commentCount comment(s)</a>";
+	echo "<p class=\"timedate\">" . strtolower($row['date']) . " : " . $realname . "</a>";
 	if(checkCookie()) {
 		echo " <a href=\"$siteurl/edit.php?number=" . $row['id'] . "&type=rich\"><img src=\"$siteurl/page_edit.gif\" border=\"0\" title=\"edit with rich editor\" width=\"16\" height=\"16\" /></a> ";
 		echo "<a href=\"$siteurl/edit.php?number=" . $row['id'] . "&type=raw\"><img src=\"$siteurl/page_edit_code.gif\" border=\"0\" title=\"edit raw code\" width=\"16\" height=\"16\" /></a> ";
-		echo "<a href=\"$siteurl/delete.php?number=" . $row['id'] . "&type=post\"><img src=\"$siteurl/page_delete.gif\" border=\"0\" title=\"delete entry and all comments\" width=\"16\" height=\"16\" /></a> ";
 	}
 	echo "</p>";
 	echo "\n";
@@ -645,31 +379,6 @@ function printRSS($num) {
 		echo "\t\t<content:encoded><![CDATA[" . $cleanbody . "]]></content:encoded>\n";
 		echo "\t\t<guid>$permalink</guid>\n";
 		echo "\t\t<link>$permalink</link>\n";
-		echo "\t</item>\n";
-        }
-}
-
-function printCommentsRSS($num) {
-	$rssSummaryLen = 1024;
-	$subjectLen = 50;
-
-	$params = array( 'num' => $num ); 
-
-	$result = query("comments.printCommentsRSS",$params);
-
-        while ($row = mysql_fetch_array($result)) {
-		$permalink = makePermaLink($row['pid']);
-		$shortComment = htmlentities(strip_tags(substr($row['comment'],0,$rssSummaryLen)),ENT_QUOTES);
-		$subjComment = strip_tags(substr($row['comment'],0,$subjectLen));
-		$shortBody = ereg_replace("&nbsp;|\n|\r|\t","",$shortBody);
-		$cleanbody = htmlentities(ereg_replace("&nbsp;|\n|\r|\t","",$row['body']),ENT_QUOTES);
-		echo "\t<item>\n";
-		echo "\t\t<title>$subjComment</title>\n";
-		echo "\t\t<pubDate>" . $row['date'] . " PST</pubDate>\n";
-		echo "\t\t<description>$shortComment..</description>\n";
-		echo "\t\t<content:encoded><![CDATA[" . $cleanbody . "]]></content:encoded>\n";
-		echo "\t\t<guid>$permalink#" . $row['cid'] . "</guid>\n";
-		echo "\t\t<link>$permalink#" . $row['cid'] . "</link>\n";
 		echo "\t</item>\n";
         }
 }
@@ -835,26 +544,6 @@ function getRssNum() {
         return($row['rssNum']);
 }
 
-function getNumComments($pid) {
-
-	$params = array( 'pid' => $pid ); 
-
-	$result = query("comments.getNumComments",$params);
-
-        $row = mysql_fetch_array($result);
-
-	return($row['count(cid)']);
-}
-
-function getTotalNumComments() {
-	$query = "select count(cid) from comments";
-	$result = mysql_query($query);
-
-        $row = mysql_fetch_array($result);
-
-	return($row['count(cid)']);
-}
-
 function setLoginCookie($user) {
 		$secret = getSecret();
                 $login = sha1($user . $secret);
@@ -996,18 +685,6 @@ function deleteEntry($id,$type) {
 		echo "post " . $id . " deleted!";
 	
 		$params = array( 'pid' => $id );
-	
-		$result = query("comments.printComments",$params);
-
-		while ($row = mysql_fetch_array($result)) {
-			$cid = $row['cid'];
-			echo "<br />removing related comment...<br />";
-			deleteEntry($cid,"comment");
-		}
-
-	} else if (ereg("^comment",$type)) {
-		$result = query("comments.deleteEntry",$params);
-		echo "comment " . $id . " deleted!";
 	}
 }
 
@@ -1109,15 +786,9 @@ function addUser($user,$email,$realname,$pass,$site,$url,$tagline) {
 		$query = "create table main ( id int NOT NULL AUTO_INCREMENT, entrytime DATETIME NOT NULL, subject varchar(160) NOT NULL, body MEDIUMTEXT, slug varchar(160), published int DEFAULT '0', PRIMARY KEY (id), FULLTEXT(subject,body)); ";
 		$status = mysql_query($query);
 		
-		$query = "create table comments ( cid int NOT NULL AUTO_INCREMENT, pid int NOT NULL, commenttime DATETIME NOT NULL, ip varchar(16), name varchar(40), url varchar(100), comment MEDIUMTEXT, PRIMARY KEY (cid)); ";
-		$status = mysql_query($query);
-		
 		$query = "create table site ( name varchar(160) NOT NULL, url varchar(160) NOT NULL, indexNum int NOT NULL, rssNum int NOT NULL, rewrite int NOT NULL, tagline varchar(160) ); ";
 		$status = mysql_query($query);
 
-		$query = "create table spam ( patternid int NOT NULL AUTO_INCREMENT, entrytime DATETIME NOT NULL, pattern varchar(160) NOT NULL, count int DEFAULT '0', PRIMARY KEY (patternid) ); ";
-		$status = mysql_query($query);
-	
 		$result = query("user.initialInsert",$params);
 		$result = query("site.initialInsert",$params);
 

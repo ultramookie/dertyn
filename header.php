@@ -5,7 +5,6 @@ include_once("dertyn.php");
 $siteurl = getSiteUrl();
 $tagline = getTagline();
 $rewriteCheck = getrewriteCheck();
-$totalComments = getTotalNumComments();
 
 $id = $_GET['id'];
 
