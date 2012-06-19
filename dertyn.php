@@ -247,7 +247,7 @@ function getArticleDesc($id) {
 
 	$shortdesc = mysql_real_escape_string(strip_tags(substr($row['body'],0,251)));
 
-	$returndesc = $shortdesc . "...";
+	$returndesc = stripslashes($shortdesc) . "...";
 
 	return $returndesc;
 }
