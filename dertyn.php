@@ -326,6 +326,7 @@ function printEntry($id,$single) {
 	if(checkCookie()) {
 		echo " <a href=\"$siteurl/edit.php?number=" . $row['id'] . "&type=rich\"><img src=\"$siteurl/page_edit.gif\" border=\"0\" title=\"edit with rich editor\" width=\"16\" height=\"16\" /></a> ";
 		echo "<a href=\"$siteurl/edit.php?number=" . $row['id'] . "&type=raw\"><img src=\"$siteurl/page_edit_code.gif\" border=\"0\" title=\"edit raw code\" width=\"16\" height=\"16\" /></a> ";
+		echo "<a href=\"$siteurl/delete.php?number=" . $row['id'] . "&type=post\"><img src=\"$siteurl/page_delete.gif\" border=\"0\" title=\"delete entry and all comments\" width=\"16\" height=\"16\" /></a> ";
 	}
 	echo "</p>";
 	echo "\n";
