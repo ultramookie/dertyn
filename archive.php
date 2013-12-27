@@ -4,6 +4,8 @@
 
 <?php
 
+	$indexNum = getIndexNum();
+	$numOfEntries = getNumEntries();
 	$numEntries = getIndexNum();
 	$siteUrl = getSiteUrl();
 
@@ -23,7 +25,14 @@
 	$prev = $pagenum-1;
 	$pagenum++;
 
-	echo "<div class=\"bottomnav\"><a href=\"" . $siteUrl . "/archive.php?pagenum=$prev\"><< back</a> ( <a href=\"" . $siteUrl . "\">home</a> ) <a href=\"" . $siteUrl  . "/archive.php?pagenum=$pagenum\">next >></a></div>";
+	$numPages = $numOfEntries / $indexNum;
+
+	if ($pagenum > $numPages) {
+		echo "<div class=\"bottomnav\"><a href=\"" . $siteUrl . "/archive.php?pagenum=$prev\"><< back</a> ( <a href=\"" . $siteUrl . "\">home</a> )</div>";
+	} else {
+		echo "<div class=\"bottomnav\"><a href=\"" . $siteUrl . "/archive.php?pagenum=$prev\"><< back</a> ( <a href=\"" . $siteUrl . "\">home</a> ) <a href=\"" . $siteUrl  . "/archive.php?pagenum=$pagenum\">next >></a></div>";
+	}
+
 ?>
 
 <?php
